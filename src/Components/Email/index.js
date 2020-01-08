@@ -1,24 +1,14 @@
 import React, {Component} from 'react';
-import EmailContext from './context';
 import '../../App.css';
 
-function EmailConsumer(props){
-  // console.log('email consumer props', props)
-  return (
-    <EmailContext.Consumer>
-      {({emails, addEmail}) => (
-        <Email {...props} emails={emails} addEmail={addEmail} />
-      )}
-    </EmailContext.Consumer>
-  );
-}
+
 
 class Email extends Component{
   componentDidMount(){
     // this.props.addEmail("this is a second test email")
   }
   render(){
-    // console.log('email props', this.props)
+    console.log('email props', this.props)
     const emails = this.props.emails.map((email)=>{
       return(
         <li className="email">{email}</li>
@@ -35,4 +25,4 @@ class Email extends Component{
   }
 }
 
-export default EmailConsumer;
+export default Email;

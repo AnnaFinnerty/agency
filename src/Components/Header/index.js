@@ -12,7 +12,7 @@ function Header(props) {
                 <h1>agency</h1>
               </Grid.Column>
               <Grid.Column width={3}>
-                
+                {/* <h2>{props.agency.name}</h2> */}
               </Grid.Column>
               <Grid.Column width={2}>
                 Monthly Income

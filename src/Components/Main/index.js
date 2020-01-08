@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
-import EmailProvider from '../Email/provider';
-import TasksProvider from '../Tasks/provider';
+import Email from '../Email';
+import Tasks from '../Tasks';
 import Employee from '../Employee';
 import Project from '../Project';
 
@@ -22,10 +22,10 @@ class Main extends Component {
         return <Employee {...info} fireEmployee={this.props.fireEmployee}/>
 
       case "email":
-        return <EmailProvider />
+        return <Email emails={this.props.emails} />
 
       case "tasks":
-        return <TasksProvider />
+        return <Tasks tasks={this.props.tasks} />
 
       default:
         return null

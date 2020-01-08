@@ -4,8 +4,6 @@ import Header from '../Header';
 import Main from '../Main';
 import Sidebar from '../Sidebar';
 
-import EmailProvider from '../Email/provider';
-import TasksProvider from '../Tasks/provider';
 import Agency from '../../Scripts/Agency';
 import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
@@ -13,7 +11,6 @@ import RandomProject from '../../Scripts/RandomProject';
 
 import TimerContext from '../App/timerContext';
 
-import { Tab } from 'semantic-ui-react';
 import '../../App.css';
 
 
@@ -26,7 +23,7 @@ class Content extends Component {
       totalPositions: 20,
       employees: [],
       applicants: [],
-      tasks: [],
+      tasks: ['Task in content'],
       emails: ['Email in content'],
       mainContentType: 'tasks',
       mainContentIndex: 'null',
@@ -153,6 +150,8 @@ class Content extends Component {
                                 removePane={this.removePane}
                                 hireApplicant={this.hireApplicant}
                                 fireEmployee={this.fireEmployee}
+                                emails={this.state.emails}
+                                tasks={this.state.tasks}
                                 />
                         </div>
                 <footer></footer>
