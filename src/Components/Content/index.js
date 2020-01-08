@@ -54,6 +54,7 @@ class Content extends Component {
       const startEmployee = this.randomEmployeeGenerator.generateRandomEmployee();
       startEmployees.push(startEmployee);
     }
+    const sortedEmployees = this.sortEmployees(startEmployees);
     numStartProjects = numStartProjects ? numStartProjects : 3;
     const startProjects = [];
     const startApplicants = [];
@@ -65,7 +66,7 @@ class Content extends Component {
       startProjects.push(startProject);
     }
     this.setState({
-      employees: startEmployees,
+      employees: sortedEmployees,
       projects: startProjects,
       applicants: startApplicants,
       agency: agency
@@ -80,9 +81,14 @@ class Content extends Component {
   }
   fireEmployee = (info) => {
     console.log('firing employee', info)
+    const employees = this.state.employees.filter((employee) => employee.id != info);
+    const sortedEmployees = this.sortEmployees(employees);
     this.setState({
-      employees: this.state.employees.filter((employee) => employee.id != info)
+      employees: sortedEmployees
     })
+  }
+  sortEmployees = (employees) => {
+    return employees.sort(function(a,b){return b.level - a.level})
   }
   generateEmail = (event) => {
     const email = "email";

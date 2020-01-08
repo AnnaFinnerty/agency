@@ -68,6 +68,7 @@ RandomEmployee.prototype.randomStats = function(){
         happiness: this.randomBetweenInts(1,11),
         creativity: this.randomBetweenInts(1,11),
         curiosity: this.randomBetweenInts(1,11),
+        dedication: this.randomBetweenInts(1,11),
     }
     return stats
 }

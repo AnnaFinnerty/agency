@@ -4,9 +4,7 @@ import '../../App.css';
 
 
 class Email extends Component{
-  componentDidMount(){
-    // this.props.addEmail("this is a second test email")
-  }
+  
   render(){
     console.log('email props', this.props)
     const emails = this.props.emails.map((email)=>{
@@ -17,9 +15,12 @@ class Email extends Component{
     return (
       <React.Fragment>
         <h2>Email</h2>
-        <ul>
+        <ul className='email-list'>
           {emails}
         </ul>
+        <div className='email-viewer'>
+
+        </div>
       </React.Fragment>
     );
   }

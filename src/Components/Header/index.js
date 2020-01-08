@@ -29,7 +29,6 @@ function Header(props) {
                 </Grid.Row>
                 <Grid.Row>
                   <Button size="small" onClick={props.stopTimer}>stop timer</Button>
-                  <Button size="small">agency stats</Button>
                 </Grid.Row>
               </Grid.Column>     
           </Grid>
