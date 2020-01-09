@@ -8,7 +8,7 @@ function RandomEmployee(){
 
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
     const startEmployees = [];
-    
+
     return startEmployees
 }
 
@@ -104,7 +104,8 @@ RandomEmployee.prototype.randomName = function(gender){
             last: lastName, 
             full:first_name + " " + lastName,
             display: first_name.charAt(0) + ". " + lastName,
-            short: first_name + " " + lastName.charAt(0) + "."
+            short: first_name + " " + lastName.charAt(0) + ".",
+            email: first_name.charAt(0) + lastName + '@'
         }
 }
 

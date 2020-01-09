@@ -4,7 +4,14 @@ function RandomEmail(){
 
 RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
     let text;
+    let subject = 'Hello';
+    let sender = employee1;
+    const time =  new Date().toLocaleString();
     switch(type){
+
+        case 'start':
+            text = 'Hey there, thanks for taking over the personnel decisions. Sure it should be too hard!';
+            break 
 
         case 'applicant':
             text = this.applicantEmail(employee1);
@@ -18,7 +25,10 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
             text = this.junkEmail(employee1); 
     }
     const email = {
-        text: text
+        subject: subject,
+        text: text,
+        sender: sender,
+        time: time
     }
     return email
 }
@@ -41,3 +51,5 @@ RandomEmail.prototype.welcomeEmail = function(employee){
     ];
     return junk[Math.floor(Math.random()*junk.length)];
 }
+
+export default RandomEmail

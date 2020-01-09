@@ -56,6 +56,8 @@ li{
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
+  overflow: hidden;
+  max-height: 3vh;
 }
 
 li:hover{

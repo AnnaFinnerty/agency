@@ -10,6 +10,7 @@ import Agency from '../../Scripts/Agency';
 import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
+import RandomEmail from '../../Scripts/RandomEmail';
 
 import TimerContext from '../App/timerContext';
 
@@ -28,7 +29,7 @@ class Content extends Component {
       employees: [],
       applicants: [],
       tasks: ['Task in content'],
-      emails: ['Email in content'],
+      emails: [],
       mainContentType: 'tasks',
       mainContentIndex: 'null',
       update: false,
@@ -47,6 +48,7 @@ class Content extends Component {
     this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
     this.randomProjectGenerator = new RandomProject();
+    this.randomEmailGenerator = new RandomEmail();
   }
   componentDidMount(){
     this.start();
@@ -71,13 +73,15 @@ class Content extends Component {
       startEmployees.push(startEmployee);
     }
     const sortedEmployees = this.sortEmployees(startEmployees);
-    
+    const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
+    console.log('welcomeEmail',welcomeEmail)
     this.setState({
       employees: sortedEmployees,
       projects: startProjects,
       applicants: startApplicants,
       agency: agency,
-      industry: industry
+      industry: industry,
+      emails: [welcomeEmail]
     })
   }
   startTimer = () => {
