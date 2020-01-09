@@ -141,21 +141,20 @@ class Content extends Component {
           employees.splice(a,1)
         }
       }
+      console.log('employee stats raw',employeeStatsRaw);
+      const employeeStats = {
+        productivity: employeeStatsRaw.productivity/employees.length,
+        happiness: employeeStatsRaw.happiness/employees.length,
+        salary: employeeStatsRaw.salary/employees.length,
+      }
+      console.log('employee stats',employeeStats);
+      //hourly random events
+      const r = Math.random();
+      if(r < .5){
+
+      }
     } 
-    console.log('employee stats raw',employeeStatsRaw);
-    const employeeStats = {
-      productivity: employeeStatsRaw.productivity/employees.length,
-      happiness: employeeStatsRaw.happiness/employees.length,
-      salary: employeeStatsRaw.salary/employees.length,
-    }
-    console.log('employee stats',employeeStats);
-    //hourly random events
-    const r = Math.random();
-    if(r < .5){
-
-    }
     
-
     //set new state
     this.setState({
       hour: hour,

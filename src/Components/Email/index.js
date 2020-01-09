@@ -26,7 +26,6 @@ class Email extends Component{
     })
   }
   render(){
-    console.log('email props', this.props)
     const emails = this.props.emails.map((email,i)=>{
       return(
       <li key={i} 
@@ -41,7 +40,6 @@ class Email extends Component{
       )
     })
     const selectedEmail = this.state.openEmail ? this.props.emails[this.state.currentEmail] : "";
-    console.log('selected email', this.state.currentEmail)
     return (
       <React.Fragment>
         <Container style={{height:'85vh'}}>
