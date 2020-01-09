@@ -96,9 +96,7 @@ class Content extends Component {
     },this.state.hourLength)
   }
   update = () => {
-    // const hour = this.state.hour >= 11 ? 0 : this.state.hour + 1;
-    // const day = this.state.hour >= 11 ? this.state.day + 1 : this.state.day;
-    // const month = this.state.day >= 30 ? this.state.month + 1 : 
+    //update time 
     let hour, day, month, year
     if(this.state.hour >= 11){
       hour = 0;
@@ -126,6 +124,7 @@ class Content extends Component {
       happiness: 0,
       salary: 0,
     }
+
     //update employees and get stats
     if(hour === 0){
       for(let a = 0; a < employees.length; a++){
@@ -137,6 +136,8 @@ class Content extends Component {
         employeeStatsRaw.salary += employees[a].stats.salary
         if(employees[a]['quit']){
           tasks.push('hire someone new');
+          const quitEmail = this.randomEmailGenerator.generateEmail('quit',employees[a]);
+          emails.unshift(quitEmail);
           employees.splice(a,1)
         }
       }

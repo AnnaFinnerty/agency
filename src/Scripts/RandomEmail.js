@@ -21,6 +21,10 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
             text = this.welcomeEmail(employee1);
         break
 
+        case 'quit':
+            text = this.quitEmail(employee1);
+        break
+
         default: 
             text = this.junkEmail(employee1); 
     }
@@ -48,6 +52,13 @@ RandomEmail.prototype.applicantEmail = function(employee){
 RandomEmail.prototype.welcomeEmail = function(employee){
     const junk = [
         "Welcome " + employee.name.display + " who just joined the company!",
+    ];
+    return junk[Math.floor(Math.random()*junk.length)];
+}
+
+RandomEmail.prototype.quitEmail = function(employee){
+    const junk = [
+        "I quit. Sincerely, " + employee.name.display,
     ];
     return junk[Math.floor(Math.random()*junk.length)];
 }

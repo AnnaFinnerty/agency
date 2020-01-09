@@ -25,7 +25,9 @@ class Tasks extends Component {
     console.log('tasks props', this.props);
     const tasks = this.props.tasks.map((task, i) => {
         return(
-            <li key={i}>{task}
+            <li key={i} className='task'>
+                {/* <button onClick={()=>this.removeTask(task)}>o</button> */}
+                 {task}
                 <button onClick={()=>this.removeTask(task)}>x</button>
             </li>
         )

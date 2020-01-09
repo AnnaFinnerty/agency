@@ -73,3 +73,9 @@ li:hover{
 .email{
   border-bottom: .5px solid black;
 }
+
+.task{
+  border: 1px solid dimgray;
+  border-radius: 10vw;
+  padding: 2vw;
+}

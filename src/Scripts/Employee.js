@@ -1,5 +1,5 @@
 class Employee{
-    constructor(id, name, gender,age,level, skillset, stats, salary){
+    constructor(id, name, gender,age,level, skillset, stats, salary,projectId){
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -9,6 +9,7 @@ class Employee{
         this.stats = stats;
         this.salary = salary;
         this.quit = false;
+        this.projectId = projectId;
     }
     update(){
         console.log('updating employee!');
@@ -17,6 +18,13 @@ class Employee{
             this.stats.happiness -= 1;
         } else if (r > .9){
             this.stats.happiness += 1;
+        }
+
+        const r2 = Math.random();
+        if(r2 < .1){
+            this.stats.productivity -= 1;
+        } else if (r > .9){
+            this.stats.productivity += 1;
         }
         
         if(this.stats.happiness < 5){

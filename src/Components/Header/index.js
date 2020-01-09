@@ -25,7 +25,7 @@ class Header extends Component{
     })
   }
   render(){
-    console.log('header props:', this.props.agency)
+    console.log('header props:', this.props)
     return (
       <React.Fragment>
         <header>
