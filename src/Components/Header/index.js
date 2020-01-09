@@ -61,8 +61,8 @@ class Header extends Component{
             </Grid>
           </nav>
       </header>
-      <IndustryModal open={this.state.industryModalOpen} closeModal={this.closeModal} />
-      <AgencyModal open={this.state.agencyModalOpen} closeModal={this.closeModal} />
+      <IndustryModal industry={this.props.industry} open={this.state.industryModalOpen} closeModal={this.closeModal} />
+      <AgencyModal agency={this.props.agency} open={this.state.agencyModalOpen} closeModal={this.closeModal} />
       </React.Fragment>
     );
   }

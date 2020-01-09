@@ -1,4 +1,5 @@
 import Employee from './Employee';
+
 function RandomEmployee(){
     this.employeeId = 100000001;
     this.maxLeaders = 2;

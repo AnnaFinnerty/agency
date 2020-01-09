@@ -8,6 +8,11 @@ class AgencyModal extends Component{
         this.state = {}
     }
     render(){
+        console.log('agency modal props')
+        const agency = this.props.agency;
+        console.log(agency);
+        const name = agency.name;
+        console.log(name);
         return(
             <Modal open={this.props.open} style={{height:'90vh'}}>
                 <Modal.Header>

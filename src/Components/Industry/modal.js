@@ -8,6 +8,7 @@ class IndustryModal extends Component{
         this.state = {}
     }
     render(){
+        console.log('industry props',this.props.industry)
         return(
             <Modal open={this.props.open} style={{height:'90vh'}}>
                 <Modal.Header>
@@ -16,7 +17,7 @@ class IndustryModal extends Component{
                 </Modal.Header>
                 <Modal.Content>
                 <Modal.Description>
-                    
+                  
                 </Modal.Description>
                 </Modal.Content>
             </Modal>

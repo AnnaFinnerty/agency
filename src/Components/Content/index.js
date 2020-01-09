@@ -22,8 +22,9 @@ class Content extends Component {
     super();
     this.state = {
       industry: null,
-      agency: null,
-      sidebarRight: false,
+      //temp fix
+      agency: new Agency(),
+      sidebarRight: new Industry(),
       projects: [],
       totalPositions: 20,
       employees: [],
@@ -55,8 +56,8 @@ class Content extends Component {
   }
   start = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
-    const agency = new Agency();
-    const industry = new Industry();
+    // const agency = new Agency();
+    // const industry = new Industry();
     const startProjects = [];
     const startApplicants = [];
     numStartProjects = numStartProjects ? numStartProjects : 3;
@@ -79,8 +80,8 @@ class Content extends Component {
       employees: sortedEmployees,
       projects: startProjects,
       applicants: startApplicants,
-      agency: agency,
-      industry: industry,
+      // agency: agency,
+      // industry: industry,
       emails: [welcomeEmail]
     })
   }
@@ -126,7 +127,7 @@ class Content extends Component {
   }
   fireEmployee = (info) => {
     console.log('firing employee', info)
-    const employees = this.state.employees.filter((employee) => employee.id != info);
+    const employees = this.state.employees.filter((employee) => employee.id !== info);
     const sortedEmployees = this.sortEmployees(employees);
     this.setState({
       employees: sortedEmployees
@@ -176,6 +177,7 @@ class Content extends Component {
     })
   }
   render(){
+    console.log('content state', this.state)
     return (
       <React.Fragment>
                 <div className="app">
@@ -186,6 +188,7 @@ class Content extends Component {
                           startTimer={this.startTimer} 
                           stopTimer={this.stopTimer}
                           agency={this.state.agency}
+                          industry={this.state.industry}
                           />
                         <div className="main-container">
                           <Sidebar employees={this.state.employees} projects={this.state.projects} applicants={this.state.applicants} addPane={this.addPane}/>

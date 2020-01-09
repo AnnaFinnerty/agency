@@ -3,8 +3,10 @@ function RandomCompany(){
 }
 
 RandomCompany.prototype.generateRandomCompany = function(){
+    const sectors = Object.keys(this.projectSectors);
     return{
-        name: this.randomCompanyName()
+        name: this.randomCompanyName(),
+        sector: this.randomFromArray(sectors)
     }
 }
 
@@ -19,6 +21,41 @@ RandomCompany.prototype.randomCompanyName = function(){
     } else {
         return second + " " + first
     }
+}
+
+RandomCompany.prototype.projectSectors = {
+    'healthcare': {
+        minCost: 2,
+        maxCost: 5,
+        minDesign: 2,
+        maxDesign: 5,
+        firstwords: [],
+        secondwords: [],
+    },
+    'finance': {
+        minCost: 5,
+        maxCost: 10,
+        minDesign: 2,
+        maxDesign: 5,
+        firstwords: [],
+        secondwords: [],
+    },
+    'housing': {
+        minCost: 2,
+        maxCost: 5,
+        minDesign: 2,
+        maxDesign: 5,
+        firstwords: [],
+        secondwords: [],
+    },
+    'local business': {
+        minCost: 1,
+        maxCost: 3,
+        minDesign: 2,
+        maxDesign: 5,
+        firstwords: [],
+        secondwords: [],
+    },
 }
 
 RandomCompany.prototype.randomFromArray = function(arr){
