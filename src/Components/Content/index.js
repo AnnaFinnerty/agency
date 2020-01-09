@@ -12,8 +12,6 @@ import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
 import RandomEmail from '../../Scripts/RandomEmail';
 
-import TimerContext from '../App/timerContext';
-
 import '../../App.css';
 
 
@@ -21,19 +19,19 @@ class Content extends Component {
   constructor(){
     super();
     this.state = {
-      industry: null,
       //temp fix
+      industry: new Industry(),
       agency: new Agency(),
-      sidebarRight: new Industry(),
+      sidebarRight: true,
       projects: [],
       totalPositions: 20,
       employees: [],
       applicants: [],
       tasks: ['Task in content'],
       emails: [],
-      mainContentType: 'tasks',
-      mainContentIndex: 'null',
-      update: false,
+      // mainContentType: 'tasks',
+      // mainContentIndex: 'null',
+      // update: false,
       hour: 0,
       day: 1,
       month: 1,
@@ -78,7 +76,7 @@ class Content extends Component {
     }
     const sortedEmployees = this.sortEmployees(startEmployees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
-    console.log('welcomeEmail',welcomeEmail)
+    
     this.setState({
       employees: sortedEmployees,
       projects: startProjects,

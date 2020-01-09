@@ -31,8 +31,19 @@ class Main extends Component {
         return null
     }
   }
-  getPaneInfo = (info) => {
+  getPaneName = (info) => {
+    console.log(info);
     switch(info.type){
+
+      case "applicant":
+        return info.info.name.display
+
+      case "employee":
+        return info.info.name.display
+
+      case "project":
+        return info.info.name
+       
       default:
         return info.type
     }
@@ -40,11 +51,11 @@ class Main extends Component {
   buildPane = (info,i) => {
     // console.log('building pane',info)
     const pane = this.getPane(info.type,info)
-    const paneInfo = this.getPaneInfo(info)
+    const paneName = this.getPaneName(info)
     const item = { 
       menuItem: (
         <Menu.Item key={info.type} onClick={()=>this.props.updatePane(i)}>
-          {paneInfo}
+          {paneName}
           {
             info.pinned ? <Icon name="map pin"></Icon> :
             <button onClick={()=>this.props.removePane(i)}>X</button>

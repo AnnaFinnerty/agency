@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 
 import Content from '../Content';
 
-import TimerContext from './timerContext';
-
 import '../../App.css';
 
 
@@ -11,15 +9,13 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      update: false,
-      hour: 0,
-      day: 365,
+      testing: true,
     }
   }
   render(){
     return (
       <React.Fragment>
-          <Content/>
+          <Content testing={this.state.testing}/>
       </React.Fragment>
     );
   }

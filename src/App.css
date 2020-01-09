@@ -47,7 +47,7 @@ header{
 aside{
   background: lightgray;
   border-right: .5px solid black;
-  width: 33%;
+  width: 31.25vw;
   height: 85vh;
 }
 
@@ -72,6 +72,8 @@ li:hover{
 
 .email{
   border-bottom: .5px solid black;
+  padding: .5vh;
+  margin: .5vh 0;
 }
 
 .task{

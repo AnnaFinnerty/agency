@@ -1,7 +1,7 @@
 class Project{
     constructor(id, company, name, sector,type, requirements,budget, estimatedMonthsToCompletion,monthsActive,percentComplete){
         this.id = id;
-        this.comnpany = company;
+        this.company = company;
         this.name = name;
         this.sector = sector;
         this.type = type;
