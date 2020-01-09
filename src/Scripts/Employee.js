@@ -10,6 +10,7 @@ class Employee{
         this.salary = salary;
         this.quit = false;
         this.projectId = projectId;
+        this.problems = 0;
     }
     update(){
         console.log('updating employee!');
@@ -27,7 +28,7 @@ class Employee{
             this.stats.productivity += 1;
         }
         
-        if(this.stats.happiness < 5){
+        if(this.stats.happiness < 5 || this.problems > 5){
             this.quit = true;
         }
     }

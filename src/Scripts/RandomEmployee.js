@@ -9,7 +9,10 @@ function RandomEmployee(){
 
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
     const startEmployees = [];
-
+    for(let i = 0; i < numEmployees; i++){
+        const employee = this.generateRandomEmployee();
+        startEmployees.push(employee);
+    }
     return startEmployees
 }
 

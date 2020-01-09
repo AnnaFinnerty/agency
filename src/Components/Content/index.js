@@ -97,16 +97,23 @@ class Content extends Component {
   }
   update = () => {
     //update time 
-    let hour, day, month, year
+    let hour = this.state.hour;
+    let day = this.state.day;
+    let month = this.state.month;
+    let year = this.state.year;
     if(this.state.hour >= 11){
+      //new day
       hour = 0;
       if(this.state.day >= 30){
+        //new month
         day = 0;
         if(this.state.month >= 12){
           month = 1
         } else {
+          //new year
           month = this.state.month + 1;
           year = this.state.year + 1;
+
         }
       } else {
         day = this.state.day + 1;
@@ -165,7 +172,6 @@ class Content extends Component {
       emails: emails,
       tasks: tasks
     })
-
   }
   stopTimer = () => {
     console.log('stopping timer')

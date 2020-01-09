@@ -53,10 +53,13 @@ class Header extends Component{
                 </Grid.Column>
                 <Grid.Column width={2} style={{padding:"0"}}>
                   <Grid.Row>
-                      <span>{this.props.hour}</span>/<span>{this.props.day}</span>
-                      <Button onClick={this.props.startTimer}>start timer</Button>
+                      <span>{this.props.hour}</span>
                   </Grid.Row>
                   <Grid.Row>
+                      <span>{this.props.day}</span>/<span>{this.props.month}</span>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Button onClick={this.props.startTimer}>start timer</Button>
                     <Button size="small" onClick={this.props.stopTimer}>stop timer</Button>
                   </Grid.Row>
                 </Grid.Column>     
