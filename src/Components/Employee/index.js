@@ -1,4 +1,7 @@
 import React from 'react';
+
+import Helpers from '../../Scripts/Helpers';
+
 import '../../App.css';
 import { Grid, Button, Label } from 'semantic-ui-react'
 
@@ -9,6 +12,8 @@ function Employee(props) {
       <li key = {i}>{skill}</li>
     )
   })
+  const helpers = new Helpers();
+  const salary = helpers.monify(props.info.salary);
   return (     
       <Grid celled>
         <Grid.Row>
@@ -46,7 +51,7 @@ function Employee(props) {
             Salary:
           </Grid.Column>
           <Grid.Column width={4}>
-            {props.info.salary}
+            {salary}
           </Grid.Column>
           <Grid.Column width={4}>
             <Button>Raise salary</Button>

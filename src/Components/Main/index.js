@@ -43,6 +43,12 @@ class Main extends Component {
 
       case "project":
         return info.info.name
+
+      case "email":
+        return 'email (' + this.props.emails.length + ')'
+
+      case "tasks":
+        return 'tasks (' + this.props.tasks.length + ')'
        
       default:
         return info.type
