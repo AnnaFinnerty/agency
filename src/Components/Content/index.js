@@ -43,7 +43,7 @@ class Content extends Component {
         {type:'email',pinned:true},
         {type:'tasks',pinned:true}
       ],
-      message: 'test message',
+      message: null,
     }
     this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
