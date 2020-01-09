@@ -12,10 +12,10 @@ class Employee{
     }
     update(){
         console.log('updating employee!');
-        const r = Math.random;
-        if(r < .3){
+        const r = Math.random();
+        if(r < .1){
             this.stats.happiness -= 1;
-        } else if (r > .7){
+        } else if (r > .9){
             this.stats.happiness += 1;
         }
         

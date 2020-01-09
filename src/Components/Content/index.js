@@ -3,7 +3,9 @@ import React, {Component} from 'react';
 import Header from '../Header';
 import Main from '../Main';
 import Sidebar from '../Sidebar';
+import Message from '../Message';
 
+import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
 import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
@@ -18,6 +20,8 @@ class Content extends Component {
   constructor(){
     super();
     this.state = {
+      industry: null,
+      agency: null,
       sidebarRight: false,
       projects: [],
       totalPositions: 20,
@@ -29,13 +33,16 @@ class Content extends Component {
       mainContentIndex: 'null',
       update: false,
       hour: 0,
-      day: 365,
+      day: 1,
+      month: 1,
+      year: 1,
       hourLength: 2000,
       activePane: 0,
       panes: [
         {type:'email',pinned:true},
         {type:'tasks',pinned:true}
       ],
+      message: 'test message',
     }
     this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
@@ -47,6 +54,16 @@ class Content extends Component {
   start = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
     const agency = new Agency();
+    const industry = new Industry();
+    const startProjects = [];
+    const startApplicants = [];
+    numStartProjects = numStartProjects ? numStartProjects : 3;
+    for(let i = 0 ; i < numStartProjects; i ++){
+      const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
+      startApplicants.push(applicant);
+      const startProject = this.randomProjectGenerator.generateRandomProject();
+      startProjects.push(startProject);
+    }
     numStartEmployees = numStartEmployees ? numStartEmployees : 15;
     const startEmployees = [];
     for(let i = 0 ; i < numStartEmployees; i ++){
@@ -54,20 +71,13 @@ class Content extends Component {
       startEmployees.push(startEmployee);
     }
     const sortedEmployees = this.sortEmployees(startEmployees);
-    numStartProjects = numStartProjects ? numStartProjects : 3;
-    const startProjects = [];
-    const startApplicants = [];
-    for(let i = 0 ; i < numStartProjects; i ++){
-      const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
-      startApplicants.push(applicant);
-      const startProject = this.randomProjectGenerator.generateRandomProject();
-      startProjects.push(startProject);
-    }
+    
     this.setState({
       employees: sortedEmployees,
       projects: startProjects,
       applicants: startApplicants,
-      agency: agency
+      agency: agency,
+      industry: industry
     })
   }
   startTimer = () => {
@@ -84,9 +94,14 @@ class Content extends Component {
     if(hour === 0){
       for(let a = 0; a < employees.length; a++){
         employees[a].update();
+        if(employees[a]['quit']){
+          employees.splice(a,1)
+        }
       }
     }
     //hourly random events
+
+    //set new state
     this.setState({
       hour: hour,
       day: day,
@@ -146,12 +161,24 @@ class Content extends Component {
       activePane: i
     })
   }
+  openMessage = (text) => {
+    this.setState({
+      message: text
+    })
+  }
+  closeMessage = () => {
+    this.setState({
+      message: null
+    })
+  }
   render(){
     return (
       <React.Fragment>
                 <div className="app">
                   <Header hour={this.state.hour} 
-                          day={this.state.day} 
+                          day={this.state.day}
+                          month={this.state.month}
+                          year={this.state.year}   
                           startTimer={this.startTimer} 
                           stopTimer={this.stopTimer}
                           agency={this.state.agency}
@@ -170,6 +197,7 @@ class Content extends Component {
                         </div>
                 <footer></footer>
                 </div>
+                <Message open={this.state.message} text={this.state.message} closeMessage={this.closeMessage}/>
       </React.Fragment>
     );
   }

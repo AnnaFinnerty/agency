@@ -1,10 +1,15 @@
 import Employee from './Employee';
-
 function RandomEmployee(){
     this.employeeId = 100000001;
     this.maxLeaders = 2;
     this.currentLeaders = 0;
     this.usedNames = [];
+}
+
+RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
+    const startEmployees = [];
+    
+    return startEmployees
 }
 
 RandomEmployee.prototype.generateEmployeeID = function(){
