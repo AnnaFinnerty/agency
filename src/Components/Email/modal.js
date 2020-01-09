@@ -4,14 +4,15 @@ import {Modal,Header,Button} from 'semantic-ui-react';
 
 const EmailModal = (props) => (
     <Modal open={props.open}>
-        <Modal.Header>Select a Photo
+        <Modal.Header>
+            {props.email.subject}
             <Button onClick={props.closeEmail} style={{float:'right'}}>
                 X
             </Button>
         </Modal.Header>
-        <Modal.Content image>
+        <Modal.Content>
         <Modal.Description>
-            <Header>Default Profile Image</Header>
+            {/* <Header>{props.email.sender.name.display}</Header> */}
             {props.email.text}
         </Modal.Description>
         </Modal.Content>
