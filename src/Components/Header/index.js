@@ -35,7 +35,9 @@ class Header extends Component{
                   <h1>agency</h1>
                 </Grid.Column>
                 <Grid.Column width={3} style={{padding:"0"}}>
-                  {/* <h2>{props.agency.name}</h2> */}
+
+                  <h3>{this.props.agency.name}</h3>
+                  <h5>{this.props.agency.yearsInOperation} years in operation</h5>
                   <Grid.Row>
                     <button onClick={()=>this.openModal('agencyModalOpen')}>A</button>
                     <button onClick={()=>this.openModal('industryModalOpen')}>I</button>

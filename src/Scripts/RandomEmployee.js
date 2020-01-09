@@ -42,7 +42,7 @@ RandomEmployee.prototype.generateRandomEmployee = function(applicant){
 RandomEmployee.prototype.randomSkillset = function(focusOne,level){
     const focii = ['ux', 'frontend','backend', 'datascience','management']
     focusOne = focusOne ? focusOne : this.randomFromArray(focii);
-    const focusTwo = level === 3 ? 'management' : this.randomFromArray(focii);
+    const focusTwo = this.randomFromArray(focii);
     const skills = this.randomSkills(focusOne,focusTwo);
     return {
         focus: focusOne,
@@ -52,16 +52,17 @@ RandomEmployee.prototype.randomSkillset = function(focusOne,level){
 
 RandomEmployee.prototype.randomSkills = function(focusOne,focusTwo){
     const skills = {
-        ux: ['design','css'],
-        frontend: ['css','html','javascript'],
-        backend: ['python','javascript'],
+        ux: ['design','css','wireframing'],
+        frontend: ['css','html', 'jQuery','javascript'],
+        backend: ['javascript','express','python','sql'],
         datascience: ['python','matplotlib','tensorflow'],
-        management: ['agile','kanban'],
+        management: ['agile','kanban','motivation'],
     }
     let skillset = [];
     if(focusOne !== focusTwo){
         skillset.push(skills[focusOne][0])
         skillset.push(skills[focusOne][1])
+        skillset.push(skills[focusOne][2])
         skillset.push(skills[focusTwo][0])
     } else {
         skillset = skills[focusOne]

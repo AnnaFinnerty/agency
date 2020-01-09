@@ -2,7 +2,7 @@ function RandomAgency(){
 
 }
 
-RandomAgency.prototype.createRandomAgency = () => {
+RandomAgency.prototype.createRandomAgency = (isFake) => {
     const name = this.randomAgencyName();
     
 }

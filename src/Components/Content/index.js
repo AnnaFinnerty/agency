@@ -60,10 +60,13 @@ class Content extends Component {
     // const industry = new Industry();
     const startProjects = [];
     const startApplicants = [];
+    const startEmails = [];
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
+      const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
+      startEmails.push(appEmail);
       const startProject = this.randomProjectGenerator.generateRandomProject();
       startProjects.push(startProject);
     }
@@ -82,7 +85,8 @@ class Content extends Component {
       applicants: startApplicants,
       // agency: agency,
       // industry: industry,
-      emails: [welcomeEmail]
+      emails: [welcomeEmail,...startEmails],
+      tasks: ['hire a new junior employee']
     })
   }
   startTimer = () => {
@@ -92,25 +96,74 @@ class Content extends Component {
     },this.state.hourLength)
   }
   update = () => {
-    const hour = this.state.hour >= 11 ? 0 : this.state.hour + 1;
-    const day = this.state.hour >= 11 ? this.state.day + 1 : this.state.day;  
+    // const hour = this.state.hour >= 11 ? 0 : this.state.hour + 1;
+    // const day = this.state.hour >= 11 ? this.state.day + 1 : this.state.day;
+    // const month = this.state.day >= 30 ? this.state.month + 1 : 
+    let hour, day, month, year
+    if(this.state.hour >= 11){
+      hour = 0;
+      if(this.state.day >= 30){
+        day = 0;
+        if(this.state.month >= 12){
+          month = 1
+        } else {
+          month = this.state.month + 1;
+          year = this.state.year + 1;
+        }
+      } else {
+        day = this.state.day + 1;
+      }
+    } else {
+      hour = this.state.hour + 1;
+    }
+    
     //daily updates
     const employees = this.state.employees;
+    const tasks = this.state.tasks;
+    const emails = this.state.emails;
+    const employeeStatsRaw = {
+      productivity: 0,
+      happiness: 0,
+      salary: 0,
+    }
+    //update employees and get stats
     if(hour === 0){
       for(let a = 0; a < employees.length; a++){
+        //run employee update method
         employees[a].update();
+        //get new employee stats and add to stats dict
+        employeeStatsRaw.productivity += employees[a].stats.productivity
+        employeeStatsRaw.happiness += employees[a].stats.happiness
+        employeeStatsRaw.salary += employees[a].stats.salary
         if(employees[a]['quit']){
+          tasks.push('hire someone new');
           employees.splice(a,1)
         }
       }
+    } 
+    console.log('employee stats raw',employeeStatsRaw);
+    const employeeStats = {
+      productivity: employeeStatsRaw.productivity/employees.length,
+      happiness: employeeStatsRaw.happiness/employees.length,
+      salary: employeeStatsRaw.salary/employees.length,
     }
+    console.log('employee stats',employeeStats);
     //hourly random events
+    const r = Math.random();
+    if(r < .5){
+
+    }
+    
 
     //set new state
     this.setState({
       hour: hour,
       day: day,
-      employees: employees
+      month: month,
+      year: year,
+      employees: employees,
+      emails: emails,
+      tasks: tasks
     })
 
   }
@@ -140,6 +193,15 @@ class Content extends Component {
     const email = "email";
     this.setState({
        emails: [email, ...this.state.emails]
+    })
+  }
+  deleteEmail = (i) => {
+
+  }
+  generateTask = (event) => {
+    const task = "task";
+    this.setState({
+       tasks: [task, ...this.state.tasks]
     })
   }
   addPane = (type,info) => {

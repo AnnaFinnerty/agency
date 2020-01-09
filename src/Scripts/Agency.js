@@ -9,10 +9,14 @@ class Agency{
         this.yearsInOperation = yearsInOperation ? yearsInOperation : 1;
         //date founded
     }
-    calculateAgencyParameters = function(employees){
+    calculateAgencyParameters = function(employees,projects){
         let totalSalaries = 0;
+        let totalIncome = 0;
         for(let i = 0; i < employees.length; i++){
             totalSalaries+=employees[i].salary;
+        }
+        for(let i = 0; i < projects.length; i++){
+            totalSalaries+=projects[i].salary;
         }
         //overhead constant
         const overhead = employees.length * this.yearsInOperation;
