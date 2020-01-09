@@ -7,7 +7,10 @@ class Project{
         this.type = type;
         this.requirements = requirements;
         this.budget = budget;
+        this.totalPaid = 0;
+        this.payInInstallments = true;
         this.estimatedMonthsToCompletion = estimatedMonthsToCompletion;
+        this.monthsToCompletion = estimatedMonthsToCompletion;
         this.monthsActive = monthsActive ? monthsActive : 0;
         this.percentComplete = percentComplete ? percentComplete : 0;
         

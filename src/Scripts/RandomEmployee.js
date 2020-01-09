@@ -7,6 +7,12 @@ function RandomEmployee(){
     this.usedNames = [];
 }
 
+RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
+    const startEmployees = [];
+
+    return startEmployees
+}
+
 RandomEmployee.prototype.generateEmployeeID = function(){
     const id = this.employeeId;
     this.employeeId += 1;
@@ -19,8 +25,9 @@ RandomEmployee.prototype.generateRandomEmployee = function(applicant){
     const gender = this.randomGender();
     const name = this.randomName(gender);
     const age = this.randomBetweenInts(23,60);
-    const level = this.randomBetweenInts(1,3);
-    if(level === 1){
+    const maxLevel = this.currentLeaders >= 2 ? 4 : 6;
+    const level = this.randomBetweenInts(1,maxLevel);
+    if(level === 3){
         this.currentLeaders+=1;
     }
     const skillset = this.randomSkillset(null, level);
@@ -65,9 +72,10 @@ RandomEmployee.prototype.randomSkills = function(focusOne,focusTwo){
 RandomEmployee.prototype.randomStats = function(){
     const stats = {
         productivity: this.randomBetweenInts(1,11),
-        happiness: this.randomBetweenInts(1,11),
+        happiness: this.randomBetweenInts(1,101),
         creativity: this.randomBetweenInts(1,11),
         curiosity: this.randomBetweenInts(1,11),
+        dedication: this.randomBetweenInts(1,11),
     }
     return stats
 }
@@ -97,7 +105,8 @@ RandomEmployee.prototype.randomName = function(gender){
             last: lastName, 
             full:first_name + " " + lastName,
             display: first_name.charAt(0) + ". " + lastName,
-            short: first_name + " " + lastName.charAt(0) + "."
+            short: first_name + " " + lastName.charAt(0) + ".",
+            email: first_name.charAt(0) + lastName + '@'
         }
 }
 

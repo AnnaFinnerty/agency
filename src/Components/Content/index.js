@@ -3,17 +3,17 @@ import React, {Component} from 'react';
 import Header from '../Header';
 import Main from '../Main';
 import Sidebar from '../Sidebar';
+import Message from '../Message';
 
-import EmailProvider from '../Email/provider';
-import TasksProvider from '../Tasks/provider';
+import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
 import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
+import RandomEmail from '../../Scripts/RandomEmail';
 
 import TimerContext from '../App/timerContext';
 
-import { Tab } from 'semantic-ui-react';
 import '../../App.css';
 
 
@@ -21,58 +21,102 @@ class Content extends Component {
   constructor(){
     super();
     this.state = {
-      sidebarRight: false,
+      industry: null,
+      //temp fix
+      agency: new Agency(),
+      sidebarRight: new Industry(),
       projects: [],
       totalPositions: 20,
       employees: [],
       applicants: [],
-      tasks: [],
-      emails: ['Email in content'],
+      tasks: ['Task in content'],
+      emails: [],
       mainContentType: 'tasks',
       mainContentIndex: 'null',
       update: false,
       hour: 0,
-      day: 365,
+      day: 1,
+      month: 1,
+      year: 1,
       hourLength: 2000,
       activePane: 0,
       panes: [
         {type:'email',pinned:true},
         {type:'tasks',pinned:true}
       ],
+      message: null,
     }
     this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
     this.randomProjectGenerator = new RandomProject();
+    this.randomEmailGenerator = new RandomEmail();
   }
   componentDidMount(){
     this.start();
   }
   start = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
-    const agency = new Agency();
-    console.log('agency',this.agency);
+    // const agency = new Agency();
+    // const industry = new Industry();
+    const startProjects = [];
+    const startApplicants = [];
+    numStartProjects = numStartProjects ? numStartProjects : 3;
+    for(let i = 0 ; i < numStartProjects; i ++){
+      const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
+      startApplicants.push(applicant);
+      const startProject = this.randomProjectGenerator.generateRandomProject();
+      startProjects.push(startProject);
+    }
     numStartEmployees = numStartEmployees ? numStartEmployees : 15;
     const startEmployees = [];
     for(let i = 0 ; i < numStartEmployees; i ++){
       const startEmployee = this.randomEmployeeGenerator.generateRandomEmployee();
       startEmployees.push(startEmployee);
     }
-    numStartProjects = numStartProjects ? numStartProjects : 3;
-    const startProjects = [];
-    const startApplicants = [];
-    for(let i = 0 ; i < numStartProjects; i ++){
-      const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
-      startApplicants.push(applicant);
-      const startProject = this.randomProjectGenerator.generateRandomProject();
-      startProject.printInfo();
-      startProjects.push(startProject);
-    }
+    const sortedEmployees = this.sortEmployees(startEmployees);
+    const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
+    console.log('welcomeEmail',welcomeEmail)
     this.setState({
-      employees: startEmployees,
+      employees: sortedEmployees,
       projects: startProjects,
       applicants: startApplicants,
-      agency: agency
+      // agency: agency,
+      // industry: industry,
+      emails: [welcomeEmail]
     })
+  }
+  startTimer = () => {
+    console.log('starting timer')
+    this.interval = setInterval(()=>{
+      this.update();
+    },this.state.hourLength)
+  }
+  update = () => {
+    const hour = this.state.hour >= 11 ? 0 : this.state.hour + 1;
+    const day = this.state.hour >= 11 ? this.state.day + 1 : this.state.day;  
+    //daily updates
+    const employees = this.state.employees;
+    if(hour === 0){
+      for(let a = 0; a < employees.length; a++){
+        employees[a].update();
+        if(employees[a]['quit']){
+          employees.splice(a,1)
+        }
+      }
+    }
+    //hourly random events
+
+    //set new state
+    this.setState({
+      hour: hour,
+      day: day,
+      employees: employees
+    })
+
+  }
+  stopTimer = () => {
+    console.log('stopping timer')
+    clearInterval(this.interval)
   }
   hireApplicant = (info) => {
     console.log('hiring applicant', info)
@@ -83,33 +127,20 @@ class Content extends Component {
   }
   fireEmployee = (info) => {
     console.log('firing employee', info)
+    const employees = this.state.employees.filter((employee) => employee.id !== info);
+    const sortedEmployees = this.sortEmployees(employees);
     this.setState({
-      employees: this.state.employees.filter((employee) => employee.id != info)
+      employees: sortedEmployees
     })
+  }
+  sortEmployees = (employees) => {
+    return employees.sort(function(a,b){return b.level - a.level})
   }
   generateEmail = (event) => {
     const email = "email";
     this.setState({
        emails: [email, ...this.state.emails]
     })
-  }
-  startTimer = () => {
-    console.log('starting timer')
-    this.interval = setInterval(()=>{
-      const hour = this.state.hour >= 11 ? 0 : this.state.hour + 1;
-      const day = this.state.hour >= 11 ? this.state.day + 1 : this.state.day;
-      this.setState({
-        hour: hour,
-        day: day
-      })
-    },this.state.hourLength)
-  }
-  update = () => {
-
-  }
-  stopTimer = () => {
-    console.log('stopping timer')
-    clearInterval(this.interval)
   }
   addPane = (type,info) => {
     console.log('adding pane');
@@ -135,15 +166,29 @@ class Content extends Component {
       activePane: i
     })
   }
+  openMessage = (text) => {
+    this.setState({
+      message: text
+    })
+  }
+  closeMessage = () => {
+    this.setState({
+      message: null
+    })
+  }
   render(){
+    console.log('content state', this.state)
     return (
       <React.Fragment>
                 <div className="app">
                   <Header hour={this.state.hour} 
-                          day={this.state.day} 
+                          day={this.state.day}
+                          month={this.state.month}
+                          year={this.state.year}   
                           startTimer={this.startTimer} 
                           stopTimer={this.stopTimer}
                           agency={this.state.agency}
+                          industry={this.state.industry}
                           />
                         <div className="main-container">
                           <Sidebar employees={this.state.employees} projects={this.state.projects} applicants={this.state.applicants} addPane={this.addPane}/>
@@ -153,10 +198,13 @@ class Content extends Component {
                                 removePane={this.removePane}
                                 hireApplicant={this.hireApplicant}
                                 fireEmployee={this.fireEmployee}
+                                emails={this.state.emails}
+                                tasks={this.state.tasks}
                                 />
                         </div>
                 <footer></footer>
                 </div>
+                <Message open={this.state.message} text={this.state.message} closeMessage={this.closeMessage}/>
       </React.Fragment>
     );
   }

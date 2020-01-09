@@ -1,26 +1,12 @@
 import React, {Component} from 'react';
 
-import TasksContext from './context';
-
 import '../../App.css';
 import { Header, Form, Input, Button } from 'semantic-ui-react'
-
-function TasksConsumer(props){
-    console.log('tasks consumer props', props)
-    return (
-      <TasksContext.Consumer>
-        {({tasks, addTask, removeTask}) => (
-          <Tasks {...props} tasks={tasks} addTask={addTask} removeTask={removeTask} />
-        )}
-      </TasksContext.Consumer>
-    );
-  }
 
 class Tasks extends Component {
   constructor(props){
       super();
       this.state = {
-          tasks: props.content,
           newTaskInput: '',
       }
   }
@@ -59,4 +45,4 @@ class Tasks extends Component {
   }
 }
 
-export default TasksConsumer;
+export default Tasks;

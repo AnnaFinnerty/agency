@@ -8,6 +8,20 @@ class Employee{
         this.skillset = skillset;
         this.stats = stats;
         this.salary = salary;
+        this.quit = false;
+    }
+    update(){
+        console.log('updating employee!');
+        const r = Math.random();
+        if(r < .1){
+            this.stats.happiness -= 1;
+        } else if (r > .9){
+            this.stats.happiness += 1;
+        }
+        
+        if(this.stats.happiness < 5){
+            this.quit = true;
+        }
     }
     printInfo(){
         console.log("employee info");

@@ -5,21 +5,20 @@ class Agency{
         this.coh = coh ? coh : 100000;
         this.maxSalary = maxSalary ? maxSalary : 300000;
         this.monthlyExpenditures = monthlyExpenditures ? monthlyExpenditures : 300000;
-        this.yearlyExpenditures = this.monthlyExpenditures * 12;
         this.monthlyProfit = monthlyProfit ? monthlyProfit : 100000;
         this.yearsInOperation = yearsInOperation ? yearsInOperation : 1;
+        //date founded
     }
-}
-
-Agency.prototype.calculateAgencyParameters = function(employees){
-    let totalSalaries = 0;
-    for(let i = 0; i < employees.length; i++){
-        totalSalaries+=employees[i].salary;
+    calculateAgencyParameters = function(employees){
+        let totalSalaries = 0;
+        for(let i = 0; i < employees.length; i++){
+            totalSalaries+=employees[i].salary;
+        }
+        //overhead constant
+        const overhead = employees.length * this.yearsInOperation;
+        const monthlySalaries = Math.floor(totalSalaries/12);
+        this.monthlyExpenditures = monthlySalaries + Math.floor(overhead/12);
     }
-    //overhead constant
-    const overhead = employees.length * this.yearsInOperation;
-    const monthlySalaries = Math.floor(totalSalaries/12);
-    
 }
 
 export default Agency
