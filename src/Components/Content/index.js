@@ -47,7 +47,6 @@ class Content extends Component {
   start = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
     const agency = new Agency();
-    console.log('agency',this.agency);
     numStartEmployees = numStartEmployees ? numStartEmployees : 15;
     const startEmployees = [];
     for(let i = 0 ; i < numStartEmployees; i ++){
@@ -62,7 +61,6 @@ class Content extends Component {
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
       const startProject = this.randomProjectGenerator.generateRandomProject();
-      startProject.printInfo();
       startProjects.push(startProject);
     }
     this.setState({
@@ -71,6 +69,34 @@ class Content extends Component {
       applicants: startApplicants,
       agency: agency
     })
+  }
+  startTimer = () => {
+    console.log('starting timer')
+    this.interval = setInterval(()=>{
+      this.update();
+    },this.state.hourLength)
+  }
+  update = () => {
+    const hour = this.state.hour >= 11 ? 0 : this.state.hour + 1;
+    const day = this.state.hour >= 11 ? this.state.day + 1 : this.state.day;  
+    //daily updates
+    const employees = this.state.employees;
+    if(hour === 0){
+      for(let a = 0; a < employees.length; a++){
+        employees[a].update();
+      }
+    }
+    //hourly random events
+    this.setState({
+      hour: hour,
+      day: day,
+      employees: employees
+    })
+
+  }
+  stopTimer = () => {
+    console.log('stopping timer')
+    clearInterval(this.interval)
   }
   hireApplicant = (info) => {
     console.log('hiring applicant', info)
@@ -95,24 +121,6 @@ class Content extends Component {
     this.setState({
        emails: [email, ...this.state.emails]
     })
-  }
-  startTimer = () => {
-    console.log('starting timer')
-    this.interval = setInterval(()=>{
-      const hour = this.state.hour >= 11 ? 0 : this.state.hour + 1;
-      const day = this.state.hour >= 11 ? this.state.day + 1 : this.state.day;
-      this.setState({
-        hour: hour,
-        day: day
-      })
-    },this.state.hourLength)
-  }
-  update = () => {
-
-  }
-  stopTimer = () => {
-    console.log('stopping timer')
-    clearInterval(this.interval)
   }
   addPane = (type,info) => {
     console.log('adding pane');

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../App.css';
-import { Grid, Label } from 'semantic-ui-react'
+import { Grid, Button, Label } from 'semantic-ui-react'
 
 function Employee(props) {
   console.log('employee pprops',props);
@@ -9,28 +9,36 @@ function Employee(props) {
       <li key = {i}>{skill}</li>
     )
   })
-  return (
-    <div>
-      <h2>{props.info.name.full}</h2>
-      {
-        props.type != "applicant" ? 
-        <button onClick={()=>props.fireEmployee(props.info.id)}>fire</button>
-        :
-        <button onClick={()=>props.hireApplicant(props.info)}>hire</button>
-      }
+  return (     
       <Grid celled>
         <Grid.Row>
           <Grid.Column width={4}>
-            ID:
+            <h2>{props.info.name.full}</h2>
           </Grid.Column>
           <Grid.Column width={4}>
-            {props.info.id}
+            ID:{props.info.id}
           </Grid.Column>
           <Grid.Column width={4}>
-            <Label>Level:</Label>
+                {
+              props.type != "applicant" ? 
+              <button onClick={()=>props.fireEmployee(props.info.id)}>fire</button>
+              :
+              <button onClick={()=>props.hireApplicant(props.info)}>hire</button>
+            }
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            Level:
           </Grid.Column>
           <Grid.Column width={4}>
             {props.info.level}
+          </Grid.Column>
+          <Grid.Column width={4}>
+            <Button>Promote</Button>
+          </Grid.Column>
+          <Grid.Column width={4}>
+            
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -41,10 +49,24 @@ function Employee(props) {
             {props.info.salary}
           </Grid.Column>
           <Grid.Column width={4}>
-            <Label>Level:</Label>
+            <Button>Raise salary</Button>
           </Grid.Column>
           <Grid.Column width={4}>
-            {props.info.level}
+            <Button>Lower salary</Button>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            Productivity:
+          </Grid.Column>
+          <Grid.Column width={4}>
+            {props.info.stats.productivity}
+          </Grid.Column>
+          <Grid.Column width={4}>
+            Happiness
+          </Grid.Column>
+          <Grid.Column width={4}>
+            {props.info.stats.happiness}
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -59,7 +81,6 @@ function Employee(props) {
           
         </Grid.Row>
       </Grid>
-    </div>
   );
 }
 

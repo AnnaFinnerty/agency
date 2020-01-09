@@ -25,17 +25,20 @@ function Sidebar(props) {
   const employees = props.employees.map((employee) => {
     return(
       <li key={employee.id} onClick={()=>props.addPane('employee',employee)}>
-        {employee.name.display}
+        <span> {employee.name.display}
         {
-          employee.level === 2 ? "*" : ""
-        }
+          employee.level === 5 ? "*" : ""
+        }</span>
+        <span>{employee.level}</span>
+        <span>{employee.stats.happiness}</span>
       </li>
     )
   })
   const projects = props.projects.map((project) => {
     return(
       <li key={project.id} onClick={()=>props.addPane('project',project)}>
-        {project.name}
+        <span>{project.name}</span>
+        <span>{project.monthsToCompletion}</span>
       </li>
     )
   })

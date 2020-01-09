@@ -19,8 +19,9 @@ RandomEmployee.prototype.generateRandomEmployee = function(applicant){
     const gender = this.randomGender();
     const name = this.randomName(gender);
     const age = this.randomBetweenInts(23,60);
-    const level = this.randomBetweenInts(1,3);
-    if(level === 1){
+    const maxLevel = this.currentLeaders >= 2 ? 4 : 6;
+    const level = this.randomBetweenInts(1,maxLevel);
+    if(level === 3){
         this.currentLeaders+=1;
     }
     const skillset = this.randomSkillset(null, level);
@@ -65,7 +66,7 @@ RandomEmployee.prototype.randomSkills = function(focusOne,focusTwo){
 RandomEmployee.prototype.randomStats = function(){
     const stats = {
         productivity: this.randomBetweenInts(1,11),
-        happiness: this.randomBetweenInts(1,11),
+        happiness: this.randomBetweenInts(1,101),
         creativity: this.randomBetweenInts(1,11),
         curiosity: this.randomBetweenInts(1,11),
         dedication: this.randomBetweenInts(1,11),

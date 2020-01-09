@@ -53,6 +53,9 @@ aside{
 
 li{
   list-style: none;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
 }
 
 li:hover{

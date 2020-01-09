@@ -4,23 +4,23 @@ import RandomCompany from '../Scripts/RandomCompany';
 
 function RandomProject(){
     this.projectId = 101;
+    this.randomCompany = new RandomCompany();
 }
 
 RandomProject.prototype.generateRandomProject = function(company) {
-    console.log("generating random project");
     const id = this.projectId;
     this.projectId += 1;
-    company = company ? company : "test company";
+    company = company ? company : this.randomCompany.generateRandomCompany();
     const sectors = Object.keys(this.projectSectors);
     const sector = this.randomFromArray(sectors);
     const types = Object.keys(this.projectTypes);
     const type = this.randomFromArray(types);
-    const name = company + " " + type;
+    const name = company.name + " " + type;
     const requirements = this.projectTypes[type];
     const estimatedMonthsToCompletion = this.randomBetweenInts(6,18);
     const budget = this.randomBetweenInts(5,100);
     const adjustedBudget = budget * 1000;
-    const project = new Project(id,company, name, sector,type, requirements, adjustedBudget, estimatedMonthsToCompletion);
+    const project = new Project(id, company, name, sector,type, requirements, adjustedBudget, estimatedMonthsToCompletion);
     return project
 }
 

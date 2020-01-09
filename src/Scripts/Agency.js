@@ -9,17 +9,16 @@ class Agency{
         this.yearsInOperation = yearsInOperation ? yearsInOperation : 1;
         //date founded
     }
-}
-
-Agency.prototype.calculateAgencyParameters = function(employees){
-    let totalSalaries = 0;
-    for(let i = 0; i < employees.length; i++){
-        totalSalaries+=employees[i].salary;
+    calculateAgencyParameters = function(employees){
+        let totalSalaries = 0;
+        for(let i = 0; i < employees.length; i++){
+            totalSalaries+=employees[i].salary;
+        }
+        //overhead constant
+        const overhead = employees.length * this.yearsInOperation;
+        const monthlySalaries = Math.floor(totalSalaries/12);
+        this.monthlyExpenditures = monthlySalaries + Math.floor(overhead/12);
     }
-    //overhead constant
-    const overhead = employees.length * this.yearsInOperation;
-    const monthlySalaries = Math.floor(totalSalaries/12);
-    this.monthlyExpenditures = monthlySalaries + Math.floor(overhead/12);
 }
 
 export default Agency

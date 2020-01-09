@@ -7,9 +7,9 @@ class Email extends Component{
   
   render(){
     console.log('email props', this.props)
-    const emails = this.props.emails.map((email)=>{
+    const emails = this.props.emails.map((email,i)=>{
       return(
-        <li className="email">{email}</li>
+        <li key={i} className="email">{email}</li>
       )
     })
     return (
