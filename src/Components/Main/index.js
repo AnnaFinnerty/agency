@@ -61,11 +61,11 @@ class Main extends Component {
     const item = { 
       menuItem: (
         <Menu.Item key={info.type} onClick={()=>this.props.updatePane(i)}>
-          {paneName}
           {
             info.pinned ? <Icon name="map pin"></Icon> :
             <button onClick={()=>this.props.removePane(i)}>X</button>
           }
+          {paneName}
         </Menu.Item>
       ),
       pinned: info.pinned, 

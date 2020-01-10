@@ -8,12 +8,27 @@ function RandomEmployee(){
 }
 
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
+    const employeeStats = {
+                            productivity: 0,
+                            happiness: 0,
+                            salary: 0,
+                        }
     const startEmployees = [];
+    for(let i = 0; i < numLeaders; i++){
+        const employee = this.generateRandomEmployee(false,null,5);
+        employeeStats.productivity += employee.stats.productivity;
+        employeeStats.happiness += employee.stats.happiness;
+        employeeStats.salary += employee.salary;
+        startEmployees.push(employee);
+    }
     for(let i = 0; i < numEmployees; i++){
         const employee = this.generateRandomEmployee();
         startEmployees.push(employee);
     }
-    return startEmployees
+    return {
+        employees: startEmployees,
+        employeeStats: employeeStats
+    }
 }
 
 RandomEmployee.prototype.generateEmployeeID = function(){
@@ -22,21 +37,21 @@ RandomEmployee.prototype.generateEmployeeID = function(){
     return id
 }
 
-RandomEmployee.prototype.generateRandomEmployee = function(applicant){
+RandomEmployee.prototype.generateRandomEmployee = function(applicant, project, positionLevel){
     // console.log("generating random employee");
     const id = !applicant ? this.generateEmployeeID() : null;
     const gender = this.randomGender();
     const name = this.randomName(gender);
     const age = this.randomBetweenInts(23,60);
-    const maxLevel = this.currentLeaders >= 2 ? 4 : 6;
-    const level = this.randomBetweenInts(1,maxLevel);
+    const maxLevel = this.currentLeaders >= 2 ? 4 : 5;
+    const level = positionLevel ? positionLevel : this.randomBetweenInts(1,maxLevel);
     if(level === 3){
         this.currentLeaders+=1;
     }
     const skillset = this.randomSkillset(null, level);
     const stats = this.randomStats();
     const salary = this.randomBetweenInts(5,13) * 10000;
-    const employee = new Employee(id,name,gender,age,level,skillset,stats, salary);
+    const employee = new Employee(id,name,gender,age,level,skillset,stats, salary,project);
     // console.log(employee);
     //employee.printInfo();
     return employee

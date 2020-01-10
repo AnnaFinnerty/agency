@@ -10,11 +10,12 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
     switch(type){
 
         case 'start':
-            text = 'Hey there, thanks for taking over the personnel decisions. Sure it should be too hard!';
+            text = 'Hey, thanks for taking over the personnel decisions. Sure it shouldn\'t be too hard!';
             break 
 
         case 'applicant':
             text = this.applicantEmail(employee1);
+            subject = 'Application'
             break
 
         case 'welcome':
@@ -23,6 +24,7 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
 
         case 'quit':
             text = this.quitEmail(employee1);
+            subject = 'I quit'
         break
 
         default: 

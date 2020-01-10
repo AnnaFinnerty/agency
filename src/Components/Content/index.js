@@ -26,17 +26,20 @@ class Content extends Component {
       projects: [],
       totalPositions: 20,
       employees: [],
+      employeeStats: {
+        productivity: 0,
+        happiness: 0,
+        salary: 0,
+      },
       applicants: [],
-      tasks: ['Task in content'],
+      tasks: [],
       emails: [],
-      // mainContentType: 'tasks',
-      // mainContentIndex: 'null',
-      // update: false,
       hour: 0,
       day: 1,
       month: 1,
       year: 1,
       hourLength: 2000,
+      timeRunning: false,
       activePane: 0,
       panes: [
         {type:'email',pinned:true},
@@ -69,16 +72,15 @@ class Content extends Component {
       startProjects.push(startProject);
     }
     numStartEmployees = numStartEmployees ? numStartEmployees : 15;
-    const startEmployees = [];
-    for(let i = 0 ; i < numStartEmployees; i ++){
-      const startEmployee = this.randomEmployeeGenerator.generateRandomEmployee();
-      startEmployees.push(startEmployee);
-    }
-    const sortedEmployees = this.sortEmployees(startEmployees);
-    const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
     
+    const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(15,2,startProjects);
+
+    const sortedEmployees = this.sortEmployees(startEmployees.employees);
+    const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
+
     this.setState({
       employees: sortedEmployees,
+      employeeStats: startEmployees.employeeStats,
       projects: startProjects,
       applicants: startApplicants,
       // agency: agency,
@@ -89,6 +91,9 @@ class Content extends Component {
   }
   startTimer = () => {
     console.log('starting timer')
+    this.setState({
+      timeRunning: true
+    })
     this.interval = setInterval(()=>{
       this.update();
     },this.state.hourLength)
@@ -173,7 +178,10 @@ class Content extends Component {
   }
   stopTimer = () => {
     console.log('stopping timer')
-    clearInterval(this.interval)
+    clearInterval(this.interval);
+    this.setState({
+      timeRunning: false
+    })
   }
   hireApplicant = (info) => {
     console.log('hiring applicant', info)
@@ -250,11 +258,13 @@ class Content extends Component {
                   <Header hour={this.state.hour} 
                           day={this.state.day}
                           month={this.state.month}
-                          year={this.state.year}   
+                          year={this.state.year}
+                          timeRunning={this.state.timeRunning}   
                           startTimer={this.startTimer} 
                           stopTimer={this.stopTimer}
                           agency={this.state.agency}
                           industry={this.state.industry}
+                          employeeStats={this.state.employeeStats}
                           />
                         <div className="main-container">
                           <Sidebar employees={this.state.employees} projects={this.state.projects} applicants={this.state.applicants} addPane={this.addPane}/>

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
-import EmailModal from './modal';
+import EmailModal from './view';
 
 import '../../App.css';
-import{ Container, Grid, Icon } from 'semantic-ui-react';
+import{ Container, Grid, Icon, Button } from 'semantic-ui-react';
 
 class Email extends Component{
   constructor(){
@@ -55,6 +55,7 @@ class Email extends Component{
       <React.Fragment>
         <Container style={{height:'85vh'}}>
           <h2>Email</h2>
+          <Button>+</Button>
           <ul className='email-list'>
             {emails}
           </ul>
