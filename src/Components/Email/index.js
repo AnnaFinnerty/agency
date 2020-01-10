@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import EmailModal from './modal';
 
 import '../../App.css';
-import{Container} from 'semantic-ui-react';
+import{ Container, Grid, Icon } from 'semantic-ui-react';
 
 class Email extends Component{
   constructor(){
@@ -31,11 +31,22 @@ class Email extends Component{
       <li key={i} 
           className="email"
           onClick={()=>this.openEmail(i)}
-          > 
-        {email.sender.name.display} | 
-        {email.subject} |
-        {email.time} | 
-        {email.text}
+          >
+        <Grid columns={3}>
+          <Grid.Column width={1}>
+            <Icon name="mail"></Icon>
+          </Grid.Column>
+          <Grid.Column width={3}>{email.sender.name.display} </Grid.Column>  
+          <Grid.Column width={2}>
+            {email.subject}
+          </Grid.Column>
+          <Grid.Column width={5}>
+             {email.text}
+          </Grid.Column>
+          <Grid.Column width={3}>
+             {email.time}
+          </Grid.Column>         
+        </Grid> 
       </li>
       )
     })

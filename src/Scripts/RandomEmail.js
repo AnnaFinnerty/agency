@@ -32,7 +32,8 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
         subject: subject,
         text: text,
         sender: sender,
-        time: time
+        time: time,
+        read: false
     }
     return email
 }
