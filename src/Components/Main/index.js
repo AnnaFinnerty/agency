@@ -62,10 +62,13 @@ class Main extends Component {
       menuItem: (
         <Menu.Item key={info.type} onClick={()=>this.props.updatePane(i)}>
           {
-            info.pinned ? <Icon name="map pin"></Icon> :
-            <button onClick={()=>this.props.removePane(i)}>X</button>
+            info.pinned ? <Icon name="map pin"></Icon> : ''
           }
           {paneName}
+          {
+            info.pinned ? '' : 
+            <button onClick={()=>this.props.removePane(i)}>X</button>
+          }
         </Menu.Item>
       ),
       pinned: info.pinned, 

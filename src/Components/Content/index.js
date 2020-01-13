@@ -11,6 +11,7 @@ import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
 import RandomEmail from '../../Scripts/RandomEmail';
+import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
 
@@ -51,14 +52,13 @@ class Content extends Component {
     this.randomEmployeeGenerator = new RandomEmployee();
     this.randomProjectGenerator = new RandomProject();
     this.randomEmailGenerator = new RandomEmail();
+    this.helpers = new Helpers();
   }
   componentDidMount(){
     this.start();
   }
   start = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
-    // const agency = new Agency();
-    // const industry = new Industry();
     const startProjects = [];
     const startApplicants = [];
     const startEmails = [];
@@ -71,9 +71,9 @@ class Content extends Component {
       const startProject = this.randomProjectGenerator.generateRandomProject();
       startProjects.push(startProject);
     }
-    numStartEmployees = numStartEmployees ? numStartEmployees : 15;
+    numStartEmployees = numStartEmployees ? numStartEmployees : 7;
     
-    const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(15,2,startProjects);
+    const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
 
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
@@ -81,10 +81,8 @@ class Content extends Component {
     this.setState({
       employees: sortedEmployees,
       employeeStats: startEmployees.employeeStats,
-      projects: startProjects,
+      projects: startEmployees.startProjects,
       applicants: startApplicants,
-      // agency: agency,
-      // industry: industry,
       emails: [welcomeEmail,...startEmails],
       tasks: ['hire a new junior employee']
     })
@@ -100,6 +98,8 @@ class Content extends Component {
   }
   update = () => {
     //update time 
+    const agency = this.state.agency;
+    let newEmployeeStats = this.state.employeeStats;
     let hour = this.state.hour;
     let day = this.state.day;
     let month = this.state.month;
@@ -127,6 +127,7 @@ class Content extends Component {
     
     //daily updates
     const employees = this.state.employees;
+    const projects = this.state.projects;
     const tasks = this.state.tasks;
     const emails = this.state.emails;
     const employeeStatsRaw = {
@@ -137,6 +138,7 @@ class Content extends Component {
 
     //update employees and get stats
     if(hour === 0){
+      //daily employee update
       for(let a = 0; a < employees.length; a++){
         //run employee update method
         employees[a].update();
@@ -152,19 +154,30 @@ class Content extends Component {
         }
       }
       console.log('employee stats raw',employeeStatsRaw);
-      const employeeStats = {
-        productivity: employeeStatsRaw.productivity/employees.length,
-        happiness: employeeStatsRaw.happiness/employees.length,
-        salary: employeeStatsRaw.salary/employees.length,
+      newEmployeeStats = {
+        productivity: Math.floor(employeeStatsRaw.productivity/employees.length),
+        happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
+        salary: Math.floor(employeeStatsRaw.salary/employees.length),
       }
-      console.log('employee stats',employeeStats);
-      //hourly random events
-      const r = Math.random();
-      if(r < .5){
-
+      console.log('employee stats',newEmployeeStats);
+      //daily project update
+      for(let a = 0; a < projects.length; a++){
+        //run project update method
+        const profit = projects[a].update();
+        console.log('$profit',profit)
+        agency.profit(profit)
       }
     } 
     
+    //hourly random events
+    const r = Math.random();
+    if(r < .5){
+      const employee = this.helpers.RandomFromArray(employees);
+      console.log(employee);
+      const email = this.randomEmailGenerator.generateEmail(null,employee);
+      emails.unshift(email)
+    }
+
     //set new state
     this.setState({
       hour: hour,
@@ -173,7 +186,9 @@ class Content extends Component {
       year: year,
       employees: employees,
       emails: emails,
-      tasks: tasks
+      tasks: tasks,
+      agency: agency,
+      employeeStats: newEmployeeStats,
     })
   }
   stopTimer = () => {
@@ -229,7 +244,6 @@ class Content extends Component {
     const activePane = this.state.activePane === i ? i - 1: this.state.activePane;
     console.log('old active pane', this.state.activePane);
     console.log('new active pane', activePane);
-
     this.setState({
        panes: this.state.panes.filter((pane,x) => i !== x),
        activePane: activePane

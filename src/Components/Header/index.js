@@ -29,8 +29,7 @@ class Header extends Component{
   }
   render(){
     console.log('header props:', this.props)
-    const income = this.helpers.monify(this.props.agency.monthlyProfit)
-    const loss = this.helpers.monify(this.props.agency.monthlyExpenditures)
+    const coh = this.helpers.monify(this.props.agency.coh)
     return (
       <React.Fragment>
         <header>
@@ -48,16 +47,15 @@ class Header extends Component{
                   </Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={2} style={{padding:"0"}}>
-                  <Grid.Row>Income/Month</Grid.Row>
-                  <Grid.Row>Expense/Month</Grid.Row>
+                  <Grid.Row>$</Grid.Row>
+                  
                   <Grid.Row>Emp.Productivity</Grid.Row>
                   <Grid.Row>Emp.Happiness</Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={2} style={{padding:"0"}}>
-                  <Grid.Row>{income}</Grid.Row>
-                  <Grid.Row>{loss}</Grid.Row>
-                  <Grid.Row>{this.props.employeeStats.productivity}</Grid.Row>
-                  <Grid.Row>{this.props.employeeStats.happiness}</Grid.Row>
+                  <Grid.Row>{coh}</Grid.Row>
+                  <Grid.Row>{this.props.employeeStats.productivity}%</Grid.Row>
+                  <Grid.Row>{this.props.employeeStats.happiness}%</Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={2} style={{padding:"0"}}>
                 </Grid.Column>

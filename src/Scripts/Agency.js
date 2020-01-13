@@ -24,6 +24,9 @@ class Agency{
         const monthlySalaries = Math.floor(totalSalaries/12);
         this.monthlyExpenditures = monthlySalaries + Math.floor(overhead/12);
     }
+    profit(amt){
+        this.coh += amt
+    }
 }
 
 export default Agency

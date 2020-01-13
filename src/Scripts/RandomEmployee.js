@@ -15,19 +15,35 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
                         }
     const startEmployees = [];
     for(let i = 0; i < numLeaders; i++){
+        //generate random leader and add their stats to initial employee stats
         const employee = this.generateRandomEmployee(false,null,5);
         employeeStats.productivity += employee.stats.productivity;
         employeeStats.happiness += employee.stats.happiness;
         employeeStats.salary += employee.salary;
+        //add to employee array
         startEmployees.push(employee);
     }
     for(let i = 0; i < numEmployees; i++){
-        const employee = this.generateRandomEmployee();
+        //choose project at random from start projects
+        const project = this.randomFromArray(startProjects);
+        //generate new employee using that project and add their stats to initial employee stats
+        const employee = this.generateRandomEmployee(false,project);
+        employeeStats.productivity += employee.stats.productivity;
+        employeeStats.happiness += employee.stats.happiness;
+        employeeStats.salary += employee.salary;
+        //add employee name and id to project's workers array
+        project.workers.push({id:employee.id,name:employee.name.display})
+        //add to employee array
         startEmployees.push(employee);
+    }
+    //average intial employee stats
+    for(let i in employeeStats){
+        employeeStats[i] = Math.floor(employeeStats[i]/(numEmployees))
     }
     return {
         employees: startEmployees,
-        employeeStats: employeeStats
+        employeeStats: employeeStats,
+        startProjects: startProjects
     }
 }
 
@@ -90,11 +106,12 @@ RandomEmployee.prototype.randomSkills = function(focusOne,focusTwo){
 
 RandomEmployee.prototype.randomStats = function(){
     const stats = {
-        productivity: this.randomBetweenInts(1,11),
+        productivity: this.randomBetweenInts(1,101),
         happiness: this.randomBetweenInts(1,101),
-        creativity: this.randomBetweenInts(1,11),
-        curiosity: this.randomBetweenInts(1,11),
-        dedication: this.randomBetweenInts(1,11),
+        creativity: this.randomBetweenInts(1,101),
+        accuracy: this.randomBetweenInts(1,101),
+        curiosity: this.randomBetweenInts(1,101),
+        dedication: this.randomBetweenInts(1,101),
     }
     return stats
 }
@@ -106,9 +123,9 @@ RandomEmployee.prototype.randomGender = function(){
 }
 
 RandomEmployee.prototype.randomName = function(gender){
-    const first_name_male = ['Scott','Trevor','Sanjay'];
-    const first_name_female = ['Jill','Nancy','Maria'];
-    const last_names = ['Jones','Paul','Smith','Johnson','Gupta'];
+    const first_name_male = ['Scott','Trevor','Sanjay','John','Julio','Adam','Bill'];
+    const first_name_female = ['Jill','Nancy','Maria','Ann','Sara','Julia'];
+    const last_names = ['Jones','Paul','Smith','Johnson','Gupta','Sanchez','Saul','Lopez','Gupta'];
     let first_name;
     if(gender === "male"){
         first_name = this.randomFromArray(first_name_male);

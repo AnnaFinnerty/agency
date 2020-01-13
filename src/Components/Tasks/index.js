@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import '../../App.css';
-import { Header, Form, Input, Button } from 'semantic-ui-react'
+import { Header, Form, Input, Button, Icon } from 'semantic-ui-react'
 
 class Tasks extends Component {
   constructor(props){
@@ -27,6 +27,7 @@ class Tasks extends Component {
         return(
             <li key={i} className='task'>
                 {/* <button onClick={()=>this.removeTask(task)}>o</button> */}
+                <Icon name='circle'></Icon>
                  {task}
                 <button onClick={()=>this.removeTask(task)}>x</button>
             </li>

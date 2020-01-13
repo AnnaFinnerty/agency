@@ -19,10 +19,6 @@ Helpers.prototype.XRandomWithoutRepeats = function(arr,x){
 }
 
 Helpers.prototype.monify = function(num){
-    console.log(num);
-    // split into two; integer and fraction part
-
-   // format integer part and append fraction part
    return '$' + num.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
 }
 

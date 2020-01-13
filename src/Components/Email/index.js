@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
-import EmailModal from './view';
+import ViewEmailModal from './view';
+import NewEmailModal from './new';
 
 import '../../App.css';
 import{ Container, Grid, Icon, Button } from 'semantic-ui-react';
@@ -10,8 +11,16 @@ class Email extends Component{
     super();
     this.state = {
       openEmail: false,
+      openNew: false,
       currentEmail: null
     }
+  }
+  newEmail = () => {
+    this.setState({
+      currentEmail: null,
+      openEmail: false,
+      newEmail: true
+    })
   }
   openEmail = (emailIndex) => {
     this.setState({
@@ -22,7 +31,8 @@ class Email extends Component{
   closeEmail = () => {
     this.setState({
       currentEmail: null,
-      openEmail: false
+      openEmail: false,
+      openNew: false,
     })
   }
   render(){
@@ -55,7 +65,7 @@ class Email extends Component{
       <React.Fragment>
         <Container style={{height:'85vh'}}>
           <h2>Email</h2>
-          <Button>+</Button>
+          <Button onClick={this.newEmail}>+</Button>
           <ul className='email-list'>
             {emails}
           </ul>
@@ -63,7 +73,14 @@ class Email extends Component{
 
           </div>
         </Container>
-        <EmailModal open={this.state.openEmail} email={selectedEmail} closeEmail={this.closeEmail}/>
+        {
+          !this.state.currentEmail ? '':
+          <ViewEmailModal open={this.state.openEmail} email={selectedEmail} closeEmail={this.closeEmail}/>
+        }
+        {
+          !this.state.newEmail ? '':
+          <NewEmailModal open={this.state.newEmail} closeEmail={this.closeEmail}/>
+        }
       </React.Fragment>
     );
   }

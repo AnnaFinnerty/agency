@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Helpers from '../../Scripts/Helpers';
 
@@ -24,12 +24,40 @@ function Employee(props) {
             ID:{props.info.id}
           </Grid.Column>
           <Grid.Column width={4}>
-                {
-              props.type != "applicant" ? 
-              <button onClick={()=>props.fireEmployee(props.info.id)}>fire</button>
+            {
+              props.type !== "applicant" ? 
+              <Button onClick={()=>props.fireEmployee(props.info.id)}>fire</Button>
               :
-              <button onClick={()=>props.hireApplicant(props.info)}>hire</button>
+              <Button onClick={()=>props.hireApplicant(props.info)}>hire</Button>
             }
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            Productivity:
+          </Grid.Column>
+          <Grid.Column width={4}>
+            {props.info.stats.productivity}
+          </Grid.Column>
+          <Grid.Column width={4}>
+            Happiness
+          </Grid.Column>
+          <Grid.Column width={4}>
+            {props.info.stats.happiness}
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            Project:
+          </Grid.Column>
+          <Grid.Column width={4}>
+            {props.info.projectId.name}
+          </Grid.Column>
+          <Grid.Column width={4}>
+            <Button>Switch Project</Button>
+          </Grid.Column>
+          <Grid.Column width={4}>
+           
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -46,6 +74,7 @@ function Employee(props) {
             
           </Grid.Column>
         </Grid.Row>
+        
         <Grid.Row>
           <Grid.Column width={4}>
             Salary:
@@ -54,24 +83,10 @@ function Employee(props) {
             {salary}
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button>Raise salary</Button>
+            <Button>Raise</Button>
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button>Lower salary</Button>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={4}>
-            Productivity:
-          </Grid.Column>
-          <Grid.Column width={4}>
-            {props.info.stats.productivity}
-          </Grid.Column>
-          <Grid.Column width={4}>
-            Happiness
-          </Grid.Column>
-          <Grid.Column width={4}>
-            {props.info.stats.happiness}
+            <Button>Lower</Button>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

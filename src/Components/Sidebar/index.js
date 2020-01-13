@@ -39,6 +39,7 @@ function Sidebar(props) {
       <li key={project.id} onClick={()=>props.addPane('project',project)}>
         <span>{project.name}</span>
         <span>{project.monthsToCompletion}</span>
+        <span>{project.percentComplete}%</span>
       </li>
     )
   })
