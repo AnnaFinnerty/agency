@@ -64,11 +64,13 @@ class Content extends Component {
     const startEmails = [];
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
+      //make new company
+      // const company = 
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
       startEmails.push(appEmail);
-      const startProject = this.randomProjectGenerator.generateRandomProject();
+      const startProject = this.randomProjectGenerator.generateRandomProject(null,true);
       startProjects.push(startProject);
     }
     numStartEmployees = numStartEmployees ? numStartEmployees : 7;
@@ -127,6 +129,7 @@ class Content extends Component {
     
     //daily updates
     const employees = this.state.employees;
+    const applicants = this.state.applicants;
     const projects = this.state.projects;
     const tasks = this.state.tasks;
     const emails = this.state.emails;
@@ -153,13 +156,12 @@ class Content extends Component {
           employees.splice(a,1)
         }
       }
-      console.log('employee stats raw',employeeStatsRaw);
       newEmployeeStats = {
         productivity: Math.floor(employeeStatsRaw.productivity/employees.length),
         happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
         salary: Math.floor(employeeStatsRaw.salary/employees.length),
       }
-      console.log('employee stats',newEmployeeStats);
+      
       //daily project update
       for(let a = 0; a < projects.length; a++){
         //run project update method
@@ -172,10 +174,32 @@ class Content extends Component {
     //hourly random events
     const r = Math.random();
     if(r < .5){
+      //boss complain
+      //boss happy
+      //employee complaint
+      //employee happy
+
+      //generate random emails
       const employee = this.helpers.RandomFromArray(employees);
       console.log(employee);
       const email = this.randomEmailGenerator.generateEmail(null,employee);
       emails.unshift(email)
+      
+      if(hour%2===0){
+        //generate a new applicant
+        if(this.state.applicants.length < 10){
+          const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
+          applicants.push(applicant);
+          const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
+          emails.push(appEmail);
+        }
+      }
+      if(hour%3===0){
+        //send a new project offer
+        if(this.state.projects.length < 10){
+          //generate new project
+        }
+      }
     }
 
     //set new state
@@ -185,6 +209,7 @@ class Content extends Component {
       month: month,
       year: year,
       employees: employees,
+      projects: projects,
       emails: emails,
       tasks: tasks,
       agency: agency,
@@ -200,7 +225,7 @@ class Content extends Component {
   }
   hireApplicant = (info) => {
     console.log('hiring applicant', info)
-    //TODO need to get id number
+    //TODO need to get new id number for applicant
     this.setState({
       employees: [info, ...this.state.employees]
     })
@@ -216,6 +241,12 @@ class Content extends Component {
   sortEmployees = (employees) => {
     return employees.sort(function(a,b){return b.level - a.level})
   }
+  dismissApplicant = (info) => {
+    console.log('dismissing applicant', info)
+    this.setState({
+      applicants:  this.state.applicants.filter((applicant) => applicant.id !== info)
+    })
+  }
   generateEmail = (event) => {
     const email = "email";
     this.setState({
@@ -223,7 +254,9 @@ class Content extends Component {
     })
   }
   deleteEmail = (i) => {
-
+    this.setState({
+      emails: this.state.emails.filter((email) => email.id !== i)
+    })
   }
   generateTask = (event) => {
     const task = "task";
@@ -281,12 +314,19 @@ class Content extends Component {
                           employeeStats={this.state.employeeStats}
                           />
                         <div className="main-container">
-                          <Sidebar employees={this.state.employees} projects={this.state.projects} applicants={this.state.applicants} addPane={this.addPane}/>
+                          <Sidebar employees={this.state.employees} 
+                                   projects={this.state.projects} 
+                                   applicants={this.state.applicants} 
+                                   addPane={this.addPane}
+                                   dismissApplicant={this.dismissApplicant}
+                                   />
                           <Main panes={this.state.panes} 
                                 activePane={this.state.activePane}
+                                addPane={this.addPane}
                                 updatePane={this.updatePane} 
                                 removePane={this.removePane}
                                 hireApplicant={this.hireApplicant}
+                                dismissApplicant={this.dismissApplicant}
                                 fireEmployee={this.fireEmployee}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}

@@ -7,7 +7,7 @@ function RandomProject(){
     this.randomCompany = new RandomCompany();
 }
 
-RandomProject.prototype.generateRandomProject = function(company) {
+RandomProject.prototype.generateRandomProject = function(company, isStartProject) {
     const id = this.projectId;
     this.projectId += 1;
     company = company ? company : this.randomCompany.generateRandomCompany();
@@ -16,11 +16,15 @@ RandomProject.prototype.generateRandomProject = function(company) {
     const types = Object.keys(this.projectTypes);
     const type = this.randomFromArray(types);
     const name = company.name + " " + type;
+    const shortName = company.shortName + " " + type;
     const requirements = this.projectTypes[type];
-    const estimatedMonthsToCompletion = this.randomBetweenInts(6,18);
+    const estimatedMonthsToCompletion = isStartProject ? this.randomBetweenInts(6,18): 0; 
+    const monthsActive = isStartProject ? Math.floor(this.randomBetweenInts(0,estimatedMonthsToCompletion)*100): 0;
+    const percentComplete = monthsActive/estimatedMonthsToCompletion;
+
     const budget = this.randomBetweenInts(5,100);
     const adjustedBudget = budget * 1000;
-    const project = new Project(id, company, name, sector,type, requirements, adjustedBudget, estimatedMonthsToCompletion);
+    const project = new Project(id, company, name,shortName, sector,type, requirements, adjustedBudget, estimatedMonthsToCompletion,monthsActive,percentComplete);
     return project
 }
 
@@ -61,36 +65,20 @@ RandomProject.prototype.projectSectors = {
 
 RandomProject.prototype.projectTypes = {
     'website': {
-        required:{
-            frontend: ['html','css','javascript']
-        },
-        optional:{
-            frontend: ['jQuery']
-        }
+        required:['html','css','javascript'],
+        optional:['jQuery']
     },
     'web app': {
-        required:{
-            frontend: ['html','css','javascript']
-        },
-        optional:{
-            frontend: ['jQuery']
-        }
+        required: ['html','css','javascript'],
+        optional:['jQuery']
     },
     'mobile app': {
-        required:{
-            frontend: ['html','css','javascript']
-        },
-        optional:{
-            frontend: ['jQuery']
-        }
+        required: ['html','css','javascript'],
+        optional: ['jQuery']
     },
     'data platform': {
-        required:{
-            frontend: ['html','css','javascript']
-        },
-        optional:{
-            frontend: ['jQuery']
-        }
+        required:['python','sql','javascript'],
+        optional: ['jQuery']
     },
 }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import ModalContext from '../Modal/context'; 
 
 import '../../App.css';
-import { Tab } from 'semantic-ui-react'
+import { Tab, Grid, Menu } from 'semantic-ui-react'
 
 const SidebarWrapper = (props) => {
 
@@ -19,41 +19,66 @@ const SidebarWrapper = (props) => {
 //sections: employees, project
 function Sidebar(props) {
   // console.log('sidebar props',props)
-  const click = () => {
-    console.log('click');
-  }
   const employees = props.employees.map((employee) => {
     return(
-      <li key={employee.id} onClick={()=>props.addPane('employee',employee)}>
-        <span> {employee.name.display}
-        {
-          employee.level === 5 ? "*" : ""
-        }</span>
-        <span>{employee.level}</span>
-        <span>{employee.stats.happiness}</span>
-      </li>
+      <React.Fragment key={employee.id}>
+      <Grid.Row columns={2} onClick={()=>props.addPane('employee',employee)} style={{padding:'0'}}>
+        <Grid.Column width={6}>
+          {employee.name.display}
+          {
+            employee.level === 5 ? "*" : ""
+          }
+        </Grid.Column>
+        <Grid.Column width={10}>
+          {employee.title}
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row columns={2} onClick={()=>props.addPane('employee',employee)} style={{padding:'0'}}>
+        <Grid.Column width={10}>
+          {
+            !employee.projectId ? '' :
+            employee.projectId.shortName
+          }
+        </Grid.Column>
+        <Grid.Column width={1}>
+          {employee.level}
+        </Grid.Column>
+        <Grid.Column width={1}>
+          {employee.stats.happiness}
+        </Grid.Column>
+        
+      </Grid.Row>
+      </React.Fragment>
     )
   })
   const projects = props.projects.map((project) => {
     return(
-      <li key={project.id} onClick={()=>props.addPane('project',project)}>
-        <span>{project.name}</span>
-        <span>{project.monthsToCompletion}</span>
-        <span>{project.percentComplete}%</span>
-      </li>
+      <Grid.Row columns={3} key={project.id} onClick={()=>props.addPane('project',project)}>
+        <Grid.Column width={12}>{project.name}</Grid.Column>
+        <Grid.Column width={2}>{project.monthsToCompletion}</Grid.Column>
+        <Grid.Column width={2}>{project.percentComplete}%</Grid.Column>
+      </Grid.Row>
     )
   })
   const applicants = props.applicants.map((applicant) => {
     return(
-      <li key={applicant.id} onClick={()=>props.addPane('applicant',applicant)}>
+      <Grid.Row columns={2} key={applicant.id}> 
+        <Grid.Column onClick={()=>props.addPane('applicant',applicant)}>
         {applicant.name.display}
-      </li>
+        </Grid.Column>
+        <Grid.Column>
+        <button onClick={()=>props.dismissApplicant(applicant.id)} >x</button>
+        </Grid.Column>
+      </Grid.Row>
     )
   })
   const panes = [
-    { menuItem: 'Employees', render: () => <Tab.Pane>{employees}</Tab.Pane> },
-    { menuItem: 'Applicants', render: () => <Tab.Pane>{applicants}</Tab.Pane> },
-    { menuItem: 'Projects', render: () => <Tab.Pane>{projects}</Tab.Pane> },
+    { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
+      render: () => <Tab.Pane style={{height: '75vh'}}><Grid columns={1}>{employees}</Grid></Tab.Pane> },
+    { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
+      render: () => <Tab.Pane style={{height: '92.5%'}}><Grid columns={1}>{applicants}</Grid></Tab.Pane> },
+    { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 
+      render: () => <Tab.Pane style={{height: '92.5%'}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
   ]
   return (
     <aside>

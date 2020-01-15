@@ -13,19 +13,19 @@ class Main extends Component {
     switch(type){
 
       case 'project':
-        return <Project {...info}/>
+        return <Project {...info} addPane={this.props.addPane}/>
 
       case 'applicant':
-        return <Employee {...info} hireApplicant={this.props.hireApplicant}/>
+        return <Employee {...info} hireApplicant={this.props.hireApplicant} addPane={this.props.addPane}/>
 
       case 'employee':
-        return <Employee {...info} fireEmployee={this.props.fireEmployee}/>
+        return <Employee {...info} fireEmployee={this.props.fireEmployee} addPane={this.props.addPane}/>
 
       case "email":
-        return <Email emails={this.props.emails} />
+        return <Email emails={this.props.emails} addPane={this.props.addPane}/>
 
       case "tasks":
-        return <Tasks tasks={this.props.tasks} />
+        return <Tasks tasks={this.props.tasks} addPane={this.props.addPane}/>
 
       default:
         return null

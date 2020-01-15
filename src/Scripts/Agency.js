@@ -8,6 +8,7 @@ class Agency{
         this.monthlyProfit = monthlyProfit ? monthlyProfit : 100000;
         this.yearsInOperation = yearsInOperation ? yearsInOperation : 1;
         this.startYear = startYear ? startYear: new Date().getFullYear() - 1 ;
+        this.experience = 0;
         //date founded
     }
     calculateAgencyParameters = function(employees,projects){

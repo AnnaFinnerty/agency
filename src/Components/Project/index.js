@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../App.css';
-import { Grid, GridRow } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 import Helpers from '../../Scripts/Helpers';
 
 function Project(props) {
@@ -14,15 +14,11 @@ function Project(props) {
   //     </li>
   //   )
   // })
-  const percentComplete = 
-    <div className='percent-complete-container'>
-      <div style={{color:'red',height:props.info.percentComplete+'%'}}></div>
-    </div>
   const workers = props.info.workers.map((worker) => {
     return (
-      <li key={worker.id}>
-        {worker.name}
-      </li>
+     
+        <Button onClick={()=>props.addPane('employee',worker)}key={worker.id}> {worker.name.display}</Button>
+  
     )
   })
   return (

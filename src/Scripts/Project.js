@@ -1,8 +1,9 @@
 class Project{
-    constructor(id, company, name, sector,type, requirements,budget, estimatedMonthsToCompletion,monthsActive,percentComplete){
+    constructor(id, company, name, shortName, sector,type, requirements,budget, estimatedMonthsToCompletion,monthsActive,percentComplete){
         this.id = id;
         this.company = company;
         this.name = name;
+        this.shortName = shortName;
         this.sector = sector;
         this.type = type;
         this.requirements = requirements;
@@ -13,9 +14,10 @@ class Project{
         this.monthsToCompletion = estimatedMonthsToCompletion;
         this.monthsActive = monthsActive ? monthsActive : 0;
         this.percentComplete = percentComplete ? percentComplete : 0;
-        this.workers = [];    
+        this.workers = [];
+        this.productivity = 0;    
     }
-    update(productivity){
+    update(){
         console.log('updating project!');
         let payment = 0;
         if(this.monthsToCompletion >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
@@ -28,7 +30,14 @@ class Project{
                 }
             } else {
                 console.log("you're still not done!?!?!");
-                this.percentComplete = this.percentComplete + productivity * 100;
+                let productivity = 0;
+                for(let i = 0; i < this.workers.length; i++){
+                    productivity += this.workers[i].stats.productivity;
+                    //productivity needs to account for if worker is matched appropriate to project
+                }
+                productivity = Math.floor(productivity/this.workers.length)/100;
+                this.percentComplete = this.percentComplete + (productivity);
+                this.productivity = productivity;
             }
         } else {
             if(this.payInInstallments){

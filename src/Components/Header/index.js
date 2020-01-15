@@ -38,12 +38,12 @@ class Header extends Component{
                 <Grid.Column width={5} style={{padding:"0"}}>
                   <h1>agency</h1>
                 </Grid.Column>
-                <Grid.Column width={3} style={{padding:"0"}}>
+                <Grid.Column width={3} style={{padding:"0 10px"}}>
                   <h3>{this.props.agency.name}</h3>
-                  <h5>{this.props.agency.yearsInOperation} years in operation</h5>
+                  <h5 style={{marginTop:"0"}}>{this.props.agency.yearsInOperation} years in operation</h5>
                   <Grid.Row>
-                    <button onClick={()=>this.openModal('agencyModalOpen')}>A</button>
-                    <button onClick={()=>this.openModal('industryModalOpen')}>I</button>
+                    <button onClick={()=>this.openModal('agencyModalOpen')}>agency</button>
+                    <button onClick={()=>this.openModal('industryModalOpen')}>industry</button>
                   </Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={2} style={{padding:"0"}}>

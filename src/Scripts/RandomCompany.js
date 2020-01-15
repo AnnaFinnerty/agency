@@ -1,25 +1,37 @@
 function RandomCompany(){
     this.usedNames = [];
+    this.icons = ['arrows alternate','chart line','cloud download','location arrow','random',
+                  'share square', 'bullhorn', 'certificate',
+                ]
 }
 
 RandomCompany.prototype.generateRandomCompany = function(){
     const sectors = Object.keys(this.projectSectors);
+    const names = this.randomCompanyName();
     return{
-        name: this.randomCompanyName(),
-        sector: this.randomFromArray(sectors)
+        name: names.name,
+        shortName: names.shortName,
+        sector: this.randomFromArray(sectors),
+        icon: this.randomFromArray(this.icons)
     }
 }
 
 RandomCompany.prototype.randomCompanyName = function(){
-    const firstWords = ["Inspire", "Revolution"];
+    const firstWords = ["Inspire", "Revolution", "Domain"];
     const secondWords = ["Digital", "Software", "Intelligence"];
     const r = Math.random();
     const first = this.randomFromArray(firstWords);
     const second = this.randomFromArray(secondWords);
+    const short = first[0] + second[0];
+    let name;
     if(r < .5){
-        return first + " " + second
+        name = first + " " + second
     } else {
-        return second + " " + first
+        name = second + " " + first
+    }
+    return {
+        name: name,
+        shortName: short,
     }
 }
 
