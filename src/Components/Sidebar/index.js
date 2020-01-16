@@ -77,11 +77,11 @@ function Sidebar(props) {
   })
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '75vh'}}>{employees}</Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '75vh',overflowY:"scroll"}}>{employees}</Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '92.5%'}}><Grid columns={1}>{applicants}</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '75vh',overflowY:"scroll"}}><Grid columns={1}>{applicants}</Grid></Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '92.5%'}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '75vh',overflowY:"scroll"}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
   ]
   return (
     <aside>
