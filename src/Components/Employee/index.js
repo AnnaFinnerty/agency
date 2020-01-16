@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import PersonalIcon from './icon';
 import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
@@ -22,7 +23,9 @@ class Employee extends Component {
       <Grid celled>
         <Grid.Row>
           <Grid.Column width={4}>
-            <h2>{this.props.info.name.full}</h2>
+            <h2>
+              <PersonalIcon icon={this.props.info.icon}/>
+              {this.props.info.name.full}</h2>
           </Grid.Column>
           <Grid.Column width={4}>
             {this.props.info.title}

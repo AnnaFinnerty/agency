@@ -6,6 +6,7 @@ class Agency{
         this.maxSalary = maxSalary ? maxSalary : 300000;
         this.monthlyExpenditures = monthlyExpenditures ? monthlyExpenditures : 300000;
         this.monthlyProfit = monthlyProfit ? monthlyProfit : 100000;
+        this.numActiveProjects = 3;
         this.yearsInOperation = yearsInOperation ? yearsInOperation : 1;
         this.startYear = startYear ? startYear: new Date().getFullYear() - 1 ;
         this.experience = 0;
@@ -27,6 +28,10 @@ class Agency{
     }
     profit(amt){
         this.coh += amt
+    }
+    update(profit){
+        let coh = this.coh + profit;
+        coh = coh - this.monthlyExpenditures;
     }
 }
 

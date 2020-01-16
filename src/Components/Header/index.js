@@ -35,7 +35,7 @@ class Header extends Component{
         <header>
           <nav>
             <Grid celled='internally'>
-                <Grid.Column width={5} style={{padding:"0"}}>
+                <Grid.Column width={5} style={{padding:"0",backgroundColor:"white",color:"black"}}>
                   <h1>agency</h1>
                 </Grid.Column>
                 <Grid.Column width={3} style={{padding:"0 10px"}}>

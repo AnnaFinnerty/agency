@@ -20,7 +20,7 @@ class Project{
     update(){
         console.log('updating project!');
         let payment = 0;
-        if(this.monthsToCompletion >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
+        if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
             if(this.percentComplete === 100){
                 console.log('project complete')
                 if(this.payInInstallments){
@@ -41,6 +41,7 @@ class Project{
             }
         } else {
             if(this.payInInstallments){
+                console.log('paying in installments!')
                 payment = this.budget/this.estimatedMonthsToCompletion
             }
         }

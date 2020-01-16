@@ -173,7 +173,7 @@ class Content extends Component {
     
     //hourly random events
     const r = Math.random();
-    if(r < .5){
+    if(r < .3){
       //boss complain
       //boss happy
       //employee complaint
@@ -198,6 +198,9 @@ class Content extends Component {
         //send a new project offer
         if(this.state.projects.length < 10){
           //generate new project
+          //add: be able to use an old company
+          const project = this.randomProjectGenerator.generateRandomProject(null,true);
+          
         }
       }
     }

@@ -5,6 +5,9 @@ function RandomEmployee(){
     this.maxLeaders = 2;
     this.currentLeaders = 0;
     this.usedNames = [];
+    this.femaleIcons = ['female-icon-1'];
+    this.maleIcons = ['male-icon-1'];
+    this.neutralIcons = ['male-icon-1'];
 }
 
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
@@ -33,9 +36,11 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
         employeeStats.salary += employee.salary;
         //check the project requirements and see if they match the employees skills
         console.log(project.requirements.required);
-        for(let a = 0; a < project.requirements.required.length; a++){
-            const req = project.requirements.required[a];
-            console.log(req)
+        const allEmployeeSkills = Object.keys(employee.skillset);
+        for(let i = 0; i < allEmployeeSkills.length; i++){
+            if(project.requirements.required.includes(allEmployeeSkills[i])){
+
+            }
         }
 
         //add employee to project's workers array
@@ -66,6 +71,7 @@ RandomEmployee.prototype.generateRandomEmployee = function(applicant, project, p
     const id = !applicant ? this.generateEmployeeID() : null;
     //set random employee properties
     const gender = this.randomGender();
+    const icon = gender === "male" ? this.randomFromArray(this.maleIcons) : gender === "female" ? this.randomFromArray(this.femaleIcons) : this.randomFromArray(this.neutralIcons);
     const name = this.randomName(gender);
     const age = this.randomBetweenInts(23,60);
     // this can be cleaned up now that the leaders are created seperately
@@ -79,7 +85,7 @@ RandomEmployee.prototype.generateRandomEmployee = function(applicant, project, p
     const stats = this.randomStats();
     const salary = this.randomBetweenInts(4,4+(level*2)) * 10000;
     //create and return new employee
-    const employee = new Employee(id,name,gender,age,level,skillset.title,skillset.focus,skillset.skills, skillset.skillSet,stats, salary,project);
+    const employee = new Employee(id,name,icon,gender,age,level,skillset.title,skillset.focus,skillset.skills, skillset.skillSet,stats, salary,project);
     return employee
 }
 
@@ -87,9 +93,9 @@ RandomEmployee.prototype.randomSkillset = function(level){
     //skill areas and job title
     const skillsets = {
         ux: ['graphic designer','ux designer','ui designer'],
-        frontend: ['junior frontend dev','frontend dev','senior frontend dev'],
-        backend: ['junior backend dev','backend dev','senior backend dev'],
-        datascience: ['junior data analyst','data analyst','senior data analyst'],
+        frontend: ['jr frontend dev','frontend dev','sr frontend dev'],
+        backend: ['jr backend dev','backend dev','sr backend dev'],
+        datascience: ['jr data analyst','data analyst','sr data analyst'],
         management: ['cfo','cto','ceo']
     }
     //give all players two focuses. Only the first will be visible to the player.

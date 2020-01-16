@@ -1,7 +1,8 @@
 class Employee{
-    constructor(id, name, gender,age,level, title,focus,skills, skillset, stats, salary,projectId){
+    constructor(id, name,icon, gender,age,level, title,focus,skills, skillset, stats, salary,projectId){
         this.id = id;
         this.name = name;
+        this.icon = icon;
         this.gender = gender;
         this.age = age;
         this.level = level;
@@ -35,7 +36,7 @@ class Employee{
         }
     }
     updateSkills(projectSkills){
-        
+
     }
     printInfo(){
         console.log("employee info");

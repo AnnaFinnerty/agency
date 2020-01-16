@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ModalContext from '../Modal/context'; 
+import PersonalIcon from '../Employee/icon';
 
 import '../../App.css';
 import { Tab, Grid, Menu } from 'semantic-ui-react'
@@ -23,13 +24,16 @@ function Sidebar(props) {
     return(
       <React.Fragment key={employee.id}>
       <Grid.Row columns={2} onClick={()=>props.addPane('employee',employee)} style={{padding:'0'}}>
+        <Grid.Column width={1}>
+          <PersonalIcon icon={employee.icon}/>
+        </Grid.Column>
         <Grid.Column width={6}>
           {employee.name.display}
           {
             employee.level === 5 ? "*" : ""
           }
         </Grid.Column>
-        <Grid.Column width={10}>
+        <Grid.Column width={8}>
           {employee.title}
         </Grid.Column>
       </Grid.Row>
