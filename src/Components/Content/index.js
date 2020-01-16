@@ -200,7 +200,7 @@ class Content extends Component {
           //generate new project
           //add: be able to use an old company
           const project = this.randomProjectGenerator.generateRandomProject(null,true);
-          
+
         }
       }
     }
@@ -231,6 +231,20 @@ class Content extends Component {
     //TODO need to get new id number for applicant
     this.setState({
       employees: [info, ...this.state.employees]
+    })
+  }
+  updateEmployee = (updatedEmployee) => {
+    console.log('updating employee', updatedEmployee)
+    const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
+    this.setState({
+      employees: employees
+    })
+  }
+  updateEmployeeLevel = (updatedEmployee) => {
+    console.log('promoting or demoting employee');
+    const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
+    this.setState({
+      employees: employees
     })
   }
   fireEmployee = (info) => {
@@ -330,6 +344,8 @@ class Content extends Component {
                                 removePane={this.removePane}
                                 hireApplicant={this.hireApplicant}
                                 dismissApplicant={this.dismissApplicant}
+                                updateEmployee={this.updateEmployee}
+                                updateEmployeeLevel={this.updateEmployeeLevel}
                                 fireEmployee={this.fireEmployee}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}

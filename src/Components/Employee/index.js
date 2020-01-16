@@ -10,6 +10,26 @@ class Employee extends Component {
   constructor(){
     super()
   }
+  raiseSalary = () => {
+    const updatedEmployee = this.props.info;
+    updatedEmployee.raiseSalary();
+    this.props.updateEmployee(updatedEmployee);
+  }
+  lowerSalary = () => {
+    const updatedEmployee = this.props.info;
+    updatedEmployee.lowerSalary();
+    this.props.updateEmployee(updatedEmployee);
+  }
+  promote = () => {
+    const updatedEmployee = this.props.info;
+    updatedEmployee.promote();
+    this.props.updateEmployeeLevel(updatedEmployee);
+  }
+  demote = () => {
+    const updatedEmployee = this.props.info;
+    updatedEmployee.demote();
+    this.props.updateEmployeeLevel(updatedEmployee);
+  }
   render(){
     console.log('employee pprops',this.props);
   const skills = this.props.info.skills.map((skill,i) => {
@@ -82,10 +102,10 @@ class Employee extends Component {
             {this.props.info.level}
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button>Promote</Button>
+            <Button onClick={this.promote}>Promote</Button>
           </Grid.Column>
           <Grid.Column width={4}>
-            
+            <Button onClick={this.demote}>Demote</Button>
           </Grid.Column>
         </Grid.Row>
         
@@ -97,10 +117,10 @@ class Employee extends Component {
             {salary}
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button>Raise</Button>
+            <Button onClick={this.raiseSalary}>Raise</Button>
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button>Lower</Button>
+            <Button onClick={this.lowerSalary}>Lower</Button>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

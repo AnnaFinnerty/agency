@@ -35,6 +35,30 @@ class Employee{
             this.quit = true;
         }
     }
+    promote(){
+        this.level += 1;
+        //title will be change back in content
+        this.stats.happiness = this.stats.happiness + 10 >= 100 ? 100 : this.stats.happiness + 10;
+        this.stats.productivity = this.stats.productivity + 1 >= 10 ? 10 : this.stats.productivity + 1;
+    }
+    demote(){
+        this.level -= 1;
+        //title will be change back in content
+        this.stats.happiness = this.stats.happiness - 10 <= 0 ? 0 : this.stats.happiness - 10;
+        this.stats.productivity = this.stats.productivity - 1 <= 0 ? 0 : this.stats.productivity - 1;
+    }
+    raiseSalary(){
+        this.salary += 10000;
+        //title will be change back in content
+        this.stats.happiness = this.stats.happiness + 10 >= 100 ? 100 : this.stats.happiness + 10;
+        this.stats.productivity = this.stats.productivity + 1 >= 10 ? 10 : this.stats.productivity + 1;
+    }
+    lowerSalary(){
+        this.salary -= 10000;
+        //title will be change back in content
+        this.stats.happiness = this.stats.happiness - 10 <= 0 ? 0 : this.stats.happiness - 10;
+        this.stats.productivity = this.stats.productivity - 1 <= 0 ? 0 : this.stats.productivity - 1;
+    }
     updateSkills(projectSkills){
 
     }

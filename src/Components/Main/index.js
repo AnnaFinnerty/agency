@@ -19,7 +19,7 @@ class Main extends Component {
         return <Employee {...info} hireApplicant={this.props.hireApplicant} addPane={this.props.addPane}/>
 
       case 'employee':
-        return <Employee {...info} fireEmployee={this.props.fireEmployee} addPane={this.props.addPane}/>
+        return <Employee {...info} updateEmployee={this.props.updateEmployee} updateEmployeeLevel={this.props.updateEmployeeLevel} fireEmployee={this.props.fireEmployee} addPane={this.props.addPane}/>
 
       case "email":
         return <Email emails={this.props.emails} addPane={this.props.addPane}/>
@@ -79,7 +79,7 @@ class Main extends Component {
     return item
   }
   render(){
-    // console.log('main props', this.props)
+    console.log('main props', this.props)
     const panes = [];
     for(let i = 0; i < this.props.panes.length; i++){
       const pane = this.buildPane(this.props.panes[i],i);
