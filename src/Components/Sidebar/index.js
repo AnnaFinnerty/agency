@@ -22,37 +22,36 @@ function Sidebar(props) {
   // console.log('sidebar props',props)
   const employees = props.employees.map((employee) => {
     return(
-      <React.Fragment key={employee.id}>
-      <Grid.Row columns={2} onClick={()=>props.addPane('employee',employee)} style={{padding:'0'}}>
-        <Grid.Column width={1}>
-          <PersonalIcon icon={employee.icon}/>
-        </Grid.Column>
-        <Grid.Column width={6}>
-          {employee.name.display}
-          {
-            employee.level === 5 ? "*" : ""
-          }
-        </Grid.Column>
-        <Grid.Column width={8}>
-          {employee.title}
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row columns={2} onClick={()=>props.addPane('employee',employee)} style={{padding:'0'}}>
-        <Grid.Column width={10}>
-          {
-            !employee.projectId ? '' :
-            employee.projectId.shortName
-          }
-        </Grid.Column>
-        <Grid.Column width={1}>
-          {employee.level}
-        </Grid.Column>
-        <Grid.Column width={1}>
-          {employee.stats.happiness}
-        </Grid.Column>
-        
-      </Grid.Row>
-      </React.Fragment>
+      <div key={employee.id} className="hover">
+        <Grid celled onClick={()=>props.addPane('employee',employee)}>
+          <Grid.Row columns={2}  style={{padding:'0'}}>
+              <Grid.Column width={6}>
+                <PersonalIcon icon={employee.icon}/>
+                {employee.name.display}
+                {
+                  employee.level === 5 ? "*" : ""
+                }
+              </Grid.Column>
+              <Grid.Column width={8}>
+                {employee.title}
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={2} style={{padding:'0'}}>
+              <Grid.Column width={10}>
+                {
+                  !employee.projectId ? '' :
+                  employee.projectId.shortName
+                }
+              </Grid.Column>
+              <Grid.Column width={1}>
+                {employee.level}
+              </Grid.Column>
+              <Grid.Column width={1}>
+                {employee.stats.happiness}
+              </Grid.Column>
+          </Grid.Row>
+      </Grid>
+      </div>
     )
   })
   const projects = props.projects.map((project) => {
@@ -78,7 +77,7 @@ function Sidebar(props) {
   })
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '75vh'}}><Grid columns={1}>{employees}</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '75vh'}}>{employees}</Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
       render: () => <Tab.Pane style={{height: '92.5%'}}><Grid columns={1}>{applicants}</Grid></Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 

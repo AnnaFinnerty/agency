@@ -65,6 +65,19 @@ RandomEmail.prototype.junkEmail = function(employee){
     return junkBody[Math.floor(Math.random()*junkBody.length)];
 }
 
+RandomEmail.prototype.suggestionEmail = function(employee){
+    const suggestionSubject = ["Happy Birthday to " + employee.name.first,'Hike this weekend'];
+    const suggestionBody = ["Hey, it's " + employee.name.display + " 's birthday","Hey, anybody up for a hike this weekend?"];
+    const email = {
+        subject: 'junk',
+        text: suggestionBody[Math.floor(Math.random()*suggestionBody.length)],
+        sender: employee.name.display,
+        time: new Date().toLocaleString(),
+        read: false
+    }
+    return suggestionBody[Math.floor(Math.random()*suggestionBody.length)];
+}
+
 RandomEmail.prototype.applicantEmail = function(employee){
     const applicantSubject = ["Application", 'Open Position','Your job posting','I need a job'];
     const junk = [

@@ -16,6 +16,7 @@ class Employee{
         this.projectId = projectId;
         this.problems = 0;
         this.matched = false;
+        this.problems = [];
     }
     update(){
         console.log('updating employee!');
