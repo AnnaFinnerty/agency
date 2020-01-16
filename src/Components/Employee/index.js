@@ -4,7 +4,7 @@ import PersonalIcon from './icon';
 import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
-import { Grid, Button, Label } from 'semantic-ui-react'
+import { Grid, Button, Dropdown } from 'semantic-ui-react'
 
 class Employee extends Component {
   constructor(){
@@ -30,6 +30,14 @@ class Employee extends Component {
     updatedEmployee.demote();
     this.props.updateEmployeeLevel(updatedEmployee);
   }
+  changeProject = (e,data) => {
+    console.log('changing project to:', data.value);
+    const newProject = this.props.projects[data.value];
+    const updatedEmployee = this.props.info;
+    updatedEmployee.projectId = newProject;
+    this.props.updateEmployeeLevel(updatedEmployee);
+  }
+  
   render(){
     console.log('employee pprops',this.props);
   const skills = this.props.info.skills.map((skill,i) => {
@@ -39,6 +47,15 @@ class Employee extends Component {
   })
   const helpers = new Helpers();
   const salary = helpers.monify(this.props.info.salary);
+  const projectOptions = this.props.projects.map((project,i)=>{
+    return(
+      {
+        key: project.id,
+        text: project.name,
+        value: i
+      }
+    )
+  })
   return (     
       <Grid celled>
         <Grid.Row>
@@ -87,10 +104,16 @@ class Employee extends Component {
               {this.props.info.projectId.name}
             </Grid.Column>
             <Grid.Column width={4}>
-              <Button>Switch Project</Button>
+              Change Project:
             </Grid.Column>
             <Grid.Column width={4}>
-            
+              <Dropdown
+                  placeholder='Switch Project'
+                  fluid
+                  selection
+                  options={projectOptions}
+                  onChange={this.changeProject}
+                />
             </Grid.Column>
           </Grid.Row>
         }

@@ -20,11 +20,14 @@ class Project{
     update(){
         console.log('updating project!');
         let payment = 0;
+        console.log('monthes active',this.monthsActive);
+        this.monthsActive += 1;
+        console.log('estimated to completion',this.estimatedMonthsToCompletion);
         if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
             if(this.percentComplete === 100){
                 console.log('project complete')
                 if(this.payInInstallments){
-                    payment = this.budget/this.estimatedMonthsToCompletion
+                    payment = Math.floor(this.budget/this.estimatedMonthsToCompletion)
                 } else {
                     payment = 0;
                 }
@@ -42,7 +45,7 @@ class Project{
         } else {
             if(this.payInInstallments){
                 console.log('paying in installments!')
-                payment = this.budget/this.estimatedMonthsToCompletion
+                payment = Math.floor(this.budget/this.estimatedMonthsToCompletion)
             }
         }
         return payment

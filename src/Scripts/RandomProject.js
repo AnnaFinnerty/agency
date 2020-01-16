@@ -19,7 +19,7 @@ RandomProject.prototype.generateRandomProject = function(company, isStartProject
     const shortName = company.shortName + " " + type;
     const requirements = this.projectTypes[type];
     const estimatedMonthsToCompletion = isStartProject ? this.randomBetweenInts(6,18): 0; 
-    const monthsActive = isStartProject ? Math.floor(this.randomBetweenInts(0,estimatedMonthsToCompletion)*100): 0;
+    const monthsActive = isStartProject ? Math.floor(this.randomBetweenInts(0,estimatedMonthsToCompletion)): 0;
     const percentComplete = monthsActive/estimatedMonthsToCompletion;
 
     const budget = this.randomBetweenInts(5,100);

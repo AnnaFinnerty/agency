@@ -327,6 +327,7 @@ class Content extends Component {
                           startTimer={this.startTimer} 
                           stopTimer={this.stopTimer}
                           agency={this.state.agency}
+                          projects={this.state.projects}
                           industry={this.state.industry}
                           employeeStats={this.state.employeeStats}
                           />
@@ -349,6 +350,7 @@ class Content extends Component {
                                 fireEmployee={this.fireEmployee}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
+                                projects={this.state.projects}
                                 />
                         </div>
                 <footer></footer>

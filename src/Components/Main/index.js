@@ -19,7 +19,7 @@ class Main extends Component {
         return <Employee {...info} hireApplicant={this.props.hireApplicant} addPane={this.props.addPane}/>
 
       case 'employee':
-        return <Employee {...info} updateEmployee={this.props.updateEmployee} updateEmployeeLevel={this.props.updateEmployeeLevel} fireEmployee={this.props.fireEmployee} addPane={this.props.addPane}/>
+        return <Employee {...info} updateEmployee={this.props.updateEmployee} updateEmployeeLevel={this.props.updateEmployeeLevel} fireEmployee={this.props.fireEmployee} addPane={this.props.addPane} projects={this.props.projects}/>
 
       case "email":
         return <Email emails={this.props.emails} addPane={this.props.addPane}/>
