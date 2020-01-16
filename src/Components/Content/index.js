@@ -21,7 +21,7 @@ class Content extends Component {
     super();
     this.state = {
       //temp fix
-      industry: new Industry(),
+      industry: null,
       agency: new Agency(),
       sidebarRight: true,
       projects: [],
@@ -59,6 +59,8 @@ class Content extends Component {
   }
   start = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
+    const industry = new Industry();
+    const agency = new Agency();
     const startProjects = [];
     const startApplicants = [];
     const startEmails = [];
@@ -81,11 +83,13 @@ class Content extends Component {
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
 
     this.setState({
+      industry: industry,
+      agency: agency,
       employees: sortedEmployees,
       employeeStats: startEmployees.employeeStats,
       projects: startEmployees.startProjects,
       applicants: startApplicants,
-      emails: [welcomeEmail,...startEmails],
+      emails: [...startEmails,welcomeEmail],
       tasks: ['hire a new junior employee']
     })
   }

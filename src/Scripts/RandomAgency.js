@@ -1,3 +1,4 @@
+import Agency from './Agency';
 import Helpers from './Helpers';
 
 function RandomAgency(){
@@ -5,13 +6,14 @@ function RandomAgency(){
     this.helpers = new Helpers();
 }
 
-RandomAgency.prototype.generateRandomAgency = (isFake) => {
-    // const name = this.randomAgencyName();
+RandomAgency.prototype.generateRandomAgency = function(isFake){
+    const name = this.randomAgencyName();
     // const icon = this.helpers.randomFromArray(this.icons);
-    return {}
+    const agency = new Agency();
+    return agency
 }
 
-RandomAgency.prototype.randomAgencyName = () => {
+RandomAgency.prototype.randomAgencyName = function(){
     const first = ["Inspire", "Revolution"];
     const second = ["Digital", "Software", "Intelligence"];
     const r = Math.random();

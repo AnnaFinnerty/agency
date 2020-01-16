@@ -15,10 +15,19 @@ function Project(props) {
   //   )
   // })
   const workers = props.info.workers.map((worker) => {
+    const skills = worker.skills.map((skill)=>{
+      return(
+        <React.Fragment>
+        <Grid.Column width={2}>{skill}</Grid.Column>
+        <Grid.Column width={2}>{worker.skillset[skill]}</Grid.Column>
+        </React.Fragment>
+      )
+    })
     return (
-     
-        <Button onClick={()=>props.addPane('employee',worker)}key={worker.id}> {worker.name.display}</Button>
-  
+      <Grid columns={4} onClick={()=>props.addPane('employee',worker)}key={worker.id}>
+          <Grid.Column width={4}>{worker.name.display}</Grid.Column>
+          {skills}
+      </Grid>
     )
   })
   return (
@@ -64,7 +73,9 @@ function Project(props) {
         </Grid.Column>
       </Grid>
       <h2>Personnel</h2>
-      {workers}
+      <Grid columns={1}>
+        {workers}
+      </Grid>
     </div>
   );
 }

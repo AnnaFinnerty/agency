@@ -56,6 +56,9 @@ class Employee extends Component {
       }
     )
   })
+  const skillScores = this.props.info.skills.map((skill)=>{
+    return <li>{this.props.info.skillset[skill]}</li>
+  })
   return (     
       <Grid celled>
         <Grid.Row>
@@ -150,12 +153,15 @@ class Employee extends Component {
           <Grid.Column width={4}>
             Skills:
           </Grid.Column>
-          <Grid.Column width={12}>
+          <Grid.Column width={4}>
             {skills}
           </Grid.Column>
+          <Grid.Column width={4}>
+            {skillScores}
+          </Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          
         </Grid.Row>
       </Grid>
   );
