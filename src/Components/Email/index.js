@@ -10,6 +10,7 @@ class Email extends Component{
   constructor(){
     super();
     this.state = {
+      emailsShowing: 'inbox',
       openEmail: false,
       openNew: false,
       currentEmail: null
@@ -38,11 +39,7 @@ class Email extends Component{
   render(){
     const emails = this.props.emails.map((email,i)=>{
       return(
-      <li key={i} 
-          className="email"
-          onClick={()=>this.openEmail(i)}
-          >
-        <Grid columns={3}>
+        <Grid columns={5} onClick={()=>this.openEmail(i)} style={{height:"5vh",overflow:'hidden'}}>
           <Grid.Column width={1}>
             <Icon name="mail"></Icon>
           </Grid.Column>
@@ -53,11 +50,11 @@ class Email extends Component{
           <Grid.Column width={5}>
              {email.text}
           </Grid.Column>
-          <Grid.Column width={3}>
+          <Grid.Column width={5}>
              {email.time}
           </Grid.Column>         
         </Grid> 
-      </li>
+
       )
     })
     const selectedEmail = this.state.openEmail ? this.props.emails[this.state.currentEmail] : "";

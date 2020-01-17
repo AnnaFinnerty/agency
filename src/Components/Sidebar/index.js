@@ -4,7 +4,7 @@ import ModalContext from '../Modal/context';
 import PersonalIcon from '../Employee/icon';
 
 import '../../App.css';
-import { Tab, Grid, Menu } from 'semantic-ui-react'
+import { Tab, Grid, Menu, Button } from 'semantic-ui-react'
 
 const SidebarWrapper = (props) => {
 
@@ -77,15 +77,18 @@ function Sidebar(props) {
   })
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '75vh',overflowY:"scroll"}}>{employees}</Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}>{employees}</Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '75vh',overflowY:"scroll"}}><Grid columns={1}>{applicants}</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}>
+                        <Grid columns={1}> {applicants}</Grid></Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '75vh',overflowY:"scroll"}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
+    { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Jobs</Menu.Item>), 
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}><Grid columns={1}>jobs</Grid></Tab.Pane> },
   ]
   return (
     <aside>
-      <div style={{backgroundColor:"white",padding:"3vh"}}>
+      <div style={{backgroundColor:"white",height:'12.5vh',paddingTop:'3vh'}}>
         <h1 style={{color:"black"}}>agency</h1>
       </div>
       <Tab panes={panes} /> 

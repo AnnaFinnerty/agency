@@ -25,11 +25,12 @@ header{
   border-bottom: .5px solid black;
   background: black;
   color: white;
+  height: 12.5vh;
 }
 
 aside{
   background: lightgray;
-  width: 31.25vw;
+  width: 30vw;
   height: 85vh;
 }
 
@@ -46,6 +47,7 @@ li{
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  width: 70vw;
 }
 
 .personal-icon{

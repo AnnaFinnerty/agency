@@ -100,7 +100,7 @@ RandomEmployee.prototype.randomSkillset = function(level){
     }
     //give all players two focuses. Only the first will be visible to the player.
     const focii = Object.keys(skillsets);
-    const fociiWithoutManagerial = focii.pop();
+    // const fociiWithoutManagerial = focii.pop();
     //All leaders aka level 5 employees focus on management.
     const focusOne = level === 5 ? 'management' : this.randomFromArray(focii);
     const focusTwo = this.randomFromArray(focii);
@@ -117,7 +117,7 @@ RandomEmployee.prototype.randomSkillset = function(level){
         skillSet[skillsSelection[i]] = this.randomBetweenInts(0,5+level);
     }
     //get the employees title based on focus/level
-    const title = level == 5 ? this.randomFromArray(skillsets[focusOne]) : skillsets[focusOne][level-1];
+    const title = level === 5 ? this.randomFromArray(skillsets[focusOne]) : skillsets[focusOne][level-1];
     return {
         focus: focusOne,
         skills: skills,

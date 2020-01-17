@@ -279,10 +279,18 @@ class Content extends Component {
       emails: this.state.emails.filter((email) => email.id !== i)
     })
   }
-  generateTask = (event) => {
+  generateTask = (test,requester,type,target,action,) => {
     const task = "task";
     this.setState({
        tasks: [task, ...this.state.tasks]
+    })
+  }
+  resolveTask = () => {
+    
+  }
+  dismissTask = (i) => {
+    this.setState({
+       tasks: this.state.tasks.filter((task,x) => x!==i )
     })
   }
   addPane = (type,info) => {

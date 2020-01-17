@@ -1,3 +1,5 @@
+
+import RandomProject from './RandomProject';
 import Company from './Company';
 
 function RandomCompany(){

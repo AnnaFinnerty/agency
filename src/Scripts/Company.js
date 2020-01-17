@@ -1,3 +1,5 @@
+import RandomProject from './RandomProject';
+
 class Company{
     constructor(name, shortName, sector, icon){
         this.name = name;
@@ -6,17 +8,22 @@ class Company{
         this.icon = icon;
         this.activeProject = null;
         this.completedProjects = 0;
-        this.happiness = 5;
+        this.satisfaction = 50;
+        this.quit = false;
 
     }
-    startProject(){
-
+    newProject(){
+        this.activeProject = new RandomProject();
     }
     completeProject(){
         this.completedProjects+= 1;
+        this.activeProject = null;
     }
     cancelProject(){
-        this.activeProject = false;
+        this.activeProject = null;
+        if(this.satisfaction === 0){
+            this.quit = true;
+        }
     }
 }
 

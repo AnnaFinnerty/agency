@@ -9,14 +9,16 @@ function RandomAgency(){
 RandomAgency.prototype.generateRandomAgency = function(isFake){
     const name = this.randomAgencyName();
     // const icon = this.helpers.randomFromArray(this.icons);
-    const agency = new Agency();
+    const agency = new Agency(name);
     return agency
 }
 
 RandomAgency.prototype.randomAgencyName = function(){
-    const first = ["Inspire", "Revolution"];
-    const second = ["Digital", "Software", "Intelligence"];
+    const firstWords = ["Inspire", "Revolution","Energize","Creative"];
+    const secondWords = ["Digital", "Software", "Intelligence","Solutions"];
     const r = Math.random();
+    const first = this.helpers.RandomFromArray(firstWords);
+    const second = this.helpers.RandomFromArray(secondWords);
     if(r < .5){
         return first + " " + second
     } else {

@@ -35,7 +35,7 @@ class Header extends Component{
         <header>
           <nav>
             <Grid celled='internally'>
-                <Grid.Column width={3} style={{padding:"0 10px"}}>
+                <Grid.Column width={5} style={{padding:"0 10px"}}>
                   <h3>{this.props.agency.name}</h3>
                   <h5 style={{marginTop:"0"}}>{this.props.agency.yearsInOperation} years in operation</h5>
                   <Grid.Row>
@@ -43,13 +43,13 @@ class Header extends Component{
                     <button onClick={()=>this.openModal('industryModalOpen')}>industry</button>
                   </Grid.Row>
                 </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
+                <Grid.Column width={3} style={{padding:"0"}}>
                   <Grid.Row>$</Grid.Row>
                   
                   <Grid.Row>Emp.Productivity</Grid.Row>
                   <Grid.Row>Emp.Happiness</Grid.Row>
                 </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
+                <Grid.Column width={3} style={{padding:"0"}}>
                   <Grid.Row>{coh}</Grid.Row>
                   <Grid.Row>{this.props.employeeStats.productivity}%</Grid.Row>
                   <Grid.Row>{this.props.employeeStats.happiness}%</Grid.Row>
