@@ -27,7 +27,9 @@ class Tasks extends Component {
         return(
             <li key={i} className='task'>
                 {/* <button onClick={()=>this.removeTask(task)}>o</button> */}
-                <Icon name='circle'></Icon>
+                 <Button onClick={()=>this.props.resolveTask(i)}>
+                  <Icon name='circle'></Icon>
+                 </Button>
                  {task}
                 <button onClick={()=>this.removeTask(task)}>x</button>
             </li>

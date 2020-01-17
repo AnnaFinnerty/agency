@@ -25,7 +25,7 @@ class Main extends Component {
         return <Email emails={this.props.emails} addPane={this.props.addPane}/>
 
       case "tasks":
-        return <Tasks tasks={this.props.tasks} addPane={this.props.addPane}/>
+        return <Tasks tasks={this.props.tasks} addPane={this.props.addPane} resolveTask={this.props.resolveTask}/>
 
       default:
         return null

@@ -66,6 +66,7 @@ class Email extends Component{
           <Button>inbox</Button>
           <Button>sent</Button>
           <Button>all</Button>
+          <hr></hr>
           {emails}
           
         </Container>

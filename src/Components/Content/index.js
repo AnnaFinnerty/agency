@@ -73,6 +73,7 @@ class Content extends Component {
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
       startEmails.push(appEmail);
       const startProject = industry.newProject(true);
+      console.log('start project',startProject)
       startProjects.push(startProject);
     }
     numStartEmployees = numStartEmployees ? numStartEmployees : 7;
@@ -143,7 +144,7 @@ class Content extends Component {
       salary: 0,
     }
 
-    //update employees and get stats
+    //daily updates
     if(hour === 0){
       //daily employee update
       for(let a = 0; a < employees.length; a++){
@@ -178,11 +179,7 @@ class Content extends Component {
     //hourly random events
     const r = Math.random();
     if(r < .3){
-      //boss complain
-      //boss happy
-      //employee complaint
-      //employee happy
-
+     
       //generate random emails
       const employee = this.helpers.RandomFromArray(employees);
       console.log(employee);
@@ -275,7 +272,7 @@ class Content extends Component {
   }
   deleteEmail = (i) => {
     this.setState({
-      emails: this.state.emails.filter((email) => email.id !== i)
+      emails: this.state.emails.filter((email,x) => x !== i)
     })
   }
   generateTask = (test,requester,type,target,action,) => {
@@ -284,8 +281,11 @@ class Content extends Component {
        tasks: [task, ...this.state.tasks]
     })
   }
-  resolveTask = () => {
-
+  resolveTask = (i) => {
+    console.log('resolving task: ' + i)
+    this.setState({
+      tasks: this.state.tasks.filter((tasks,x) => x !== i)
+    })
   }
   dismissTask = (i) => {
     this.setState({
@@ -360,6 +360,7 @@ class Content extends Component {
                                 updateEmployee={this.updateEmployee}
                                 updateEmployeeLevel={this.updateEmployeeLevel}
                                 fireEmployee={this.fireEmployee}
+                                resolveTask={this.resolveTask}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
