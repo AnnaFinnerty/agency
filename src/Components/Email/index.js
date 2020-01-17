@@ -39,7 +39,7 @@ class Email extends Component{
   render(){
     const emails = this.props.emails.map((email,i)=>{
       return(
-        <Grid columns={5} onClick={()=>this.openEmail(i)} style={{height:"5vh",overflow:'hidden'}}>
+        <Grid columns={5} onClick={()=>this.openEmail(i)} className="hover" style={{height:"5vh",overflow:'hidden'}}>
           <Grid.Column width={1}>
             <Icon name="mail"></Icon>
           </Grid.Column>
@@ -63,12 +63,11 @@ class Email extends Component{
         <Container style={{height:'85vh'}}>
           <h2>Email</h2>
           <Button onClick={this.newEmail}>+</Button>
-          <ul className='email-list'>
-            {emails}
-          </ul>
-          <div className='email-viewer'>
-
-          </div>
+          <Button>inbox</Button>
+          <Button>sent</Button>
+          <Button>all</Button>
+          {emails}
+          
         </Container>
         {
           !this.state.currentEmail ? '':

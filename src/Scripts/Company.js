@@ -1,5 +1,3 @@
-import RandomProject from './RandomProject';
-
 class Company{
     constructor(name, shortName, sector, icon){
         this.name = name;
@@ -11,9 +9,6 @@ class Company{
         this.satisfaction = 50;
         this.quit = false;
 
-    }
-    newProject(){
-        this.activeProject = new RandomProject();
     }
     completeProject(){
         this.completedProjects+= 1;

@@ -72,7 +72,7 @@ class Content extends Component {
       startApplicants.push(applicant);
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
       startEmails.push(appEmail);
-      const startProject = this.randomProjectGenerator.generateRandomProject(null,true);
+      const startProject = industry.newProject(true);
       startProjects.push(startProject);
     }
     numStartEmployees = numStartEmployees ? numStartEmployees : 7;
@@ -203,8 +203,7 @@ class Content extends Component {
         if(this.state.projects.length < 10){
           //generate new project
           //add: be able to use an old company
-          const project = this.randomProjectGenerator.generateRandomProject(null,true);
-
+          const project = this.industry.newProject();
         }
       }
     }
@@ -286,7 +285,7 @@ class Content extends Component {
     })
   }
   resolveTask = () => {
-    
+
   }
   dismissTask = (i) => {
     this.setState({

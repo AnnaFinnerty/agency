@@ -1,6 +1,6 @@
 import RandomAgency from './RandomAgency';
 import RandomCompany from './RandomCompany';
-
+import RandomProject from './RandomProject';
 
 function Industry(){
     this.clients = [];
@@ -9,6 +9,7 @@ function Industry(){
     this.maxCompetitors = 5;
     this.randomCompany = new RandomCompany();
     this.randomAgency = new RandomAgency();
+    this.randomProject = new RandomProject();
     this.awake();
 }
 
@@ -22,13 +23,19 @@ Industry.prototype.awake = function(){
         const client = this.randomCompany.generateRandomCompany();
         this.clients.push(client);
     }
-    console.log('competitors',this.competitors)
-    console.log('clients',this.clients)
 }
 
-Industry.prototype.newProject = function(){
+Industry.prototype.newProject = function(startProject){
     const r = Math.random();
-    
+    let client;
+    if(r < .2 || !this.competitors.length){
+        client = this.randomCompany.generateRandomCompany();
+        this.clients.push(client);
+    } else {
+        client = this.competitors[Math.floor(Math.random()*this.competitors.length)]
+    }
+    const project = this.randomProject.generateRandomProject(client,true);
+    return project
 }
 
 export default Industry
