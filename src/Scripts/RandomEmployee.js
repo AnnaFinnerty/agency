@@ -1,4 +1,5 @@
 import Employee from './Employee';
+import MatchEmployeeToProject from './MatchEmployeeToProject';
 
 function RandomEmployee(){
     this.employeeId = 100000001;
@@ -35,14 +36,13 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
         employeeStats.happiness += employee.stats.happiness;
         employeeStats.salary += employee.salary;
         //check the project requirements and see if they match the employees skills
-        console.log(project.requirements.required);
-        const allEmployeeSkills = Object.keys(employee.skillset);
-        for(let i = 0; i < allEmployeeSkills.length; i++){
-            if(project.requirements.required.includes(allEmployeeSkills[i])){
+        // const allEmployeeSkills = Object.keys(employee.skillset);
+        // for(let i = 0; i < allEmployeeSkills.length; i++){
+        //     if(project.requirements.required.includes(allEmployeeSkills[i])){
 
-            }
-        }
-
+        //     }
+        // }
+        const match = MatchEmployeeToProject(employee,project);
         //add employee to project's workers array
         project.workers.push(employee)
         //add to employee array
@@ -80,6 +80,8 @@ RandomEmployee.prototype.generateRandomEmployee = function(applicant, project, p
     if(level === 3){
         this.currentLeaders+=1;
     }
+    //check employees' skills against project requirements
+
     //generate random employee properties baded on level
     const skillset = this.randomSkillset(level);
     const stats = this.randomStats();

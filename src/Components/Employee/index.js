@@ -56,8 +56,8 @@ class Employee extends Component {
       }
     )
   })
-  const skillScores = this.props.info.skills.map((skill)=>{
-    return <li>{this.props.info.skillset[skill]}</li>
+  const skillScores = this.props.info.skills.map((skill,i)=>{
+    return <li key={'skill_'+i}>{this.props.info.skillset[skill]}</li>
   })
   return (     
       <Grid celled>

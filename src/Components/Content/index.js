@@ -21,7 +21,7 @@ class Content extends Component {
     super();
     this.state = {
       //temp fix
-      industry: null,
+      industry: new Industry(),
       agency: new Agency(),
       sidebarRight: true,
       projects: [],
@@ -66,8 +66,7 @@ class Content extends Component {
     const startEmails = [];
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
-      //make new company
-      // const company = 
+
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
@@ -76,7 +75,7 @@ class Content extends Component {
       console.log('start project',startProject)
       startProjects.push(startProject);
     }
-    numStartEmployees = numStartEmployees ? numStartEmployees : 7;
+    // numStartEmployees = numStartEmployees ? numStartEmployees : 7;
     
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
 

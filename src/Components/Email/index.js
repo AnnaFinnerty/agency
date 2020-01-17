@@ -39,7 +39,7 @@ class Email extends Component{
   render(){
     const emails = this.props.emails.map((email,i)=>{
       return(
-        <Grid columns={5} onClick={()=>this.openEmail(i)} className="hover" style={{height:"5vh",overflow:'hidden'}}>
+        <Grid key={'email_'+i} columns={5} onClick={()=>this.openEmail(i)} className="hover" style={{height:"5vh",overflow:'hidden'}}>
           <Grid.Column width={1}>
             <Icon name="mail"></Icon>
           </Grid.Column>

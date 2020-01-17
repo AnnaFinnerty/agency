@@ -13,9 +13,6 @@ class Tasks extends Component {
   onSubmit = (e) => {
     this.props.addTask(this.state.newTaskInput)
   }
-  removeTask = (removeTask) => {
-    this.props.removeTask(removeTask)
-  }
   onChange = (e) => {
     this.setState({
         [e.target.name]: e.target.value
