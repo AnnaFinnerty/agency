@@ -38,8 +38,8 @@ class Project{
                     productivity += this.workers[i].stats.productivity;
                     //productivity needs to account for if worker is matched appropriate to project
                 }
-                productivity = Math.floor(productivity/this.workers.length)/100;
-                this.percentComplete = this.percentComplete + (productivity);
+                productivity = Math.floor(productivity/this.workers.length/100);
+                this.percentComplete = this.percentComplete + productivity;
                 this.productivity = productivity;
             }
         } else {

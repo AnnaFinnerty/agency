@@ -322,8 +322,15 @@ class Content extends Component {
     console.log('content state', this.state)
     return (
       <React.Fragment>
-                <div className="app">
-                  <Header hour={this.state.hour} 
+          <div className="app">
+                      <Sidebar employees={this.state.employees} 
+                                   projects={this.state.projects} 
+                                   applicants={this.state.applicants} 
+                                   addPane={this.addPane}
+                                   dismissApplicant={this.dismissApplicant}
+                                   />
+                        <div className="main-container">
+                        <Header hour={this.state.hour} 
                           day={this.state.day}
                           month={this.state.month}
                           year={this.state.year}
@@ -335,13 +342,7 @@ class Content extends Component {
                           industry={this.state.industry}
                           employeeStats={this.state.employeeStats}
                           />
-                        <div className="main-container">
-                          <Sidebar employees={this.state.employees} 
-                                   projects={this.state.projects} 
-                                   applicants={this.state.applicants} 
-                                   addPane={this.addPane}
-                                   dismissApplicant={this.dismissApplicant}
-                                   />
+                          
                           <Main panes={this.state.panes} 
                                 activePane={this.state.activePane}
                                 addPane={this.addPane}

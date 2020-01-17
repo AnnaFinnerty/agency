@@ -35,9 +35,6 @@ class Header extends Component{
         <header>
           <nav>
             <Grid celled='internally'>
-                <Grid.Column width={5} style={{padding:"0",backgroundColor:"white",color:"black"}}>
-                  <h1>agency</h1>
-                </Grid.Column>
                 <Grid.Column width={3} style={{padding:"0 10px"}}>
                   <h3>{this.props.agency.name}</h3>
                   <h5 style={{marginTop:"0"}}>{this.props.agency.yearsInOperation} years in operation</h5>

@@ -1,3 +1,5 @@
+import Company from './Company';
+
 function RandomCompany(){
     this.usedNames = [];
     this.icons = ['arrows alternate','chart line','cloud download','location arrow','random',
@@ -7,13 +9,11 @@ function RandomCompany(){
 
 RandomCompany.prototype.generateRandomCompany = function(){
     const sectors = Object.keys(this.projectSectors);
+    const sector = this.randomFromArray(sectors);
+    const icon = this.randomFromArray(this.icons)
     const names = this.randomCompanyName();
-    return{
-        name: names.name,
-        shortName: names.shortName,
-        sector: this.randomFromArray(sectors),
-        icon: this.randomFromArray(this.icons)
-    }
+    const company = new Company(names.name, names.shortName,sector,icon)
+    return company
 }
 
 RandomCompany.prototype.randomCompanyName = function(){

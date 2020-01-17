@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Modal, Button} from 'semantic-ui-react';
+import {Modal, Grid, Button} from 'semantic-ui-react';
 
 class IndustryModal extends Component{
     constructor(){
@@ -26,8 +26,16 @@ class IndustryModal extends Component{
                     <Button onClick={()=>this.props.closeModal('industryModalOpen')} style={{float:'right'}}>X</Button>
                 </Modal.Header>
                 <Modal.Content>
-                  {clients}
-                  {competitors}
+                    <Grid columns={2}>
+                        <Grid.Column width={8}>
+                            <Grid.Row>clients</Grid.Row>
+                            {clients}
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                            <Grid.Row>competitors</Grid.Row>
+                            {competitors}
+                        </Grid.Column>
+                    </Grid>
                 </Modal.Content>
             </Modal>
         )

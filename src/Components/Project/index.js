@@ -15,11 +15,11 @@ function Project(props) {
   //   )
   // })
   const workers = props.info.workers.map((worker) => {
-    const skills = worker.skills.map((skill)=>{
+    const skills = worker.skills.map((skill,i)=>{
       return(
-        <React.Fragment>
-        <Grid.Column width={2}>{skill}</Grid.Column>
-        <Grid.Column width={2}>{worker.skillset[skill]}</Grid.Column>
+        <React.Fragment key={worker.id+"_skill_"+i}>
+          <Grid.Column width={2}>{skill}</Grid.Column>
+          <Grid.Column width={2}>{worker.skillset[skill]}</Grid.Column>
         </React.Fragment>
       )
     })

@@ -26,4 +26,9 @@ Industry.prototype.awake = function(){
     console.log('clients',this.clients)
 }
 
+Industry.prototype.newProject = function(){
+    const r = Math.random();
+    
+}
+
 export default Industry

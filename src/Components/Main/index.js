@@ -86,7 +86,7 @@ class Main extends Component {
       panes.push(pane);
     }
     return (
-        <Tab style={{width:'100%',height:'85vh',backgroundColor:'whitesmoke'}} panes={panes} activeIndex={this.props.activePane}/>
+        <Tab style={{width:'100%',height:'85vh',backgroundColor:'whitesmoke',overflowX:'scroll'}} panes={panes} activeIndex={this.props.activePane}/>
     );
   }
 }
