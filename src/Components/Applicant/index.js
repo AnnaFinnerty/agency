@@ -34,7 +34,8 @@ class Applicant extends Component {
     console.log('changing project to:', data.value);
     const newProject = this.props.projects[data.value];
     const updatedEmployee = this.props.info;
-    updatedEmployee.projectId = newProject;
+    //MTC change to run off method in employee that also sets id
+    updatedEmployee.project = newProject;
     this.props.updateEmployeeLevel(updatedEmployee);
   }
   
@@ -92,7 +93,7 @@ class Applicant extends Component {
           this.props.info.level === 5 || this.props.type === 'applicant' ? '' :
           <Grid.Row>
             <Grid.Column width={4}>
-              Project: {this.props.info.projectId ? this.props.info.projectId.name : "unassigned"}
+              Project: {this.props.info.projectId ? this.props.info.project.name : "unassigned"}
             </Grid.Column>
             <Grid.Column width={4}>
               Match: {this.props.info.projectId ? this.props.info.match : "n/a"}

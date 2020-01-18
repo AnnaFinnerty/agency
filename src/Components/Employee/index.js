@@ -34,17 +34,19 @@ class Employee extends Component {
     console.log('changing project to:', data.value);
     const newProject = this.props.projects[data.value];
     const updatedEmployee = this.props.info;
-    updatedEmployee.projectId = newProject;
+    //MTC change to run off employee method that also updates id
+    updatedEmployee.project = newProject ? newProject : null;
+    updatedEmployee.projectId = newProject ? newProject.id : null;
     this.props.updateEmployeeLevel(updatedEmployee);
   }
   
   render(){
     console.log('employee pprops',this.props);
-  const skills = this.props.info.skills.map((skill,i) => {
-    return(
-      <li key = {i}>{skill}</li>
-    )
-  })
+    const skills = this.props.info.skills.map((skill,i) => {
+      return(
+        <li key = {i}>{skill}</li>
+      )
+    })
   const helpers = new Helpers();
   const salary = helpers.monify(this.props.info.salary);
   const projectOptions = this.props.type === "applicant" ? "" : this.props.projects.map((project,i)=>{
@@ -56,7 +58,13 @@ class Employee extends Component {
                                                                                             }
                                                                                           )
                                                                                         })
-  const skillScores = this.props.info.skills.map((skill,i)=>{
+  
+  projectOptions.unshift({
+    key: '000',
+    text: 'none',
+    value: null
+  })
+                                                                                        const skillScores = this.props.info.skills.map((skill,i)=>{
     return <li key={'skill_'+i}>{this.props.info.skillset[skill]}</li>
   })
   return (     
@@ -101,7 +109,7 @@ class Employee extends Component {
           this.props.info.level === 5 || this.props.type === 'applicant' ? '' :
           <Grid.Row>
             <Grid.Column width={4}>
-              Project: {this.props.info.projectId ? this.props.info.projectId.name : "unassigned"}
+              Project: {this.props.info.projectId ? this.props.info.project.name : "unassigned"}
             </Grid.Column>
             <Grid.Column width={4}>
               Match: {this.props.info.projectId ? this.props.info.match : "n/a"}

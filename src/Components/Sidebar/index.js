@@ -40,7 +40,7 @@ function Sidebar(props) {
               <Grid.Column width={10}>
                 {
                   !employee.projectId ? '' :
-                  employee.projectId.shortName
+                  employee.project.shortName
                 }
               </Grid.Column>
               <Grid.Column width={1}>
