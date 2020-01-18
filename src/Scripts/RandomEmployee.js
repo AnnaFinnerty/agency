@@ -14,6 +14,8 @@ function RandomEmployee(){
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
     console.log('generating start employees');
     console.log(startProjects);
+    //remove projects that aren't accepted from start projects
+    startProjects = startProjects.filter((project)=> project.accepted)
     const employeeStats = {
                             productivity: 0,
                             happiness: 0,
