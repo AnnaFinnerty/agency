@@ -1,5 +1,5 @@
 class Employee{
-    constructor(id, name,icon, gender,age,level, title,focus,skills, skillset, stats, salary,projectId){
+    constructor(id, name,icon, gender,age,level, title,focus,skills, skillset, stats, salary,project){
         this.id = id;
         this.name = name;
         this.icon = icon;
@@ -13,7 +13,8 @@ class Employee{
         this.stats = stats;
         this.salary = salary;
         this.quit = false;
-        this.projectId = projectId;
+        this.project = project;
+        this.projectId = project ? project.id : null;
         this.match = null;
         this.problems = 0;
         this.problems = [];

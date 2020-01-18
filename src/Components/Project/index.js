@@ -7,7 +7,7 @@ function Project(props) {
   console.log('project props',props)
   const removeEmployee = (worker) => {
     console.log('removing employee from project')
-    worker.project = null;
+    worker.projectId = null;
     props.updateEmployee('employee', worker);
   }
   const helpers = new Helpers();

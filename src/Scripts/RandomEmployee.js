@@ -31,6 +31,7 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
     //generate start employees
     for(let i = 0; i < numEmployees; i++){
         //choose project at random from start projects
+        //MTC this can be better -- use modulus to equally divide employees into projects
         const project = this.randomFromArray(startProjects);
         //generate new employee using that project and add their stats to initial employee stats
         const employee = this.generateRandomEmployee(false,project);
