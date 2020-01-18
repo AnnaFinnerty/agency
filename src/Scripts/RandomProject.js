@@ -6,8 +6,8 @@ function RandomProject(){
 }
 
 RandomProject.prototype.generateRandomProject = function(company, isStartProject) {
-    console.log('generating random project');
-    console.log('company',company);
+    // console.log('generating random project');
+    // console.log('company',company);
     const id = this.projectId;
     this.projectId += 1;
     const sectors = Object.keys(this.projectSectors);

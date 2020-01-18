@@ -1,10 +1,14 @@
 import React from 'react';
 import '../../App.css';
-import { Grid, Button, Icon } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 import Helpers from '../../Scripts/Helpers';
 
 function Project(props) {
   console.log('project props',props)
+  const removeEmployee = () => {
+    console.log('removing employee from project')
+    
+  }
   const helpers = new Helpers();
   const budget = helpers.monify(props.info.budget)
   const required = props.info.requirements.required.map((requirement,i) => {
@@ -26,14 +30,18 @@ function Project(props) {
       return(
         <React.Fragment key={worker.id+"_skill_"+i}>
           <Grid.Column width={2}>{skill}</Grid.Column>
-          <Grid.Column width={2}>{worker.skillset[skill]}</Grid.Column>
+          <Grid.Column width={1}>{worker.skillset[skill]}</Grid.Column>
         </React.Fragment>
       )
     })
     return (
-      <Grid columns={4} onClick={()=>props.addPane('employee',worker)}key={worker.id}>
-          <Grid.Column width={4}>{worker.name.display}</Grid.Column>
+      <Grid columns={4} key={worker.id}>
+          <Grid.Column width={4} onClick={()=>props.addPane('employee',worker)} className="hover" >{worker.name.display}</Grid.Column>
+          {/* skills are returned already in columns */}
           {skills}
+          <Grid.Column width={2}>
+              <Button onClick={removeEmployee}>Remove</Button>
+          </Grid.Column>
       </Grid>
     )
   })
@@ -52,6 +60,18 @@ function Project(props) {
       </h3>
       <Grid>
         <Grid.Column width={4}>
+          <Grid.Row>Est. months</Grid.Row>
+          <Grid.Row>Months left</Grid.Row>
+          <Grid.Row>Percent Complete</Grid.Row>
+          <Grid.Row>Productivity</Grid.Row>
+        </Grid.Column>
+        <Grid.Column width={4}>
+          <Grid.Row>{props.info.estimatedMonthsToCompletion}</Grid.Row>
+          <Grid.Row>{props.info.monthsToCompletion}</Grid.Row>
+          <Grid.Row>{props.info.percentComplete}</Grid.Row>
+          <Grid.Row>{props.info.productivity}%</Grid.Row>
+        </Grid.Column>
+        <Grid.Column width={4}>
           <Grid.Row>Sector</Grid.Row>
           <Grid.Row>Type</Grid.Row>
           <Grid.Row>Budget</Grid.Row>
@@ -63,16 +83,7 @@ function Project(props) {
           <Grid.Row>{budget}</Grid.Row>
           <Grid.Row>{props.info.payInInstallments ? 'yes' : 'no'}</Grid.Row>
         </Grid.Column>
-        <Grid.Column width={4}>
-          <Grid.Row>Est. months to completion</Grid.Row>
-          <Grid.Row>Months left to completion</Grid.Row>
-          <Grid.Row>Percent Complete</Grid.Row>
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Grid.Row>{props.info.estimatedMonthsToCompletion}</Grid.Row>
-          <Grid.Row>{props.info.monthsToCompletion}</Grid.Row>
-          <Grid.Row>{props.info.percentComplete}</Grid.Row>
-        </Grid.Column>
+        
       </Grid>
       <h2>Requirements</h2>
       <Grid columns={2}>

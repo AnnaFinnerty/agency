@@ -20,15 +20,15 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
                             salary: 0,
                           }
     const startEmployees = [];
-    for(let i = 0; i < numLeaders; i++){
-        //generate random leader and add their stats to initial employee stats
+    //generate random leader and add their stats to initial employee stats
+    for(let i = 0; i < numLeaders; i++){ 
         const employee = this.generateRandomEmployee(false,null,5);
         employeeStats.productivity += employee.stats.productivity;
         employeeStats.happiness += employee.stats.happiness;
         employeeStats.salary += employee.salary;
-        //add to employee array
         startEmployees.push(employee);
     }
+    //generate start employees
     for(let i = 0; i < numEmployees; i++){
         //choose project at random from start projects
         const project = this.randomFromArray(startProjects);
@@ -37,17 +37,11 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
         employeeStats.productivity += employee.stats.productivity;
         employeeStats.happiness += employee.stats.happiness;
         employeeStats.salary += employee.salary;
-        //check the project requirements and see if they match the employees skills
-        // const allEmployeeSkills = Object.keys(employee.skillset);
-        // for(let i = 0; i < allEmployeeSkills.length; i++){
-        //     if(project.requirements.required.includes(allEmployeeSkills[i])){
-
-        //     }
-        // }
         const match = MatchEmployeeToProject(employee,project);
         employee.match = match;
         //add employee to project's workers array
-        project.workers.push(employee)
+        project.workers.push(employee);
+        project.calculateProductivity();
         //add to employee array
         startEmployees.push(employee);
     }

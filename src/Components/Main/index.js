@@ -13,19 +13,43 @@ class Main extends Component {
     switch(type){
 
       case 'project':
-        return <Project {...info} addPane={this.props.addPane} acceptProject={this.props.acceptProject} rejectProject={this.props.rejectProject} withdrawProject={this.props.withdrawProject} />
+        return <Project 
+                  {...info} 
+                  addPane={this.props.addPane} 
+                  acceptProject={this.props.acceptProject} 
+                  rejectProject={this.props.rejectProject} 
+                  withdrawProject={this.props.withdrawProject} 
+                  updateEmployee={this.props.updateEmployee}
+                  />
 
       case 'applicant':
-        return <Employee {...info} hireApplicant={this.props.hireApplicant} addPane={this.props.addPane}/>
+        return <Employee 
+                  {...info} 
+                  hireApplicant={this.props.hireApplicant} 
+                  addPane={this.props.addPane}
+                />
 
       case 'employee':
-        return <Employee {...info} updateEmployee={this.props.updateEmployee} updateEmployeeLevel={this.props.updateEmployeeLevel} fireEmployee={this.props.fireEmployee} addPane={this.props.addPane} projects={this.props.projects}/>
+        return <Employee 
+                  {...info} 
+                  updateEmployee={this.props.updateEmployee} 
+                  updateEmployeeLevel={this.props.updateEmployeeLevel} 
+                  fireEmployee={this.props.fireEmployee} 
+                  addPane={this.props.addPane} 
+                  projects={this.props.projects}
+                />
 
       case "email":
-        return <Email emails={this.props.emails} addPane={this.props.addPane} considerProject={this.props.considerProject}/>
+        return <Email 
+                  emails={this.props.emails} 
+                  addPane={this.props.addPane} 
+                  considerProject={this.props.considerProject}/>
 
       case "tasks":
-        return <Tasks tasks={this.props.tasks} addPane={this.props.addPane} resolveTask={this.props.resolveTask}/>
+        return <Tasks 
+                  tasks={this.props.tasks} 
+                  addPane={this.props.addPane} 
+                  resolveTask={this.props.resolveTask}/>
 
       default:
         return null
