@@ -66,6 +66,7 @@ class Content extends Component {
     const startEmails = [];
 
     const newProject = industry.newProject(false);
+    startProjects.push(newProject);
     const newProjectEmail = this.randomEmailGenerator.generateEmail('project',newProject);
     startEmails.push(newProjectEmail);
 
@@ -203,6 +204,7 @@ class Content extends Component {
           //generate new project
           //add: be able to use an old company
           const project = this.state.industry.newProject();
+          projects.push(project);
           const newProjectEmail = this.randomEmailGenerator.generateEmail('project',project);
           emails.push(newProjectEmail);
         }
@@ -297,8 +299,16 @@ class Content extends Component {
     })
   }
   considerProject = (consideredProject) => {
-    console.log('accepting project', consideredProject);
+    console.log('considering project', consideredProject);
     consideredProject.considered = true;
+    const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
+    this.setState({
+      projects: projects
+    })
+  }
+  acceptProject = (consideredProject) => {
+    console.log('accepting project', consideredProject);
+    consideredProject.accepted = true;
     const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
     this.setState({
       projects: projects
@@ -307,19 +317,26 @@ class Content extends Component {
   rejectProject = (rejectedProject) => {
     console.log('rejecting project', rejectedProject)
     this.setState({
-      projects: this.state.projects.filter((project) => project.id !== rejectedProject.id)
+      projects: this.state.projects.filter((project) => project.id !== rejectedProject)
     })
   }
   withdrawProject = (withdrawnProject) => {
-    console.log('rejecting project', withdrawnProject)
+    console.log('withdraw project', withdrawnProject)
     //call to industry to decrease company satisfaction
+    // console.log('removing pane', i);
+    // const activePane = this.state.activePane === i ? i - 1: this.state.activePane;
+    // console.log('old active pane', this.state.activePane);
+    // console.log('new active pane', activePane);
+    console.log(this.state.projects);
     this.setState({
-      projects: this.state.projects.filter((project) => project.id !== withdrawnProject.id)
+      projects: this.state.projects.filter((project) => project.id !== withdrawnProject),
+      panes: this.state.panes.filter((pane) => pane.id !== "project_"+withdrawnProject),
+      activePane: this.state.activePane - 1
     })
   }
   addPane = (type,info) => {
     console.log('adding pane');
-    const pane = {type:type,info:info,pinned:false}
+    const pane = {type:type,info:info,pinned:false,id:type+"_"+info.id}
     this.setState({
       panes: [...this.state.panes,pane],
       activePane: this.state.panes.length

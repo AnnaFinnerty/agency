@@ -45,7 +45,7 @@ function Project(props) {
         {!props.info.accepted ? 
           <React.Fragment>
             <Button onClick={()=>props.acceptProject(props.info)}>accept</Button>
-            <Button onClick={()=>props.rejectProject(props.info)}>reject</Button>
+            <Button onClick={()=>props.rejectProject(props.info.id)}>reject</Button>
           </React.Fragment> 
             : 
           <Button onClick={()=>props.withdrawProject(props.info.id)}>withdraw</Button>}
