@@ -246,7 +246,12 @@ class Content extends Component {
   updateEmployee = (updatedEmployee) => {
     console.log('updating employee', updatedEmployee)
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-    const projects = this.state.projects.map((project) => project.id !== updatedEmployee.project.id ? project: updatedEmployee.project);
+    //special project update logic
+    //when an employee is removed from a project, 
+    let projects = this.state.projects;
+    if(updatedEmployee.project){
+      projects = this.state.projects.map((project) => project.id !== updatedEmployee.project.id ? project: updatedEmployee.project);
+    } 
     this.setState({
       employees: employees,
       projects: projects
