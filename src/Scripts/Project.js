@@ -25,6 +25,14 @@ class Project{
         console.log('monthes active',this.monthsActive);
         this.monthsActive += 1;
         console.log('estimated to completion',this.estimatedMonthsToCompletion);
+        let productivity = 0;
+        for(let i = 0; i < this.workers.length; i++){
+            productivity += this.workers[i].stats.productivity;
+                    //productivity needs to account for if worker is matched appropriate to project
+            }
+        productivity = Math.floor(productivity/this.workers.length/100);
+        this.percentComplete = this.percentComplete + productivity;
+        this.productivity = productivity;
         if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
             if(this.percentComplete === 100){
                 console.log('project complete')
@@ -35,14 +43,7 @@ class Project{
                 }
             } else {
                 console.log("you're still not done!?!?!");
-                let productivity = 0;
-                for(let i = 0; i < this.workers.length; i++){
-                    productivity += this.workers[i].stats.productivity;
-                    //productivity needs to account for if worker is matched appropriate to project
-                }
-                productivity = Math.floor(productivity/this.workers.length/100);
-                this.percentComplete = this.percentComplete + productivity;
-                this.productivity = productivity;
+                
             }
         } else {
             if(this.payInInstallments){

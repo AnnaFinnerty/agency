@@ -58,7 +58,7 @@ function Sidebar(props) {
     if(project.considering || project.accepted){
       return(
         <Grid.Row className="hover" columns={3} key={project.id} onClick={()=>props.addPane('project',project)}>
-          <Grid.Column width={12}>{project.name}</Grid.Column>
+          <Grid.Column width={10}>{project.name}</Grid.Column>
           <Grid.Column width={2}>{project.monthsToCompletion}</Grid.Column>
           <Grid.Column width={2}>{project.percentComplete}%</Grid.Column>
         </Grid.Row>

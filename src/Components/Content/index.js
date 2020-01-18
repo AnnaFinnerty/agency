@@ -246,8 +246,10 @@ class Content extends Component {
   updateEmployee = (updatedEmployee) => {
     console.log('updating employee', updatedEmployee)
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
+    const projects = this.state.projects.map((project) => project.id !== updatedEmployee.project.id ? project: updatedEmployee.project);
     this.setState({
-      employees: employees
+      employees: employees,
+      projects: projects
     })
   }
   updateEmployeeLevel = (updatedEmployee) => {
