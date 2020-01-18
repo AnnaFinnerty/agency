@@ -5,9 +5,10 @@ import Helpers from '../../Scripts/Helpers';
 
 function Project(props) {
   console.log('project props',props)
-  const removeEmployee = () => {
+  const removeEmployee = (worker) => {
     console.log('removing employee from project')
-    
+    worker.project = null;
+    props.updateEmployee('employee', worker);
   }
   const helpers = new Helpers();
   const budget = helpers.monify(props.info.budget)
@@ -40,7 +41,7 @@ function Project(props) {
           {/* skills are returned already in columns */}
           {skills}
           <Grid.Column width={2}>
-              <Button onClick={removeEmployee}>Remove</Button>
+              <Button onClick={()=>removeEmployee(worker)}>Remove</Button>
           </Grid.Column>
       </Grid>
     )

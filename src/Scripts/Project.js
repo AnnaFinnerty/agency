@@ -45,35 +45,11 @@ class Project{
         }
         return payment
     }
-    // monthlyUpdate(productivity){
-    //     console.log('updating project!');
-    //     let payment = 0;
-    //     if(this.monthsToCompletion >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
-    //         if(this.percentComplete === 100){
-    //             console.log('project complete')
-    //             if(this.payInInstallments){
-    //                 payment = this.budget/this.estimatedMonthsToCompletion
-    //             } else {
-    //                 payment = this.budget
-    //             }
-    //         } else {
-    //             console.log("you're still not done!?!?!");
-    //             this.percentComplete = this.percentComplete + productivity * 100;
-    //         }
-    //     } else {
-    //         if(this.payInInstallments){
-    //             payment = this.budget/this.estimatedMonthsToCompletion
-    //         }
-    //     }
-    //     return payment
-    // }
     calculateProductivity(){
         console.log("calculating productivity");
         let productivity = 0;
         for(let i = 0; i < this.workers.length; i++){
-            productivity += this.workers[i].stats.productivity/10 * this.workers[i].match;
-            
-                    //productivity needs to account for if worker is matched appropriate to project
+            productivity += this.workers[i].stats.productivity/10 * this.workers[i].match ;
             }
         productivity = Math.floor(productivity/this.workers.length);
         console.log(productivity);
