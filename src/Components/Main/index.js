@@ -13,26 +13,67 @@ class Main extends Component {
     switch(type){
 
       case 'project':
-        return <Project {...info}/>
+        return <Project 
+                  {...info} 
+                  addPane={this.props.addPane} 
+                  acceptProject={this.props.acceptProject} 
+                  rejectProject={this.props.rejectProject} 
+                  withdrawProject={this.props.withdrawProject} 
+                  updateEmployee={this.props.updateEmployee}
+                  />
 
       case 'applicant':
-        return <Employee {...info} hireApplicant={this.props.hireApplicant}/>
+        return <Employee 
+                  {...info} 
+                  hireApplicant={this.props.hireApplicant} 
+                  addPane={this.props.addPane}
+                />
 
       case 'employee':
-        return <Employee {...info} fireEmployee={this.props.fireEmployee}/>
+        return <Employee 
+                  {...info} 
+                  updateEmployee={this.props.updateEmployee} 
+                  updateEmployeeLevel={this.props.updateEmployeeLevel} 
+                  fireEmployee={this.props.fireEmployee} 
+                  addPane={this.props.addPane} 
+                  projects={this.props.projects}
+                />
 
       case "email":
-        return <Email emails={this.props.emails} />
+        return <Email 
+                  emails={this.props.emails} 
+                  addPane={this.props.addPane} 
+                  considerProject={this.props.considerProject}/>
 
       case "tasks":
-        return <Tasks tasks={this.props.tasks} />
+        return <Tasks 
+                  tasks={this.props.tasks} 
+                  addPane={this.props.addPane} 
+                  resolveTask={this.props.resolveTask}/>
 
       default:
         return null
     }
   }
-  getPaneInfo = (info) => {
+  getPaneName = (info) => {
+    console.log(info);
     switch(info.type){
+
+      case "applicant":
+        return info.info.name.display
+
+      case "employee":
+        return info.info.name.display
+
+      case "project":
+        return info.info.name
+
+      case "email":
+        return 'email (' + this.props.emails.length + ')'
+
+      case "tasks":
+        return 'tasks (' + this.props.tasks.length + ')'
+       
       default:
         return info.type
     }
@@ -40,13 +81,16 @@ class Main extends Component {
   buildPane = (info,i) => {
     // console.log('building pane',info)
     const pane = this.getPane(info.type,info)
-    const paneInfo = this.getPaneInfo(info)
+    const paneName = this.getPaneName(info)
     const item = { 
       menuItem: (
-        <Menu.Item key={info.type} onClick={()=>this.props.updatePane(i)}>
-          {paneInfo}
+        <Menu.Item key={info.type + "-" + info.id} onClick={()=>this.props.updatePane(i)}>
           {
-            info.pinned ? <Icon name="map pin"></Icon> :
+            info.pinned ? <Icon name="map pin"></Icon> : ''
+          }
+          {paneName}
+          {
+            info.pinned ? '' : 
             <button onClick={()=>this.props.removePane(i)}>X</button>
           }
         </Menu.Item>
@@ -59,14 +103,14 @@ class Main extends Component {
     return item
   }
   render(){
-    // console.log('main props', this.props)
+    console.log('main props', this.props)
     const panes = [];
     for(let i = 0; i < this.props.panes.length; i++){
       const pane = this.buildPane(this.props.panes[i],i);
       panes.push(pane);
     }
     return (
-        <Tab style={{width:'100%',height:'85vh'}} panes={panes} activeIndex={this.props.activePane}/>
+        <Tab style={{width:'100%',height:'85vh',backgroundColor:'whitesmoke',overflowX:'scroll'}} panes={panes} activeIndex={this.props.activePane}/>
     );
   }
 }

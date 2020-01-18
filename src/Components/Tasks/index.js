@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import '../../App.css';
-import { Header, Form, Input, Button } from 'semantic-ui-react'
+import { Header, Form, Input, Button, Icon } from 'semantic-ui-react'
 
 class Tasks extends Component {
   constructor(props){
@@ -13,9 +13,6 @@ class Tasks extends Component {
   onSubmit = (e) => {
     this.props.addTask(this.state.newTaskInput)
   }
-  removeTask = (removeTask) => {
-    this.props.removeTask(removeTask)
-  }
   onChange = (e) => {
     this.setState({
         [e.target.name]: e.target.value
@@ -25,8 +22,11 @@ class Tasks extends Component {
     console.log('tasks props', this.props);
     const tasks = this.props.tasks.map((task, i) => {
         return(
-            <li key={i}>{task}
-                <button onClick={()=>this.removeTask(task)}>x</button>
+            <li key={i} className='task'>
+                 <Button onClick={()=>this.props.resolveTask(i)}>
+                  <Icon name='circle'></Icon>
+                 </Button>
+                 {task}
             </li>
         )
     })

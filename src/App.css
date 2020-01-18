@@ -1,53 +1,36 @@
-.App {
-  text-align: center;
+body{
+  padding: 0;
+  margin: 0;
+  background: gainsboro;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1{
+  margin-top: 2vh;
+  text-align: center;
+  background: white;
+  margin-bottom: 0;
 }
 
 header{
   width: 100%;
-  height: 15vh;
-  padding: 1%;
   border-bottom: .5px solid black;
+  background: black;
+  color: white;
+  height: 12.5vh;
 }
 
 aside{
   background: lightgray;
-  border-right: .5px solid black;
-  width: 33%;
+  width: 30vw;
   height: 85vh;
 }
 
@@ -58,18 +41,36 @@ li{
   justify-content: space-between;
   overflow: hidden;
   max-height: 3vh;
-}
-
-li:hover{
-  background: rgba(0,0,0,.25);
+  padding: 0;
 }
 
 .main-container{
   display: flex;
-  flex-direction: inline;
+  flex-direction: column;
   flex-wrap: nowrap;
+  width: 70vw;
+}
+
+.personal-icon{
+  width: 2vw;
+  height: 2vw;
+  /* background-image: url('/icons/female-icon-1.png'); */
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .email{
   border-bottom: .5px solid black;
+  padding: .5vh;
+  margin: .5vh 0;
+}
+
+.task{
+  border: 1px solid dimgray;
+  border-radius: 10vw;
+  padding: 20px;
+}
+
+.hover:hover{
+  background: goldenrod;
 }

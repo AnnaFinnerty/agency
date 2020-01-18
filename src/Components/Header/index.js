@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 
 import IndustryModal from '../Industry/modal';
 import AgencyModal from '../Agency/modal';
+import Helpers from '../../Scripts/Helpers';
+
 
 import '../../App.css';
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid, Button, Icon } from 'semantic-ui-react';
 
 class Header extends Component{
   constructor(){
@@ -12,7 +14,9 @@ class Header extends Component{
     this.state = {
        industryModalOpen: false,
        agencyModalOpen: false,
+       fullscreen: false,
     }
+    this.helpers = new Helpers();
   }
   openModal = (name) => {
     this.setState({
@@ -24,47 +28,96 @@ class Header extends Component{
       [name]: false
     })
   }
+  openFull = () => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE */
+      elem.msRequestFullscreen();
+    }
+    this.setState({
+      fullscreen: true
+    })
+  }
+  closeFull = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE */
+      document.msExitFullscreen();
+    }
+    this.setState({
+      fullscreen: false
+    })
+  }
   render(){
-    console.log('header props:', this.props.agency)
+    console.log('header props:', this.props)
+    const coh = this.helpers.monify(this.props.agency.coh)
     return (
       <React.Fragment>
         <header>
           <nav>
             <Grid celled='internally'>
-                <Grid.Column width={5} style={{padding:"0"}}>
-                  <h1>agency</h1>
+                <Grid.Column width={5} style={{padding:"0 10px"}}>
+                  <h3>{this.props.agency.name}</h3>
+                  <h5 style={{marginTop:"0"}}>{this.props.agency.yearsInOperation} years in operation</h5>
+                  <Grid.Row>
+                    <button onClick={()=>this.openModal('agencyModalOpen')}>agency</button>
+                    <button onClick={()=>this.openModal('industryModalOpen')}>industry</button>
+                  </Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={3} style={{padding:"0"}}>
-
-                  <h3>{this.props.agency.name}</h3>
-                  <h5>{this.props.agency.yearsInOperation} years in operation</h5>
+                  <Grid.Row>$</Grid.Row>
+                  
+                  <Grid.Row>Emp.Productivity</Grid.Row>
+                  <Grid.Row>Emp.Happiness</Grid.Row>
+                </Grid.Column>
+                <Grid.Column width={3} style={{padding:"0"}}>
+                  <Grid.Row>{coh}</Grid.Row>
+                  <Grid.Row>{this.props.employeeStats.productivity}%</Grid.Row>
+                  <Grid.Row>{this.props.employeeStats.happiness}%</Grid.Row>
+                </Grid.Column>
+                
+                <Grid.Column width={3} style={{padding:"0"}}>
                   <Grid.Row>
-                    <button onClick={()=>this.openModal('agencyModalOpen')}>A</button>
-                    <button onClick={()=>this.openModal('industryModalOpen')}>I</button>
-                  </Grid.Row>
-                </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
-                  Monthly Income
-                  Monthly Expenditures
-                </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
-                </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
-                </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
-                  <Grid.Row>
-                      <span>{this.props.hour}</span>/<span>{this.props.day}</span>
-                      <Button onClick={this.props.startTimer}>start timer</Button>
+                      <span>{this.props.hour}</span>
                   </Grid.Row>
                   <Grid.Row>
-                    <Button size="small" onClick={this.props.stopTimer}>stop timer</Button>
+                      <span>{this.props.day}</span>/<span>{this.props.month}</span>
+                  </Grid.Row>
+                  <Grid.Row >
+                    {
+                      !this.props.timeRunning ? 
+                      <Button color="green" size="small" style={{padding:"15%"}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
+                      :
+                      <Button onClick={this.props.stopTimer} style={{padding:"15%"}}><Icon color="red" name="stop"></Icon></Button>
+                    }
+                    {
+                      !this.state.fullscreen ?
+                      <Button onClick={this.openFull} style={{padding:"15%"}}><Icon name="window maximize outline"></Icon></Button>
+                      :
+                      <Button onClick={this.closeFull} style={{padding:"15%"}}><Icon name="window restore outline"></Icon></Button>
+                    }
                   </Grid.Row>
                 </Grid.Column>     
             </Grid>
           </nav>
       </header>
-      <IndustryModal industry={this.props.industry} open={this.state.industryModalOpen} closeModal={this.closeModal} />
-      <AgencyModal agency={this.props.agency} open={this.state.agencyModalOpen} closeModal={this.closeModal} />
+      {
+        !this.state.industryModalOpen ? '' :
+        <IndustryModal industry={this.props.industry} open={this.state.industryModalOpen} closeModal={this.closeModal} />
+      }
+      {
+        !this.state.agencyModalOpen ? '' :
+        <AgencyModal agency={this.props.agency} open={this.state.agencyModalOpen} closeModal={this.closeModal} />
+      }
       </React.Fragment>
     );
   }

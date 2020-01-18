@@ -1,17 +1,27 @@
 import React, {Component} from 'react';
 
-import EmailModal from './modal';
+import ViewEmailModal from './view';
+import NewEmailModal from './new';
 
 import '../../App.css';
-import{Container} from 'semantic-ui-react';
+import{ Container, Grid, Icon, Button } from 'semantic-ui-react';
 
 class Email extends Component{
   constructor(){
     super();
     this.state = {
+      emailsShowing: 'inbox',
       openEmail: false,
+      openNew: false,
       currentEmail: null
     }
+  }
+  newEmail = () => {
+    this.setState({
+      currentEmail: null,
+      openEmail: false,
+      newEmail: true
+    })
   }
   openEmail = (emailIndex) => {
     this.setState({
@@ -22,38 +32,51 @@ class Email extends Component{
   closeEmail = () => {
     this.setState({
       currentEmail: null,
-      openEmail: false
+      openEmail: false,
+      openNew: false,
     })
   }
   render(){
-    console.log('email props', this.props)
     const emails = this.props.emails.map((email,i)=>{
       return(
-      <li key={i} 
-          className="email"
-          onClick={()=>this.openEmail(i)}
-          > 
-        {email.sender.name.display} | 
-        {email.subject} |
-        {email.time} | 
-        {email.text}
-      </li>
+        <Grid key={'email_'+i} columns={5} onClick={()=>this.openEmail(i)} className="hover" style={{height:"5vh",overflow:'hidden'}}>
+          <Grid.Column width={1}>
+            <Icon name="mail"></Icon>
+          </Grid.Column>
+          <Grid.Column width={3}>{email.sender.name.display} </Grid.Column>  
+          <Grid.Column width={3}>
+            {email.subject}
+          </Grid.Column>
+          <Grid.Column width={5}>
+             {email.text}
+          </Grid.Column>
+          <Grid.Column width={4}>
+             {email.time}
+          </Grid.Column>         
+        </Grid> 
+
       )
     })
     const selectedEmail = this.state.openEmail ? this.props.emails[this.state.currentEmail] : "";
-    console.log('selected email', this.state.currentEmail)
     return (
       <React.Fragment>
         <Container style={{height:'85vh'}}>
           <h2>Email</h2>
-          <ul className='email-list'>
-            {emails}
-          </ul>
-          <div className='email-viewer'>
-
-          </div>
+          <Button onClick={this.newEmail}>+</Button>
+          <Button>inbox</Button>
+          <Button>sent</Button>
+          <Button>all</Button>
+          <hr style={{marginBottom:"5vh"}}></hr>
+          {emails}
         </Container>
-        <EmailModal open={this.state.openEmail} email={selectedEmail} closeEmail={this.closeEmail}/>
+        {
+          !this.state.currentEmail ? '':
+          <ViewEmailModal open={this.state.openEmail} email={selectedEmail} closeEmail={this.closeEmail} addPane={this.props.addPane}/>
+        }
+        {
+          !this.state.newEmail ? '':
+          <NewEmailModal open={this.state.newEmail} closeEmail={this.closeEmail} />
+        }
       </React.Fragment>
     );
   }

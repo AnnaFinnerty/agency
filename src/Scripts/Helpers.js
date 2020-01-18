@@ -1,13 +1,15 @@
-const RandomFromArray = function(arr){
+function Helpers(){}
+
+Helpers.prototype.RandomFromArray = function(arr){
     return arr[Math.floor(Math.random()*arr.length)]
 }
 
-const RandomBetweenInts = function(start,end){
+Helpers.prototype.RandomBetweenInts = function(start,end){
     return Math.floor(Math.random()*(end-start)) + start
 }
 
 //find a random number of items from an array, without repeating
-const XRandomWithoutRepeats = function(arr,x){
+Helpers.prototype.XRandomWithoutRepeats = function(arr,x){
     const tempArr = [];
     tempArr.fill(0,arr.length-1);
     for(let i = 0; i < x; i++){
@@ -16,4 +18,8 @@ const XRandomWithoutRepeats = function(arr,x){
     }
 }
 
-export default {RandomFromArray, RandomBetweenInts, XRandomWithoutRepeats}
+Helpers.prototype.monify = function(num){
+   return '$' + num.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+}
+
+export default Helpers
