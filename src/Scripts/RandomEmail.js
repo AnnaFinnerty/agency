@@ -30,14 +30,15 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
 
         case 'applicant':
             return this.applicantEmail(employee1)
-            break
+
+        case 'project':
+            return this.projectEmail(employee1,employee2)
 
         case 'welcome':
             return this.welcomeEmail(employee1);
 
         case 'quit':
             return this.quitEmail(employee1);
-        break
 
         default: 
             return this.junkEmail(employee1); 
@@ -73,7 +74,8 @@ RandomEmail.prototype.suggestionEmail = function(employee){
         text: suggestionBody[Math.floor(Math.random()*suggestionBody.length)],
         sender: employee,
         time: new Date().toLocaleString(),
-        read: false
+        read: false,
+        consider: true
     }
     return email;
 }
@@ -90,7 +92,22 @@ RandomEmail.prototype.applicantEmail = function(employee){
         text: this.helpers.RandomFromArray(applicantBody),
         sender: employee,
         time: new Date().toLocaleString(),
-        read: false
+        read: false,
+        consider: true,
+        applicant: employee
+    }
+    return email;
+}
+
+RandomEmail.prototype.projectEmail = function(project){
+    const email = {
+        subject: "New project for " + project.company.name,
+        text: "Does your company have the bandwidth to complete a new " + project.type + " for " +project.company.name + "?",
+        sender: project.company.rep,
+        time: new Date().toLocaleString(),
+        read: false,
+        consider: true,
+        project: project
     }
     return email;
 }
@@ -98,7 +115,7 @@ RandomEmail.prototype.applicantEmail = function(employee){
 RandomEmail.prototype.welcomeEmail = function(employee){
     const email = {
         subject: 'Thanks again',
-        text: "Hey, thanks for taking over the personnel decisions. Sure it shouldn\'t be too hard!",
+        text: "Hey, thanks for taking over the personnel decisions. Sure it shouldn't be too hard!",
         sender: employee,
         time: new Date().toLocaleString(),
         read: false

@@ -26,6 +26,10 @@ const ViewEmailModal = (props) => (
         </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
+            {
+                !props.email.consider ? "" :
+                <Button onClick={()=>props.addPane('project',props.email.project)}>Consider</Button>
+            }
             <Button>Reply</Button>
             <Button>Forward</Button>
         </Modal.Actions>

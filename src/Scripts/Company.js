@@ -1,5 +1,5 @@
 class Company{
-    constructor(name, shortName, sector, icon){
+    constructor(name, shortName, sector, icon, rep){
         this.name = name;
         this.shortName = shortName;
         this.sector = sector;
@@ -8,7 +8,7 @@ class Company{
         this.completedProjects = 0;
         this.satisfaction = 50;
         this.quit = false;
-
+        this.rep = rep;
     }
     completeProject(){
         this.completedProjects+= 1;

@@ -101,10 +101,10 @@ class Employee extends Component {
           this.props.info.level === 5 || this.props.type === 'applicant' ? '' :
           <Grid.Row>
             <Grid.Column width={4}>
-              Project:
+              Project: {this.props.info.projectId ? this.props.info.projectId.name : "unassigned"}
             </Grid.Column>
             <Grid.Column width={4}>
-              {this.props.info.projectId.name}
+              Match: {this.props.info.projectId ? this.props.info.match : "n/a"}
             </Grid.Column>
             <Grid.Column width={4}>
               Change Project:

@@ -14,8 +14,9 @@ class Employee{
         this.salary = salary;
         this.quit = false;
         this.projectId = projectId;
+        this.match = null;
         this.problems = 0;
-        this.matched = false;
+        
         this.problems = [];
     }
     update(){

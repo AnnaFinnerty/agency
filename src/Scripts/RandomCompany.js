@@ -1,5 +1,5 @@
 
-import RandomProject from './RandomProject';
+import RandomEmployee from './RandomEmployee';
 import Company from './Company';
 
 function RandomCompany(){
@@ -7,6 +7,7 @@ function RandomCompany(){
     this.icons = ['arrows alternate','chart line','cloud download','location arrow','random',
                   'share square', 'bullhorn', 'certificate',
                 ]
+    this.randomEmployee = new RandomEmployee();
 }
 
 RandomCompany.prototype.generateRandomCompany = function(){
@@ -14,7 +15,8 @@ RandomCompany.prototype.generateRandomCompany = function(){
     const sector = this.randomFromArray(sectors);
     const icon = this.randomFromArray(this.icons)
     const names = this.randomCompanyName();
-    const company = new Company(names.name, names.shortName,sector,icon)
+    const rep = this.randomEmployee.generateRandomEmployee(false,null);
+    const company = new Company(names.name, names.shortName,sector,icon,rep)
     return company
 }
 

@@ -12,6 +12,8 @@ function RandomEmployee(){
 }
 
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
+    console.log('generating start employees');
+    console.log(startProjects);
     const employeeStats = {
                             productivity: 0,
                             happiness: 0,
@@ -43,6 +45,7 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
         //     }
         // }
         const match = MatchEmployeeToProject(employee,project);
+        employee.match = match;
         //add employee to project's workers array
         project.workers.push(employee)
         //add to employee array

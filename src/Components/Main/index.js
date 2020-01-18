@@ -13,7 +13,7 @@ class Main extends Component {
     switch(type){
 
       case 'project':
-        return <Project {...info} addPane={this.props.addPane}/>
+        return <Project {...info} addPane={this.props.addPane} acceptProject={this.props.acceptProject} rejectProject={this.props.rejectProject} withdrawProject={this.props.withdrawProject} />
 
       case 'applicant':
         return <Employee {...info} hireApplicant={this.props.hireApplicant} addPane={this.props.addPane}/>
@@ -22,7 +22,7 @@ class Main extends Component {
         return <Employee {...info} updateEmployee={this.props.updateEmployee} updateEmployeeLevel={this.props.updateEmployeeLevel} fireEmployee={this.props.fireEmployee} addPane={this.props.addPane} projects={this.props.projects}/>
 
       case "email":
-        return <Email emails={this.props.emails} addPane={this.props.addPane}/>
+        return <Email emails={this.props.emails} addPane={this.props.addPane} considerProject={this.props.considerProject}/>
 
       case "tasks":
         return <Tasks tasks={this.props.tasks} addPane={this.props.addPane} resolveTask={this.props.resolveTask}/>
@@ -60,7 +60,7 @@ class Main extends Component {
     const paneName = this.getPaneName(info)
     const item = { 
       menuItem: (
-        <Menu.Item key={info.type} onClick={()=>this.props.updatePane(i)}>
+        <Menu.Item key={info.type + "-" + info.id} onClick={()=>this.props.updatePane(i)}>
           {
             info.pinned ? <Icon name="map pin"></Icon> : ''
           }

@@ -64,9 +64,13 @@ class Content extends Component {
     const startProjects = [];
     const startApplicants = [];
     const startEmails = [];
+
+    const newProject = industry.newProject(false);
+    const newProjectEmail = this.randomEmailGenerator.generateEmail('project',newProject);
+    startEmails.push(newProjectEmail);
+
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
-
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
@@ -75,12 +79,11 @@ class Content extends Component {
       console.log('start project',startProject)
       startProjects.push(startProject);
     }
-    // numStartEmployees = numStartEmployees ? numStartEmployees : 7;
     
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
-
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
+
 
     this.setState({
       industry: industry,
@@ -177,7 +180,7 @@ class Content extends Component {
     
     //hourly random events
     const r = Math.random();
-    if(r < .3){
+    if(true){
      
       //generate random emails
       const employee = this.helpers.RandomFromArray(employees);
@@ -194,12 +197,14 @@ class Content extends Component {
           emails.push(appEmail);
         }
       }
-      if(hour%3===0){
+      if(true){
         //send a new project offer
         if(this.state.projects.length < 10){
           //generate new project
           //add: be able to use an old company
-          const project = this.industry.newProject();
+          const project = this.state.industry.newProject();
+          const newProjectEmail = this.randomEmailGenerator.generateEmail('project',project);
+          emails.push(newProjectEmail);
         }
       }
     }
@@ -291,6 +296,27 @@ class Content extends Component {
        tasks: this.state.tasks.filter((task,x) => x!==i )
     })
   }
+  considerProject = (consideredProject) => {
+    console.log('accepting project', consideredProject);
+    consideredProject.considered = true;
+    const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
+    this.setState({
+      projects: projects
+    })
+  }
+  rejectProject = (rejectedProject) => {
+    console.log('rejecting project', rejectedProject)
+    this.setState({
+      projects: this.state.projects.filter((project) => project.id !== rejectedProject.id)
+    })
+  }
+  withdrawProject = (withdrawnProject) => {
+    console.log('rejecting project', withdrawnProject)
+    //call to industry to decrease company satisfaction
+    this.setState({
+      projects: this.state.projects.filter((project) => project.id !== withdrawnProject.id)
+    })
+  }
   addPane = (type,info) => {
     console.log('adding pane');
     const pane = {type:type,info:info,pinned:false}
@@ -329,12 +355,12 @@ class Content extends Component {
     return (
       <React.Fragment>
           <div className="app">
-                      <Sidebar employees={this.state.employees} 
-                                   projects={this.state.projects} 
-                                   applicants={this.state.applicants} 
-                                   addPane={this.addPane}
-                                   dismissApplicant={this.dismissApplicant}
-                                   />
+                      <Sidebar  employees={this.state.employees} 
+                                projects={this.state.projects} 
+                                applicants={this.state.applicants} 
+                                addPane={this.addPane}
+                                dismissApplicant={this.dismissApplicant}
+                      />
                         <div className="main-container">
                         <Header hour={this.state.hour} 
                           day={this.state.day}
@@ -360,6 +386,10 @@ class Content extends Component {
                                 updateEmployeeLevel={this.updateEmployeeLevel}
                                 fireEmployee={this.fireEmployee}
                                 resolveTask={this.resolveTask}
+                                considerProject={this.considerProject}
+                                acceptProject={this.acceptProject}
+                                rejectProject={this.rejectProject}
+                                withdrawProject={this.withdrawProject}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}

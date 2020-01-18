@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Modal, Grid, Button} from 'semantic-ui-react';
+import {Modal, Grid,Card, Button,Icon} from 'semantic-ui-react';
 
 class IndustryModal extends Component{
     constructor(){
@@ -11,12 +11,26 @@ class IndustryModal extends Component{
         console.log('industry props',this.props.industry)
         const clients = this.props.industry.clients.map((client)=>{
             return(
-                <div>{client.name}</div>
+                <Card>
+                    <Card.Content>
+                        <Card.Header>{client.name}</Card.Header>
+                        <Card.Description>
+                            Rep: {client.rep.name.full}
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
             )
         })
         const competitors = this.props.industry.competitors.map((competitor)=>{
             return(
-                <div>{competitor.name}</div>
+                <Card>
+                    <Card.Content>
+                        <Card.Header>{competitor.name}</Card.Header>
+                        <Card.Description>
+                            
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
             )
         })
         return(

@@ -26,7 +26,7 @@ Industry.prototype.awake = function(){
     console.log('clients',this.clients)
 }
 
-Industry.prototype.newProject = function(startProject){
+Industry.prototype.newProject = function(isStartProject){
     console.log('new project in industry');
     console.log('clients',this.clients)
     const r = Math.random();
@@ -35,10 +35,10 @@ Industry.prototype.newProject = function(startProject){
         client = this.randomCompany.generateRandomCompany();
         this.clients.push(client);
     } else {
-        client = this.competitors[Math.floor(Math.random()*this.competitors.length)]
+        client = this.clients[Math.floor(Math.random()*this.clients.length)]
     }
     console.log('new project client',client)
-    const project = this.randomProject.generateRandomProject(client,true);
+    const project = this.randomProject.generateRandomProject(client,isStartProject);
     return project
 }
 

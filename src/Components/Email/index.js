@@ -44,13 +44,13 @@ class Email extends Component{
             <Icon name="mail"></Icon>
           </Grid.Column>
           <Grid.Column width={3}>{email.sender.name.display} </Grid.Column>  
-          <Grid.Column width={2}>
+          <Grid.Column width={3}>
             {email.subject}
           </Grid.Column>
           <Grid.Column width={5}>
              {email.text}
           </Grid.Column>
-          <Grid.Column width={5}>
+          <Grid.Column width={4}>
              {email.time}
           </Grid.Column>         
         </Grid> 
@@ -66,17 +66,16 @@ class Email extends Component{
           <Button>inbox</Button>
           <Button>sent</Button>
           <Button>all</Button>
-          <hr></hr>
+          <hr style={{marginBottom:"5vh"}}></hr>
           {emails}
-          
         </Container>
         {
           !this.state.currentEmail ? '':
-          <ViewEmailModal open={this.state.openEmail} email={selectedEmail} closeEmail={this.closeEmail}/>
+          <ViewEmailModal open={this.state.openEmail} email={selectedEmail} closeEmail={this.closeEmail} addPane={this.props.addPane}/>
         }
         {
           !this.state.newEmail ? '':
-          <NewEmailModal open={this.state.newEmail} closeEmail={this.closeEmail}/>
+          <NewEmailModal open={this.state.newEmail} closeEmail={this.closeEmail} />
         }
       </React.Fragment>
     );
