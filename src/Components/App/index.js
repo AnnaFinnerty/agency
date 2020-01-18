@@ -12,11 +12,10 @@ class App extends Component {
       testing: true,
     }
   }
+  //build out login/logout
   render(){
     return (
-      <React.Fragment>
-          <Content testing={this.state.testing}/>
-      </React.Fragment>
+      <Content testing={this.state.testing}/>
     );
   }
 }

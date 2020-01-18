@@ -6,7 +6,7 @@ import Helpers from '../../Scripts/Helpers';
 import '../../App.css';
 import { Grid, Button, Dropdown } from 'semantic-ui-react'
 
-class Employee extends Component {
+class Applicant extends Component {
   constructor(){
     super()
   }
@@ -47,15 +47,6 @@ class Employee extends Component {
   })
   const helpers = new Helpers();
   const salary = helpers.monify(this.props.info.salary);
-  const projectOptions = this.props.type === "applicant" ? "" : this.props.projects.map((project,i)=>{
-                                                                                          return(
-                                                                                            {
-                                                                                              key: project.id,
-                                                                                              text: project.name,
-                                                                                              value: i
-                                                                                            }
-                                                                                          )
-                                                                                        })
   const skillScores = this.props.info.skills.map((skill,i)=>{
     return <li key={'skill_'+i}>{this.props.info.skillset[skill]}</li>
   })
@@ -168,4 +159,4 @@ class Employee extends Component {
   }
 }
 
-export default Employee;
+export default Applicant;

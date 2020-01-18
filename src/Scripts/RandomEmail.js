@@ -94,7 +94,7 @@ RandomEmail.prototype.applicantEmail = function(employee){
         time: new Date().toLocaleString(),
         read: false,
         consider: true,
-        applicant: employee
+        target: employee
     }
     return email;
 }
@@ -107,7 +107,7 @@ RandomEmail.prototype.projectEmail = function(project){
         time: new Date().toLocaleString(),
         read: false,
         consider: true,
-        project: project
+        target: project
     }
     return email;
 }

@@ -41,6 +41,7 @@ li{
   justify-content: space-between;
   overflow: hidden;
   max-height: 3vh;
+  padding: 0;
 }
 
 .main-container{
@@ -67,7 +68,7 @@ li{
 .task{
   border: 1px solid dimgray;
   border-radius: 10vw;
-  padding: 2vw;
+  padding: 20px;
 }
 
 .hover:hover{

@@ -23,12 +23,10 @@ class Tasks extends Component {
     const tasks = this.props.tasks.map((task, i) => {
         return(
             <li key={i} className='task'>
-                {/* <button onClick={()=>this.removeTask(task)}>o</button> */}
                  <Button onClick={()=>this.props.resolveTask(i)}>
                   <Icon name='circle'></Icon>
                  </Button>
                  {task}
-                <button onClick={()=>this.removeTask(task)}>x</button>
             </li>
         )
     })

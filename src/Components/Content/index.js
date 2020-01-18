@@ -46,6 +46,10 @@ class Content extends Component {
         {type:'email',pinned:true},
         {type:'tasks',pinned:true}
       ],
+      updateParams: {
+        emailFrequency: .1,
+        projectFrequency: .05,
+      },
       message: null,
     }
     this.taskManager = new TaskManager();
@@ -146,7 +150,7 @@ class Content extends Component {
       happiness: 0,
       salary: 0,
     }
-
+    const updateHour = Math.floor(Math.random())
     //daily updates
     if(hour === 0){
       //daily employee update
@@ -181,7 +185,7 @@ class Content extends Component {
     
     //hourly random events
     const r = Math.random();
-    if(true){
+    if(r < this.state.updateParams.emailFrequency){
      
       //generate random emails
       const employee = this.helpers.RandomFromArray(employees);
@@ -189,7 +193,7 @@ class Content extends Component {
       const email = this.randomEmailGenerator.generateEmail(null,employee);
       emails.unshift(email)
       
-      if(hour%2===0){
+      if(hour%2===0 && this.state.applicants < 8){
         //generate a new applicant
         if(this.state.applicants.length < 10){
           const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
@@ -198,7 +202,7 @@ class Content extends Component {
           emails.push(appEmail);
         }
       }
-      if(true){
+      if(r < this.state.updateParams.projectFrequency){
         //send a new project offer
         if(this.state.projects.length < 10){
           //generate new project
@@ -300,7 +304,7 @@ class Content extends Component {
   }
   considerProject = (consideredProject) => {
     console.log('considering project', consideredProject);
-    consideredProject.considered = true;
+    consideredProject.considering = true;
     const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
     this.setState({
       projects: projects
@@ -335,7 +339,7 @@ class Content extends Component {
     })
   }
   addPane = (type,info) => {
-    console.log('adding pane');
+    console.log('adding pane',info);
     const pane = {type:type,info:info,pinned:false,id:type+"_"+info.id}
     this.setState({
       panes: [...this.state.panes,pane],

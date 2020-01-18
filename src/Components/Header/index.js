@@ -6,7 +6,7 @@ import Helpers from '../../Scripts/Helpers';
 
 
 import '../../App.css';
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid, Button, Icon } from 'semantic-ui-react';
 
 class Header extends Component{
   constructor(){
@@ -14,6 +14,7 @@ class Header extends Component{
     this.state = {
        industryModalOpen: false,
        agencyModalOpen: false,
+       fullscreen: false,
     }
     this.helpers = new Helpers();
   }
@@ -25,6 +26,35 @@ class Header extends Component{
   closeModal = (name) => {
     this.setState({
       [name]: false
+    })
+  }
+  openFull = () => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE */
+      elem.msRequestFullscreen();
+    }
+    this.setState({
+      fullscreen: true
+    })
+  }
+  closeFull = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE */
+      document.msExitFullscreen();
+    }
+    this.setState({
+      fullscreen: false
     })
   }
   render(){
@@ -54,21 +84,26 @@ class Header extends Component{
                   <Grid.Row>{this.props.employeeStats.productivity}%</Grid.Row>
                   <Grid.Row>{this.props.employeeStats.happiness}%</Grid.Row>
                 </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
-                </Grid.Column>
-                <Grid.Column width={2} style={{padding:"0"}}>
+                
+                <Grid.Column width={3} style={{padding:"0"}}>
                   <Grid.Row>
                       <span>{this.props.hour}</span>
                   </Grid.Row>
                   <Grid.Row>
                       <span>{this.props.day}</span>/<span>{this.props.month}</span>
                   </Grid.Row>
-                  <Grid.Row>
+                  <Grid.Row >
                     {
-                      this.props.timeRunning ? 
-                      <Button size="small" onClick={this.props.stopTimer}>stop timer</Button>
+                      !this.props.timeRunning ? 
+                      <Button color="green" size="small" style={{padding:"15%"}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
                       :
-                      <Button onClick={this.props.startTimer}>start timer</Button>
+                      <Button onClick={this.props.stopTimer} style={{padding:"15%"}}><Icon color="red" name="stop"></Icon></Button>
+                    }
+                    {
+                      !this.state.fullscreen ?
+                      <Button onClick={this.openFull} style={{padding:"15%"}}><Icon name="window maximize outline"></Icon></Button>
+                      :
+                      <Button onClick={this.closeFull} style={{padding:"15%"}}><Icon name="window restore outline"></Icon></Button>
                     }
                   </Grid.Row>
                 </Grid.Column>     

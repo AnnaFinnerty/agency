@@ -7,6 +7,7 @@ class Project{
         this.sector = sector;
         this.type = type;
         this.accepted = accepted;
+        this.considering = accepted;
         this.requirements = requirements;
         this.budget = budget;
         this.totalPaid = 0;

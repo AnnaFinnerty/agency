@@ -4,7 +4,7 @@ import ModalContext from '../Modal/context';
 import PersonalIcon from '../Employee/icon';
 
 import '../../App.css';
-import { Tab, Grid, Menu, Button } from 'semantic-ui-react'
+import { Tab, Grid, Menu } from 'semantic-ui-react'
 
 const SidebarWrapper = (props) => {
 
@@ -55,17 +55,19 @@ function Sidebar(props) {
     )
   })
   const projects = props.projects.map((project) => {
-    return(
-      <Grid.Row columns={3} key={project.id} onClick={()=>props.addPane('project',project)}>
-        <Grid.Column width={12}>{project.name}</Grid.Column>
-        <Grid.Column width={2}>{project.monthsToCompletion}</Grid.Column>
-        <Grid.Column width={2}>{project.percentComplete}%</Grid.Column>
-      </Grid.Row>
-    )
+    if(project.considering || project.accepted){
+      return(
+        <Grid.Row className="hover" columns={3} key={project.id} onClick={()=>props.addPane('project',project)}>
+          <Grid.Column width={12}>{project.name}</Grid.Column>
+          <Grid.Column width={2}>{project.monthsToCompletion}</Grid.Column>
+          <Grid.Column width={2}>{project.percentComplete}%</Grid.Column>
+        </Grid.Row>
+      )
+    }
   })
   const applicants = props.applicants.map((applicant) => {
     return(
-      <Grid.Row columns={2} key={applicant.id}> 
+      <Grid.Row className="hover" columns={2} key={applicant.id}> 
         <Grid.Column onClick={()=>props.addPane('applicant',applicant)}>
         {applicant.name.display}
         </Grid.Column>
