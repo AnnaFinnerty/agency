@@ -51,7 +51,7 @@ class Content extends Component {
         {type:'tasks',pinned:true}
       ],
       updateParams: {
-        emailFrequency: .1,
+        emailFrequency: .3,
         projectFrequency: .05,
       },
     }
@@ -190,8 +190,8 @@ class Content extends Component {
     
     //hourly random events
     const r = Math.random();
-    // if(r < this.state.updateParams.emailFrequency){
-    if(true){
+    if(r < this.state.updateParams.emailFrequency){
+    // if(true){
       //generate random emails
       const employee = this.helpers.RandomFromArray(employees);
       // console.log(employee);

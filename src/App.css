@@ -71,14 +71,24 @@ li{
   padding: 20px;
 }
 
-.message-open{
+.message{
   width: 21vw;
-  height: 40vh;
-  background: gainsboro;
   position: fixed;
   bottom: 0;
   right: 0;
-  border: 3px solid dimgray;
+  border: .5px solid dimgray;
+  padding: 10px;
+  margin: 10px;
+}
+
+.message-open{
+  height: 40vh;
+  background: gainsboro;  
+}
+
+.message-closed{
+  height: 5vh;
+  background: grey;
 }
 
 .hover:hover{

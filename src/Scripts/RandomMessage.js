@@ -25,18 +25,20 @@ RandomMessage.prototype.generateMessage = function(type,time,employee1,employee2
 }
 
 RandomMessage.prototype.junkMessage = function(time,employee){
-    console.log('random message', employee)
-    const junkMessages = ["Junk message 1", "Junk message 2"];
+    const junkMessages = ["Hey guys there's cake in the break room", "Anyone have a spare phone charger?",
+                          "I found someone's phone charger", "Anyone up for a hike this weekend?", "Who's got spare bandwidth?"
+                         ];
     const text = this.helpers.RandomFromArray(junkMessages);
-    const message = this.message(employee.name.display,text,time);
+    const message = this.message(employee.name.display,text,time,false);
     return message
 }
 
-RandomMessage.prototype.message = function(sender,text,time){
+RandomMessage.prototype.message = function(sender,text,time,starred){
     return {
         sender: sender,
         text: text,
-        time: time
+        time: time,
+        starred: starred
     }
 }
 
