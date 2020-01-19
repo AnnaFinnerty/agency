@@ -95,15 +95,15 @@ class Header extends Component{
                   <Grid.Row >
                     {
                       !this.props.timeRunning ? 
-                      <Button color="green" size="small" style={{padding:"15%"}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
+                      <Button color="green" size="small" style={{padding:"10%"}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
                       :
-                      <Button onClick={this.props.stopTimer} style={{padding:"15%"}}><Icon color="red" name="stop"></Icon></Button>
+                      <Button onClick={this.props.stopTimer} style={{padding:"10%"}}><Icon color="red" name="stop"></Icon></Button>
                     }
                     {
                       !this.state.fullscreen ?
-                      <Button onClick={this.openFull} style={{padding:"15%"}}><Icon name="window maximize outline"></Icon></Button>
+                      <Button onClick={this.openFull} style={{padding:"10%"}}><Icon name="window maximize outline"></Icon></Button>
                       :
-                      <Button onClick={this.closeFull} style={{padding:"15%"}}><Icon name="window restore outline"></Icon></Button>
+                      <Button onClick={this.closeFull} style={{padding:"10%"}}><Icon name="window restore outline"></Icon></Button>
                     }
                   </Grid.Row>
                 </Grid.Column>     

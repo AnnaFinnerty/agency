@@ -11,6 +11,7 @@ import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
 import RandomEmail from '../../Scripts/RandomEmail';
+import RandomMessage from '../../Scripts/RandomMessage';
 import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
@@ -35,6 +36,9 @@ class Content extends Component {
       applicants: [],
       tasks: [],
       emails: [],
+      messages: [],
+      messageOpen: true,
+      message: null,
       hour: 0,
       day: 1,
       month: 1,
@@ -50,12 +54,12 @@ class Content extends Component {
         emailFrequency: .1,
         projectFrequency: .05,
       },
-      message: null,
     }
     this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
     this.randomProjectGenerator = new RandomProject();
     this.randomEmailGenerator = new RandomEmail();
+    this.randomMessageGenerator = new RandomMessage();
     this.helpers = new Helpers();
   }
   componentDidMount(){
@@ -145,6 +149,7 @@ class Content extends Component {
     const projects = this.state.projects;
     const tasks = this.state.tasks;
     const emails = this.state.emails;
+    const messages = this.state.messages;
     const employeeStatsRaw = {
       productivity: 0,
       happiness: 0,
@@ -185,14 +190,20 @@ class Content extends Component {
     
     //hourly random events
     const r = Math.random();
-    if(r < this.state.updateParams.emailFrequency){
-     
+    // if(r < this.state.updateParams.emailFrequency){
+    if(true){
       //generate random emails
       const employee = this.helpers.RandomFromArray(employees);
-      console.log(employee);
+      // console.log(employee);
       const email = this.randomEmailGenerator.generateEmail(null,employee);
       emails.unshift(email)
       
+      //generate random message
+      const employee2 = this.helpers.RandomFromArray(employees);
+      const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee2);
+      console.log(message);
+      messages.push(message)
+
       if(hour%2===0 && this.state.applicants < 8){
         //generate a new applicant
         if(this.state.applicants.length < 10){
@@ -224,6 +235,7 @@ class Content extends Component {
       employees: employees,
       projects: projects,
       emails: emails,
+      messages: messages,
       tasks: tasks,
       agency: agency,
       employeeStats: newEmployeeStats,
@@ -247,7 +259,7 @@ class Content extends Component {
     console.log('updating employee', updatedEmployee)
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
     //special project update logic
-     
+ 
     let projects = this.state.projects;
     //when an employee has a project Id, they've been assigned a project
     //the project should be updated to include the new employees version of project
@@ -432,7 +444,7 @@ class Content extends Component {
                         </div>
                 <footer></footer>
                 </div>
-                <Message open={this.state.message} text={this.state.message} closeMessage={this.closeMessage}/>
+                <Message open={this.state.messageOpen} text={this.state.message} closeMessage={this.closeMessage} messages={this.state.messages}/>
       </React.Fragment>
     );
   }

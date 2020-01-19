@@ -29,7 +29,7 @@ header{
 }
 
 aside{
-  background: lightgray;
+  background: dimgray;
   width: 30vw;
   height: 85vh;
 }
@@ -69,6 +69,16 @@ li{
   border: 1px solid dimgray;
   border-radius: 10vw;
   padding: 20px;
+}
+
+.message-open{
+  width: 21vw;
+  height: 40vh;
+  background: gainsboro;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border: 3px solid dimgray;
 }
 
 .hover:hover{

@@ -1,17 +1,28 @@
-import React from 'react';
-import {Modal,Button,Icon} from 'semantic-ui-react';
+import React, {Component} from 'react';
+import {Feed,Input,Button,Icon} from 'semantic-ui-react';
 
-const Message = (props) => (
-    <Modal open={props.open} style={{width:'50%'}}>
-        <Modal.Content image>
-            <Modal.Description style={{width:'50%'}}>
-                {props.text}
-            </Modal.Description>
-        </Modal.Content>
-        <Modal.Actions>
-            <Button onClick={()=>props.closeMessage()}>OK</Button>
-        </Modal.Actions>
-  </Modal>
-)
+class Message extends Component{
+    constructor(){
+        super();
+        this.state = {
+            open: true,
+        }
+    }
+    render(){
+        const messages = this.props.messages.map((message)=> {
+            return(
+                <div>{message.text}</div>
+            )
+        })
+        return(
+            <div className='message-open'>
+                <Feed style={{height:"30vh"}}>
+                    {messages}
+                </Feed>
+                <Input fluid placeholder="..." ></Input>
+            </div>
+        )
+    }
+}
 
 export default Message

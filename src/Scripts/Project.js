@@ -45,6 +45,14 @@ class Project{
         }
         return payment
     }
+    addWorker(worker){
+        this.workers.push(worker);
+        this.calculateProductivity();
+    }
+    removeWorker(worker){
+        this.workers.filter((w) => worker.id !== w.id)
+        this.calculateProductivity();
+    }
     calculateProductivity(){
         console.log("calculating productivity");
         let productivity = 0;

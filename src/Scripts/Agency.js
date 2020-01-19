@@ -1,5 +1,5 @@
 class Agency{
-    constructor(name,coh, maxSalary, monthlyExpenditures, monthlyProfit, yearsInOperation, startYear){
+    constructor(name,coh, maxSalary, monthlyExpenditures, monthlyProfit, yearsInOperation, startYear, reputation, experience){
         console.log('agency running');
         this.name = name ? name : 'Web Brands';
         this.coh = coh ? coh : 100000;
@@ -9,7 +9,8 @@ class Agency{
         this.numActiveProjects = 3;
         this.yearsInOperation = yearsInOperation ? yearsInOperation : 1;
         this.startYear = startYear ? startYear: new Date().getFullYear() - 1 ;
-        this.experience = 0;
+        this.reputation = reputation ? reputation : 50;
+        this.experience = experience ? experience : 0;
         //date founded
     }
     calculateAgencyParameters = function(employees,projects){

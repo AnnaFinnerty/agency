@@ -60,6 +60,7 @@ function Sidebar(props) {
         <Grid.Row className="hover" columns={4} key={project.id} onClick={()=>props.addPane('project',project)}>
           <Grid.Column width={10}>{project.name}</Grid.Column>
           <Grid.Column width={1}>{project.workers.length}</Grid.Column>
+          <Grid.Column width={1}>{project.productivity}%</Grid.Column>
           <Grid.Column width={1}>{project.monthsToCompletion}</Grid.Column>
           <Grid.Column width={1}>{project.percentComplete}%</Grid.Column>
         </Grid.Row>
@@ -80,14 +81,14 @@ function Sidebar(props) {
   })
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}>{employees}</Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>{employees}</Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}>
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
                         <Grid columns={1}> {applicants}</Grid></Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Jobs</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}><Grid columns={1}>jobs</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Grid columns={1}>jobs</Grid></Tab.Pane> },
   ]
   return (
     <aside>
