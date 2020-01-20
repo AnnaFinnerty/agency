@@ -68,7 +68,8 @@ li{
 .task{
   border: 1px solid dimgray;
   border-radius: 10vw;
-  padding: 20px;
+  padding: 5px;
+  height: 5vh;
 }
 
 .message{

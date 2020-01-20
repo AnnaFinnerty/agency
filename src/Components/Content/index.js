@@ -37,12 +37,13 @@ class Content extends Component {
       tasks: [],
       emails: [],
       messages: [],
-      messageOpen: true,
-      message: null,
+      // messageOpen: true,
+      // message: null,
       hour: 0,
-      day: 1,
+      day: 20,
       month: 1,
-      year: 1,
+      year: 0,
+      startYear: null,
       hourLength: 2000,
       timeRunning: false,
       activePane: 0,
@@ -93,6 +94,7 @@ class Content extends Component {
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
 
+    const startYear = new Date().getFullYear();
 
     this.setState({
       industry: industry,
@@ -102,7 +104,8 @@ class Content extends Component {
       projects: startEmployees.startProjects,
       applicants: startApplicants,
       emails: [...startEmails,welcomeEmail],
-      tasks: ['hire a new junior employee']
+      tasks: ['hire a new junior employee'],
+      startYear: startYear
     })
   }
   startTimer = () => {
@@ -184,7 +187,9 @@ class Content extends Component {
         //run project update method
         const profit = projects[a].update();
         console.log('$profit',profit)
-        agency.profit(profit)
+        if(day === 29){
+          agency.profit(profit)
+        } 
       }
     } 
     
@@ -256,24 +261,16 @@ class Content extends Component {
     })
   }
   updateEmployee = (updatedEmployee) => {
-    console.log('updating employee', updatedEmployee)
+    console.log('updating employee');
+    console.log(updatedEmployee);
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-    //special project update logic
- 
-    let projects = this.state.projects;
-    //when an employee has a project Id, they've been assigned a project
-    //the project should be updated to include the new employees version of project
-    //(which already contains the employee)
-    if(updatedEmployee.projectId){
-      projects = this.state.projects.map((project) => project.id !== updatedEmployee.project.id ? project: updatedEmployee.project);
-    } else {
-      //if the projectId has been set to null, but the employee has a stored project
-      //they have been removed from that project
-      
-    }
+
+    updatedEmployee.project.removeWorker(updatedEmployee);
+    updatedEmployee.project.calculateProductivity();
+    console.log(updatedEmployee);
     this.setState({
       employees: employees,
-      projects: projects
+      projects: this.state.projects.filter((project) => project.id !== updatedEmployee.project.id ? project : updatedEmployee.project)
     })
   }
   updateEmployeeLevel = (updatedEmployee) => {
@@ -327,6 +324,9 @@ class Content extends Component {
     this.setState({
        tasks: this.state.tasks.filter((task,x) => x!==i )
     })
+  }
+  addMessage = (message) => {
+
   }
   considerProject = (consideredProject) => {
     console.log('considering project', consideredProject);
@@ -409,10 +409,12 @@ class Content extends Component {
                                 dismissApplicant={this.dismissApplicant}
                       />
                         <div className="main-container">
-                        <Header hour={this.state.hour} 
+                        <Header 
+                          hour={this.state.hour} 
                           day={this.state.day}
                           month={this.state.month}
                           year={this.state.year}
+                          startYear={this.state.startYear}
                           timeRunning={this.state.timeRunning}   
                           startTimer={this.startTimer} 
                           stopTimer={this.stopTimer}

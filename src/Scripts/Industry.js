@@ -25,7 +25,12 @@ Industry.prototype.awake = function(){
     }
     console.log('clients',this.clients)
 }
-
+Industry.prototype.monthlyUpdate = function(){
+    for(let i = 0; i < this.competitors.length; i++){
+        //check if competitor has failed
+        //otherwise update competitors
+    }
+}
 Industry.prototype.newProject = function(isStartProject){
     console.log('new project in industry');
     console.log('clients',this.clients)

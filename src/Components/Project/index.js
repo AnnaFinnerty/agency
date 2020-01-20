@@ -6,10 +6,10 @@ import Helpers from '../../Scripts/Helpers';
 function Project(props) {
   console.log('project props',props)
   const removeEmployee = (removedWorker) => {
-    console.log('removing employee from project')
+    console.log('removing employee from project',removedWorker)
     removedWorker.projectId = null;
     removedWorker.project.workers = removedWorker.project.workers.filter((worker)=> worker.id !== removedWorker.id);
-    props.updateEmployee('employee', removedWorker);
+    props.updateEmployee(removedWorker);
   }
   const helpers = new Helpers();
   const budget = helpers.monify(props.info.budget)

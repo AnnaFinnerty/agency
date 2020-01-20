@@ -31,8 +31,17 @@ class Agency{
         this.coh += amt
     }
     update(profit){
-        let coh = this.coh + profit;
-        coh = coh - this.monthlyExpenditures;
+        if(!profit){
+            //if there's no profit, this is an AI agency, which will use update randomly
+            this.autoUpdate();
+        } else {
+            //if there's a profit, this agency belongs to a player.
+            let coh = this.coh + profit;
+            coh = coh - this.monthlyExpenditures;
+        }
+    }
+    autoUpdate(){
+
     }
 }
 

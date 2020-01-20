@@ -87,10 +87,10 @@ class Header extends Component{
                 
                 <Grid.Column width={3} style={{padding:"0"}}>
                   <Grid.Row>
-                      <span>{this.props.hour}</span>
+                      <span>{this.props.hour.length === 2 ? this.props.hour + ":00" : this.props.hour + "0:00"}</span>
                   </Grid.Row>
                   <Grid.Row>
-                      <span>{this.props.day}</span>/<span>{this.props.month}</span>
+                      <span>{this.props.day}</span>/<span>{this.props.month}</span>/<span>{this.props.startYear+this.props.year}</span>
                   </Grid.Row>
                   <Grid.Row >
                     {
