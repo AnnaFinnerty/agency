@@ -30,6 +30,17 @@ const ViewEmailModal = (props) => (
                 props.email.considering !== undefined? "" :
                 <Button onClick={()=>props.addPane('project',props.email.target)}>Consider</Button>
             }
+            {
+                props.email.considering !== undefined? "" :
+                <Button onClick={()=>props.addPane('project',props.email.target)}>Consider</Button>
+            }
+            {
+                props.email.accept !== undefined? "" :
+                <React.Fragment>
+                    <Button >Accept</Button>
+                    <Button >Reject</Button>
+                </React.Fragment>
+            }
             <Button>Reply</Button>
             <Button>Forward</Button>
         </Modal.Actions>

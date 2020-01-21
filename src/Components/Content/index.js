@@ -22,6 +22,7 @@ class Content extends Component {
     super();
     this.state = {
       //temp fix
+      fired: false,
       industry: new Industry(),
       agency: new Agency(),
       sidebarRight: true,
@@ -39,12 +40,12 @@ class Content extends Component {
       messages: [],
       // messageOpen: true,
       // message: null,
-      hour: 0,
+      hour: 1,
       day: 20,
       month: 1,
       year: 0,
       startYear: null,
-      hourLength: 2000,
+      hourLength: 1000,
       timeRunning: false,
       activePane: 0,
       panes: [
@@ -86,13 +87,17 @@ class Content extends Component {
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
       startEmails.push(appEmail);
       const startProject = industry.newProject(true);
-      console.log('start project',startProject)
       startProjects.push(startProject);
     }
     
+    
+
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
+
+    //update agency income/expenses based on employees/projects
+    agency.calculateAgencyParameters(startEmployees.employees,startProjects);
 
     const startYear = new Date().getFullYear();
 
@@ -158,6 +163,16 @@ class Content extends Component {
       happiness: 0,
       salary: 0,
     }
+    //if the agency runs out of cash or the bosses happiness drops to 0
+    // you're fired
+    if(this.state.agency.coh <= 0 || this.state.employees[0].happiness <= 0){
+      const email = this.randomEmailGenerator.fireEmail(this.state.employees[0]);
+      emails.unshift(email);
+      this.setState({
+        emails: emails
+      })
+      return
+    }
     const updateHour = Math.floor(Math.random())
     //daily updates
     if(hour === 0){
@@ -198,14 +213,16 @@ class Content extends Component {
     if(r < this.state.updateParams.emailFrequency){
     // if(true){
       //generate random emails
-      const employee = this.helpers.RandomFromArray(employees);
+      const boss = employees[0];
+      const employee1 = this.helpers.RandomFromArray(employees);
+      const employee2 = this.helpers.RandomFromArray(employees);
       // console.log(employee);
-      const email = this.randomEmailGenerator.generateEmail(null,employee);
+      const email = this.randomEmailGenerator.generateRandomEmail(boss,employee1,employee2);
       emails.unshift(email)
       
       //generate random message
-      const employee2 = this.helpers.RandomFromArray(employees);
-      const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee2);
+      const employee3 = this.helpers.RandomFromArray(employees);
+      const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee3);
       console.log(message);
       messages.push(message)
 
@@ -264,13 +281,18 @@ class Content extends Component {
     console.log('updating employee');
     console.log(updatedEmployee);
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-
-    updatedEmployee.project.removeWorker(updatedEmployee);
+    if(updatedEmployee.projectId === null){
+      updatedEmployee.project.removeWorker(updatedEmployee);
+    }
     updatedEmployee.project.calculateProductivity();
+    const projects = this.state.projects.filter((project) => project.id !== updatedEmployee.project.id ? project : updatedEmployee.project);
+    const agency = this.state.agency;
+    agency.calculateAgencyParameters(employees,projects);
     console.log(updatedEmployee);
     this.setState({
       employees: employees,
-      projects: this.state.projects.filter((project) => project.id !== updatedEmployee.project.id ? project : updatedEmployee.project)
+      projects: projects,
+      agency: agency
     })
   }
   updateEmployeeLevel = (updatedEmployee) => {
@@ -442,6 +464,7 @@ class Content extends Component {
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
+                                employees={this.state.employees} 
                                 />
                         </div>
                 <footer></footer>

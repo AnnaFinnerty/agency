@@ -20,15 +20,15 @@ class Agency{
             totalSalaries+=employees[i].salary;
         }
         for(let i = 0; i < projects.length; i++){
-            totalSalaries+=projects[i].salary;
+            const budget = projects[i].budget;
+            const monthes = projects[i].estimatedMonthsToCompletion;
+            totalIncome=totalIncome + Math.floor(budget/monthes);
         }
-        //overhead constant
+        //increase overhead based on age of agency/number of employees
         const overhead = employees.length * this.yearsInOperation;
         const monthlySalaries = Math.floor(totalSalaries/12);
         this.monthlyExpenditures = monthlySalaries + Math.floor(overhead/12);
-    }
-    profit(amt){
-        this.coh += amt
+        this.monthlyProfit = Math.floor(totalIncome);
     }
     update(profit){
         if(!profit){
@@ -36,11 +36,13 @@ class Agency{
             this.autoUpdate();
         } else {
             //if there's a profit, this agency belongs to a player.
-            let coh = this.coh + profit;
-            coh = coh - this.monthlyExpenditures;
+            this.coh = this.coh + profit - this.monthlyExpenditures;
         }
     }
     autoUpdate(){
+
+    }
+    completeProject(project){
 
     }
 }

@@ -18,12 +18,10 @@ Industry.prototype.awake = function(){
         const competitor = this.randomAgency.generateRandomAgency();
         this.competitors.push(competitor);
     }
-    console.log('competitors',this.competitors)
     for(let i =0; i < this.startCompetitors; i++){
         const client = this.randomCompany.generateRandomCompany();
         this.clients.push(client);
     }
-    console.log('clients',this.clients)
 }
 Industry.prototype.monthlyUpdate = function(){
     for(let i = 0; i < this.competitors.length; i++){
@@ -32,8 +30,6 @@ Industry.prototype.monthlyUpdate = function(){
     }
 }
 Industry.prototype.newProject = function(isStartProject){
-    console.log('new project in industry');
-    console.log('clients',this.clients)
     const r = Math.random();
     let client;
     if(r < .2 || !this.competitors.length){
@@ -42,7 +38,6 @@ Industry.prototype.newProject = function(isStartProject){
     } else {
         client = this.clients[Math.floor(Math.random()*this.clients.length)]
     }
-    console.log('new project client',client)
     const project = this.randomProject.generateRandomProject(client,isStartProject);
     return project
 }

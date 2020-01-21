@@ -1,6 +1,9 @@
 import React from 'react';
+
+import {VictoryPie } from 'victory';
+
 import '../../App.css';
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid, Dropdown, Button, Icon } from 'semantic-ui-react';
 import Helpers from '../../Scripts/Helpers';
 
 function Project(props) {
@@ -10,6 +13,18 @@ function Project(props) {
     removedWorker.projectId = null;
     removedWorker.project.workers = removedWorker.project.workers.filter((worker)=> worker.id !== removedWorker.id);
     props.updateEmployee(removedWorker);
+  }
+  const addEmployee = (e,data) => {
+    
+    const addedEmployee = props.employees[data.value];
+    const project = props.info;
+    project.workers.push(addedEmployee);
+    addedEmployee.projectId = props.info.id;
+    addedEmployee.project = project;
+    
+
+    console.log('adding employee to project',data.value, addedEmployee)
+    props.updateEmployee(addedEmployee);
   }
   const helpers = new Helpers();
   const budget = helpers.monify(props.info.budget)
@@ -47,6 +62,16 @@ function Project(props) {
       </Grid>
     )
   })
+  const selectableEmployees = props.employees.filter((employee) => employee.level !== 5 && employee.projectId !== props.info.id)
+  const employeeOptions = selectableEmployees.map((employee,i)=>{
+    return(
+      {
+        key: employee.id,
+        text: employee.name.full + ": " + employee.skilltext,
+        value: i
+      }
+    )
+  })
   return (
     <div>
       <h2>{props.info.name}</h2>
@@ -58,54 +83,91 @@ function Project(props) {
             <Button onClick={()=>props.rejectProject(props.info.id)}>reject</Button>
           </React.Fragment> 
             : 
-          <Button onClick={()=>props.withdrawProject(props.info.id)}>withdraw</Button>}
+          ""
+        }
       </h3>
       <Grid>
+        <Grid.Column width={5} style={{textAlign:'center'}}>
+          Percent Complete
+          <VictoryPie
+            style={{ parent: { maxWidth: "100%" } }}
+            data={[
+              { x: " ", y: props.info.percentComplete },
+              { x: " ", y: 100-props.info.percentComplete },
+            ]}
+          />
+        </Grid.Column>
+        <Grid.Column width={5} style={{textAlign:'center'}}>
+          Time Remaining
+          <VictoryPie
+            style={{ parent: { maxWidth: "100%" } }}
+            data={[
+              { x: " ", y: props.info.estimatedMonthsToCompletion },
+              { x: " ", y: props.info.monthsActive },
+            ]}
+          />
+        </Grid.Column>
+      </Grid>
+      <Grid>
         <Grid.Column width={4}>
-          <Grid.Row>Est. months</Grid.Row>
-          <Grid.Row>Months left</Grid.Row>
+          
           <Grid.Row>Percent Complete</Grid.Row>
           <Grid.Row>Productivity</Grid.Row>
         </Grid.Column>
-        <Grid.Column width={4}>
-          <Grid.Row>{props.info.estimatedMonthsToCompletion}</Grid.Row>
-          <Grid.Row>{props.info.monthsToCompletion}</Grid.Row>
+        <Grid.Column width={1}>
+          
           <Grid.Row>{props.info.percentComplete}</Grid.Row>
           <Grid.Row>{props.info.productivity}%</Grid.Row>
         </Grid.Column>
         <Grid.Column width={4}>
-          <Grid.Row>Sector</Grid.Row>
-          <Grid.Row>Type</Grid.Row>
+          <Grid.Row>Est. months</Grid.Row>
+          <Grid.Row>Months left</Grid.Row>
           <Grid.Row>Budget</Grid.Row>
           <Grid.Row>Paid In Installments?</Grid.Row>
         </Grid.Column>
-        <Grid.Column width={4}>
-          <Grid.Row>{props.info.sector}</Grid.Row>
-          <Grid.Row>{props.info.type}</Grid.Row>
+        <Grid.Column width={1}>
+          <Grid.Row>{props.info.estimatedMonthsToCompletion}</Grid.Row>
+          <Grid.Row>{props.info.monthsToCompletion}</Grid.Row>
           <Grid.Row>{budget}</Grid.Row>
           <Grid.Row>{props.info.payInInstallments ? 'yes' : 'no'}</Grid.Row>
         </Grid.Column>
-        
       </Grid>
       <h2>Requirements</h2>
       <Grid columns={2}>
         <Grid.Column width={4}>
+          <Grid.Row>Sector</Grid.Row>
           <Grid.Row>Required:</Grid.Row>
         </Grid.Column>
         <Grid.Column width={4}>
+          <Grid.Row>{props.info.sector}</Grid.Row>
           {required}
         </Grid.Column>
         <Grid.Column width={4}>
+          <Grid.Row>Type</Grid.Row>
           <Grid.Row>Optional:</Grid.Row>
         </Grid.Column>
         <Grid.Column width={4}>
+        <Grid.Row>{props.info.type}</Grid.Row>
         {optional}
         </Grid.Column>
       </Grid>
       <h2>Personnel</h2>
+      <Icon name="user"></Icon>
+      <Dropdown
+          placeholder='Add Employee'
+          fluid
+          selection
+          options={employeeOptions}
+          onChange={addEmployee}
+      />
       <Grid columns={1}>
         {workers}
       </Grid>
+      {!props.info.accepted ? 
+          "" 
+            : 
+          <Button onClick={()=>props.withdrawProject(props.info.id)}>withdraw from project</Button>
+      }
     </div>
   );
 }

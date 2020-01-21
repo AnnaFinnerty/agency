@@ -20,6 +20,7 @@ class Main extends Component {
                   rejectProject={this.props.rejectProject} 
                   withdrawProject={this.props.withdrawProject} 
                   updateEmployee={this.props.updateEmployee}
+                  employees={this.props.employees}
                   />
 
       case 'applicant':
@@ -110,7 +111,7 @@ class Main extends Component {
       panes.push(pane);
     }
     return (
-        <Tab style={{width:'100%',height:'85vh',backgroundColor:'whitesmoke',overflowX:'scroll'}} panes={panes} activeIndex={this.props.activePane}/>
+        <Tab style={{width:'100%',height:'90vh',backgroundColor:'whitesmoke',overflowX:'scroll'}} panes={panes} activeIndex={this.props.activePane}/>
     );
   }
 }

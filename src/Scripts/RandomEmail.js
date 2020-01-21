@@ -1,26 +1,26 @@
 import Helpers from './Helpers';
-import { tsMethodSignature } from '@babel/types';
 
 function RandomEmail(){
-    console.log('random email running');
     this.helpers = new Helpers();
 }
 
 RandomEmail.prototype.generateRandomEmail = function(boss,employee1,employee2){
     //emails from the boss get priority
     const r = Math.random();
-    if(r < .5){
+    if(r < .1){
         if(boss.stats.happiness > 60 || boss.stats.happiness < 30){
             return this.bossEmail(boss)
         } else {
             if(employee1.stats.happiness > 80){
                 //MTC needs to be replaced!
                 return this.happyEmail(employee1);
+            } else if (employee1.stats.happiness < 40) {
+                return this.complaintEmail(employee1,employee2);
             } else {
-                return this.complaintEmail(employee1);
+                return this.requestEmail(employee1);
             }
         }
-    } else {
+    } else if(r<.5 && r > .1 ) {
         return this.generateEmail(null,employee1,employee2);
     }
 }
@@ -178,7 +178,7 @@ RandomEmail.prototype.happyEmail = function(employee){
 }
 
 RandomEmail.prototype.bossEmail = function(boss){
-    const bossSubject = [];
+    const bossSubject = ["I'm not happy","Things are going great"];
     const bossBody = [
         "Boss email",
     ];
@@ -192,8 +192,19 @@ RandomEmail.prototype.bossEmail = function(boss){
     return email;
 }
 
-RandomEmail.prototype.newProjectEmail = function(project,company){
-    
+RandomEmail.prototype.fireEmail = function(boss){
+    const bossSubject = ["This isn't working out"];
+    const bossBody = [
+        "Sorry things didn't work out, but I think you'll be happier at another company.",
+    ];
+    const email = {
+        subject: this.helpers.RandomFromArray(bossSubject),
+        text: this.helpers.RandomFromArray(bossBody),
+        sender: boss,
+        time: new Date().toLocaleString(),
+        read: false
+    }
+    return email;
 }
 
 export default RandomEmail

@@ -10,6 +10,7 @@ class Employee{
         this.focus = focus;
         this.skills = skills;
         this.skillset = skillset;
+    
         this.stats = stats;
         this.salary = salary;
         this.quit = false;

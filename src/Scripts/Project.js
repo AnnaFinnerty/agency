@@ -54,16 +54,13 @@ class Project{
         this.calculateProductivity();
     }
     calculateProductivity(){
-        console.log("calculating productivity");
         let productivity = 0;
         for(let i = 0; i < this.workers.length; i++){
             productivity += this.workers[i].stats.productivity/10 * this.workers[i].match ;
             }
         productivity = Math.floor(productivity/this.workers.length);
-        console.log(productivity);
         this.percentComplete = this.percentComplete + productivity;
         this.productivity = productivity;
-        console.log(this.productivity)
     }
     printInfo(){
         console.log("project info");

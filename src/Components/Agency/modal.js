@@ -14,7 +14,7 @@ class AgencyModal extends Component{
 // name: "Web Brands"
 // yearsInOperation: 1
     render(){
-        console.log('agency modal props',this.props)
+        // console.log('agency modal props',this.props)
         return(
             <Modal open={this.props.open} style={{height:'90vh'}}>
                 <Modal.Header>
