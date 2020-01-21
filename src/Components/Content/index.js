@@ -196,7 +196,7 @@ class Content extends Component {
         happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
         salary: Math.floor(employeeStatsRaw.salary/employees.length),
       }
-      
+      const projectsToDelete = [];
       //daily project update
       for(let a = 0; a < projects.length; a++){
         //run project update method
@@ -206,7 +206,7 @@ class Content extends Component {
         if(day === 30 || projects[a].complete){
           agency.profit(profit)
           if(projects[a].complete){
-            const finishedProject = projects.splice(a,1);
+            projectsToDelete.push(projects[a]);
           }
         } 
       }

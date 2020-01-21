@@ -30,7 +30,7 @@ class Project{
         this.monthsActive += 1;
         this.calculateProductivity();
         console.log(this.percentComplete);
-        if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
+        if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete >= 100){
             if(this.percentComplete === 100){
                 console.log('project complete')
                 this.complete = true;
