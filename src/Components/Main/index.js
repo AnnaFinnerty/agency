@@ -57,7 +57,6 @@ class Main extends Component {
     }
   }
   getPaneName = (info) => {
-    console.log(info);
     switch(info.type){
 
       case "applicant":
@@ -104,7 +103,7 @@ class Main extends Component {
     return item
   }
   render(){
-    console.log('main props', this.props)
+    // console.log('main props', this.props)
     const panes = [];
     for(let i = 0; i < this.props.panes.length; i++){
       const pane = this.buildPane(this.props.panes[i],i);

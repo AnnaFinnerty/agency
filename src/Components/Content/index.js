@@ -53,7 +53,7 @@ class Content extends Component {
         {type:'tasks',pinned:true}
       ],
       updateParams: {
-        emailFrequency: .3,
+        emailFrequency: .15,
         projectFrequency: .05,
       },
     }
@@ -202,8 +202,12 @@ class Content extends Component {
         //run project update method
         const profit = projects[a].update();
         console.log('$profit',profit)
-        if(day === 29){
+        //get paid on the last day of the month
+        if(day === 30 || projects[a].complete){
           agency.profit(profit)
+          if(projects[a].complete){
+            const finishedProject = projects.splice(a,1);
+          }
         } 
       }
     } 
@@ -420,7 +424,7 @@ class Content extends Component {
     })
   }
   render(){
-    console.log('content state', this.state)
+    // console.log('content state', this.state)
     return (
       <React.Fragment>
           <div className="app">

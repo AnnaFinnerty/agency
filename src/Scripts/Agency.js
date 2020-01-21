@@ -11,6 +11,7 @@ class Agency{
         this.startYear = startYear ? startYear: new Date().getFullYear() - 1 ;
         this.reputation = reputation ? reputation : 50;
         this.experience = experience ? experience : 0;
+        this.completedProjects = 0;
         //date founded
     }
     calculateAgencyParameters = function(employees,projects){
@@ -43,7 +44,8 @@ class Agency{
 
     }
     completeProject(project){
-
+        this.completedProjects += 1;
+        
     }
 }
 

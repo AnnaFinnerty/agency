@@ -110,14 +110,14 @@ function Project(props) {
       </Grid>
       <Grid>
         <Grid.Column width={4}>
-          
           <Grid.Row>Percent Complete</Grid.Row>
           <Grid.Row>Productivity</Grid.Row>
+          <Grid.Row>Client Satisifaction</Grid.Row>
         </Grid.Column>
         <Grid.Column width={1}>
-          
           <Grid.Row>{props.info.percentComplete}</Grid.Row>
           <Grid.Row>{props.info.productivity}%</Grid.Row>
+          <Grid.Row>{props.info.satisfaction}%</Grid.Row>
         </Grid.Column>
         <Grid.Column width={4}>
           <Grid.Row>Est. months</Grid.Row>

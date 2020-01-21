@@ -20,7 +20,9 @@ RandomEmail.prototype.generateRandomEmail = function(boss,employee1,employee2){
                 return this.requestEmail(employee1);
             }
         }
-    } else if(r<.5 && r > .1 ) {
+    } else if (r<.5 && r > .1 ) {
+        return this.generateEmail(null,employee1,employee2);
+    } else {
         return this.generateEmail(null,employee1,employee2);
     }
 }
@@ -42,6 +44,9 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
 
         case 'project':
             return this.projectEmail(employee1,employee2)
+
+        case 'complete':
+            return this.completeEmail(employee1,employee2)
 
         case 'welcome':
             return this.welcomeEmail(employee1);
@@ -126,6 +131,19 @@ RandomEmail.prototype.projectEmail = function(project){
     const email = {
         subject: "New project for " + project.company.name,
         text: "Does your company have the bandwidth to complete a new " + project.type + " for " +project.company.name + "?",
+        sender: project.company.rep,
+        time: new Date().toLocaleString(),
+        read: false,
+        consider: true,
+        target: project
+    }
+    return email;
+}
+
+RandomEmail.prototype.completeEmail = function(project){
+    const email = {
+        subject: "Project complete for " + project.company.name,
+        text: "Congratulations on finishing the " + project.type + " for " +project.company.name + "?",
         sender: project.company.rep,
         time: new Date().toLocaleString(),
         read: false,

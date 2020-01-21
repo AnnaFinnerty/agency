@@ -10,7 +10,7 @@ class Email extends Component{
   constructor(){
     super();
     this.state = {
-      emailsShowing: 'inbox',
+      boxShowing: 'inbox',
       openEmail: false,
       openNew: false,
       currentEmail: null
@@ -19,6 +19,7 @@ class Email extends Component{
   newEmail = () => {
     this.setState({
       currentEmail: null,
+      boxShowing: 'inbox',
       openEmail: false,
       newEmail: true
     })
@@ -37,7 +38,13 @@ class Email extends Component{
     })
   }
   render(){
-    const emails = this.props.emails.map((email,i)=>{
+    let emails = this.props.emails;
+    if(this.state.boxShowing === 'inbox'){
+      emails = this.props.emails.filter((email)=> !email.read )
+    } else if (this.state.boxShowing === 'sent'){
+      emails = this.props.emails.filter((email)=> email.sent )
+    }
+    const selectedEmails = !emails.length ? '' : emails.map((email,i)=>{
       return(
         <Grid key={'email_'+i} columns={5} onClick={()=>this.openEmail(i)} className="hover" style={{height:"5vh",overflow:'hidden'}}>
           <Grid.Column width={1}>
@@ -67,7 +74,7 @@ class Email extends Component{
           <Button>sent</Button>
           <Button>all</Button>
           <hr style={{marginBottom:"5vh"}}></hr>
-          {emails}
+          {selectedEmails}
         </Container>
         {
           !this.state.currentEmail ? '':

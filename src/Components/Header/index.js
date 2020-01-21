@@ -58,7 +58,7 @@ class Header extends Component{
     })
   }
   render(){
-    console.log('header props:', this.props)
+    // console.log('header props:', this.props)
     const coh = this.helpers.monify(this.props.agency.coh)
     const profit = this.helpers.monify(this.props.agency.monthlyProfit);
     const loss = this.helpers.monify(this.props.agency.monthlyExpenditures)
