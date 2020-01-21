@@ -1,17 +1,60 @@
-import React from 'react';
-import {Modal,Button,Icon} from 'semantic-ui-react';
+import React, {Component} from 'react';
+import {Feed,Input,Label,Button} from 'semantic-ui-react';
 
-const Message = (props) => (
-    <Modal open={props.open} style={{width:'50%'}}>
-        <Modal.Content image>
-            <Modal.Description style={{width:'50%'}}>
-                {props.text}
-            </Modal.Description>
-        </Modal.Content>
-        <Modal.Actions>
-            <Button onClick={()=>props.closeMessage()}>OK</Button>
-        </Modal.Actions>
-  </Modal>
-)
+class Message extends Component{
+    constructor(){
+        super();
+        this.state = {
+            open: true,
+            text: '',
+        }
+    }
+    open = () => {
+        this.setState({
+            open: true
+        })
+    }
+    close = () => {
+        this.setState({
+            open: false
+        })
+    }
+    onChange = (e) => {
+        this.setState({
+            text: e.target.value
+        })
+    }
+    onSubmit = () => {
+
+    }
+    render(){
+        const messages = this.props.messages.map((message)=> {
+            return(
+                <div>{message.sender}: {message.text}</div>
+            )
+        })
+        return(
+            <div style={{overflow:"hidden"}} className={this.state.open ? 'message message-open': 'message message-closed'}>
+                <div style={{position:'fixed',width:'100%'}}>
+                {
+                    this.state.open ? 
+                    <Button onClick={this.close} style={{right:'15px',position:'fixed',padding:'4px'}}>X</Button>
+                    :
+                    <Button onClick={this.open} style={{right:'15px',position:'fixed',padding:'4px'}}>X</Button>
+                }
+                </div>
+                {
+                    !this.state.open ? "" :
+                    <React.Fragment>
+                        <Feed style={{height:"50vh",marginTop:"-20vh", overflowY:"scroll", display:'flex',flexDirection:'column',justifyContent:'flex-end'}}>
+                            {messages}
+                        </Feed>
+                        <Input fluid placeholder="..." value={this.state.text} onChange={this.onChange} ></Input>
+                    </React.Fragment>
+                }
+            </div>
+        )
+    }
+}
 
 export default Message

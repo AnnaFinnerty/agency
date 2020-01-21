@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
+import Helpers from '../../Scripts/Helpers';
 
-import {Modal, Grid,Card, Button,Icon} from 'semantic-ui-react';
+import {Modal, Grid,Card, Button} from 'semantic-ui-react';
 
 class IndustryModal extends Component{
     constructor(){
         super()
         this.state = {}
+        this.helpers = new Helpers();
     }
     render(){
         console.log('industry props',this.props.industry)
@@ -22,12 +24,13 @@ class IndustryModal extends Component{
             )
         })
         const competitors = this.props.industry.competitors.map((competitor)=>{
+            const income = this.helpers.monify(competitor.monthlyProfit * 12)
             return(
                 <Card>
                     <Card.Content>
                         <Card.Header>{competitor.name}</Card.Header>
                         <Card.Description>
-                            
+                            Yearly income: {income}
                         </Card.Description>
                     </Card.Content>
                 </Card>

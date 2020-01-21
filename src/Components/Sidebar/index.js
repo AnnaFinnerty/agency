@@ -4,7 +4,7 @@ import ModalContext from '../Modal/context';
 import PersonalIcon from '../Employee/icon';
 
 import '../../App.css';
-import { Tab, Grid, Menu } from 'semantic-ui-react'
+import { Tab, Grid, Menu, Icon } from 'semantic-ui-react'
 
 const SidebarWrapper = (props) => {
 
@@ -57,36 +57,53 @@ function Sidebar(props) {
   const projects = props.projects.map((project) => {
     if(project.considering || project.accepted){
       return(
-        <Grid.Row className="hover" columns={3} key={project.id} onClick={()=>props.addPane('project',project)}>
-          <Grid.Column width={10}>{project.name}</Grid.Column>
-          <Grid.Column width={2}>{project.monthsToCompletion}</Grid.Column>
-          <Grid.Column width={2}>{project.percentComplete}%</Grid.Column>
+        <Grid.Row className="hover" columns={4} key={project.id} onClick={()=>props.addPane('project',project)}>
+          <Grid.Column width={7}>{project.name}</Grid.Column>
+          <Grid.Column width={1}>{project.workers.length}</Grid.Column>
+          <Grid.Column width={1}>{project.productivity}%</Grid.Column>
+          <Grid.Column width={1}>{project.monthsToCompletion}</Grid.Column>
+          <Grid.Column width={1}>{project.percentComplete}%</Grid.Column>
         </Grid.Row>
       )
     }
   })
   const applicants = props.applicants.map((applicant) => {
     return(
-      <Grid.Row className="hover" columns={2} key={applicant.id}> 
+      <Grid.Row className="hover" columns={3} key={applicant.id}> 
         <Grid.Column onClick={()=>props.addPane('applicant',applicant)}>
         {applicant.name.display}
         </Grid.Column>
+        <Grid.Column onClick={()=>props.addPane('applicant',applicant)}>
+        {applicant.skills}
+        </Grid.Column>
         <Grid.Column>
-        <button onClick={()=>props.dismissApplicant(applicant.id)} >x</button>
+          <button onClick={()=>props.dismissApplicant(applicant.id)} >x</button>
         </Grid.Column>
       </Grid.Row>
     )
   })
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}>{employees}</Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>{employees}</Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}>
+      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
                         <Grid columns={1}> {applicants}</Grid></Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}><Grid columns={1}>{projects}</Grid></Tab.Pane> },
+      render: () => 
+      <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
+        <Grid columns={1}>
+          <Grid.Row columns={4}>
+            <Grid.Column width={7}>name</Grid.Column>
+            <Grid.Column width={1}><Icon name="user"/></Grid.Column>
+            <Grid.Column width={1}><Icon name="fire"/></Grid.Column>
+            <Grid.Column width={1}><Icon name="calendar alternate"/></Grid.Column>
+            <Grid.Column width={1}><Icon name="percent"/></Grid.Column>
+          </Grid.Row>
+          {projects}
+        </Grid>
+      </Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Jobs</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '80vh',overflowY:"scroll"}}><Grid columns={1}>jobs</Grid></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Grid columns={1}>jobs</Grid></Tab.Pane> },
   ]
   return (
     <aside>

@@ -29,9 +29,9 @@ header{
 }
 
 aside{
-  background: lightgray;
+  background: dimgray;
   width: 30vw;
-  height: 85vh;
+  height: 100vh;
 }
 
 li{
@@ -68,7 +68,28 @@ li{
 .task{
   border: 1px solid dimgray;
   border-radius: 10vw;
-  padding: 20px;
+  padding: 5px;
+  height: 5vh;
+}
+
+.message{
+  width: 21vw;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border: .5px solid dimgray;
+  padding: 10px;
+  margin: 10px;
+}
+
+.message-open{
+  height: 40vh;
+  background: gainsboro;  
+}
+
+.message-closed{
+  height: 5vh;
+  background: grey;
 }
 
 .hover:hover{

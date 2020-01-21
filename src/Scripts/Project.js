@@ -1,3 +1,4 @@
+
 class Project{
     constructor(id, company, name, shortName, sector,type, accepted, requirements,budget, estimatedMonthsToCompletion,monthsActive,percentComplete){
         this.id = id;
@@ -16,8 +17,11 @@ class Project{
         this.monthsToCompletion = estimatedMonthsToCompletion;
         this.monthsActive = monthsActive ? monthsActive : 0;
         this.percentComplete = percentComplete ? percentComplete : 0;
+        this.onTime = true;
         this.workers = [];
-        this.productivity = 0;    
+        this.productivity = 0;
+        this.complete = false;
+        this.satisfaction = 100-(this.estimatedMonthsToCompletion-this.monthsActive);    
     }
     update(){
         console.log('updating project!');
@@ -25,37 +29,48 @@ class Project{
         console.log('monthes active',this.monthsActive);
         this.monthsActive += 1;
         this.calculateProductivity();
-        if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete === 100){
+        console.log(this.percentComplete);
+        if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete >= 100){
             if(this.percentComplete === 100){
                 console.log('project complete')
+                this.complete = true;
                 if(this.payInInstallments){
                     payment = Math.floor(this.budget/this.estimatedMonthsToCompletion)
                 } else {
-                    payment = 0;
+                    payment = this.budget;
                 }
             } else {
                 console.log("you're still not done!?!?!");
-                
+                this.satisfaction -= 10;
             }
         } else {
             if(this.payInInstallments){
                 console.log('paying in installments!')
-                payment = Math.floor(this.budget/this.estimatedMonthsToCompletion)
+                payment = Math.floor(this.budget/this.estimatedMonthsToCompletion);
+                this.satisfaction += 1;
             }
         }
         return payment
     }
+    addWorker(worker){
+        this.workers.push(worker);
+        this.calculateProductivity();
+    }
+    removeWorker(worker){
+        this.workers.filter((w) => worker.id !== w.id)
+        this.calculateProductivity();
+    }
     calculateProductivity(){
-        console.log("calculating productivity");
         let productivity = 0;
         for(let i = 0; i < this.workers.length; i++){
             productivity += this.workers[i].stats.productivity/10 * this.workers[i].match ;
             }
         productivity = Math.floor(productivity/this.workers.length);
-        console.log(productivity);
         this.percentComplete = this.percentComplete + productivity;
         this.productivity = productivity;
-        console.log(this.productivity)
+        const onTime = (this.estimatedMonthsToCompletion-this.monthsActive)/productivity;
+        console.log('on time calc',onTime);
+        this.onTime = onTime;
     }
     printInfo(){
         console.log("project info");

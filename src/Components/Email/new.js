@@ -5,6 +5,9 @@ import {Modal,Header,Button} from 'semantic-ui-react';
 class NewEmailModal extends Component{
     constructor(){
         super()
+        this.suggestions = [{
+            
+        }]
     }
     render(){
         return(

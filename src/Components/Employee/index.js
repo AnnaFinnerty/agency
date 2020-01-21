@@ -39,7 +39,7 @@ class Employee extends Component {
     updatedEmployee.projectId = newProject ? newProject.id : null;
     this.props.updateEmployeeLevel(updatedEmployee);
   }
-  
+
   render(){
     console.log('employee pprops',this.props);
     const skills = this.props.info.skills.map((skill,i) => {
@@ -49,7 +49,7 @@ class Employee extends Component {
     })
   const helpers = new Helpers();
   const salary = helpers.monify(this.props.info.salary);
-  const projectOptions = this.props.type === "applicant" ? "" : this.props.projects.map((project,i)=>{
+  const projectOptions = this.props.type === "applicant" ? [] : this.props.projects.map((project,i)=>{
                                                                                           return(
                                                                                             {
                                                                                               key: project.id,

@@ -22,12 +22,15 @@ class Tasks extends Component {
     console.log('tasks props', this.props);
     const tasks = this.props.tasks.map((task, i) => {
         return(
-            <li key={i} className='task'>
-                 <Button onClick={()=>this.props.resolveTask(i)}>
-                  <Icon name='circle'></Icon>
+            <div key={i} className='task'>
+                 <Button style={{padding:'3px',borderRadius:'100%'}}>
+                    <Icon style={{margin:'0'}} name='circle'></Icon>
                  </Button>
-                 {task}
-            </li>
+                <span>{task}</span>
+                <Button onClick={()=>this.props.resolveTask(i)} style={{padding:'3px',borderRadius:'100%'}}>
+                    <Icon style={{margin:'0'}} name='circle'></Icon>
+                </Button>
+            </div>
         )
     })
     return (

@@ -58,8 +58,10 @@ class Header extends Component{
     })
   }
   render(){
-    console.log('header props:', this.props)
+    // console.log('header props:', this.props)
     const coh = this.helpers.monify(this.props.agency.coh)
+    const profit = this.helpers.monify(this.props.agency.monthlyProfit);
+    const loss = this.helpers.monify(this.props.agency.monthlyExpenditures)
     return (
       <React.Fragment>
         <header>
@@ -74,36 +76,39 @@ class Header extends Component{
                   </Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={3} style={{padding:"0"}}>
-                  <Grid.Row>$</Grid.Row>
-                  
+                  <Grid.Row>Cash on Hand</Grid.Row>
+                  <Grid.Row>Income/Month</Grid.Row>
+                  <Grid.Row>Loss/Month</Grid.Row>
                   <Grid.Row>Emp.Productivity</Grid.Row>
                   <Grid.Row>Emp.Happiness</Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={3} style={{padding:"0"}}>
                   <Grid.Row>{coh}</Grid.Row>
+                  <Grid.Row>{profit}</Grid.Row>
+                  <Grid.Row>{loss}</Grid.Row>
                   <Grid.Row>{this.props.employeeStats.productivity}%</Grid.Row>
                   <Grid.Row>{this.props.employeeStats.happiness}%</Grid.Row>
                 </Grid.Column>
                 
                 <Grid.Column width={3} style={{padding:"0"}}>
                   <Grid.Row>
-                      <span>{this.props.hour}</span>
+                      <span>{this.props.hour < 10 ? "0" + this.props.hour + ":00" : this.props.hour + ":00"}</span>
                   </Grid.Row>
                   <Grid.Row>
-                      <span>{this.props.day}</span>/<span>{this.props.month}</span>
+                    <span>{this.props.month}</span>/<span>{this.props.day}</span>/<span>{this.props.startYear+this.props.year}</span>
                   </Grid.Row>
                   <Grid.Row >
                     {
                       !this.props.timeRunning ? 
-                      <Button color="green" size="small" style={{padding:"15%"}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
+                      <Button color="green" size="small" style={{padding:"10%"}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
                       :
-                      <Button onClick={this.props.stopTimer} style={{padding:"15%"}}><Icon color="red" name="stop"></Icon></Button>
+                      <Button onClick={this.props.stopTimer} style={{padding:"10%"}}><Icon color="red" name="stop"></Icon></Button>
                     }
                     {
                       !this.state.fullscreen ?
-                      <Button onClick={this.openFull} style={{padding:"15%"}}><Icon name="window maximize outline"></Icon></Button>
+                      <Button onClick={this.openFull} style={{padding:"10%"}}><Icon name="window maximize outline"></Icon></Button>
                       :
-                      <Button onClick={this.closeFull} style={{padding:"15%"}}><Icon name="window restore outline"></Icon></Button>
+                      <Button onClick={this.closeFull} style={{padding:"10%"}}><Icon name="window restore outline"></Icon></Button>
                     }
                   </Grid.Row>
                 </Grid.Column>     

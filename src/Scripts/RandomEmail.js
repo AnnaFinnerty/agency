@@ -1,18 +1,29 @@
 import Helpers from './Helpers';
 
 function RandomEmail(){
-    console.log('random email running');
     this.helpers = new Helpers();
 }
 
 RandomEmail.prototype.generateRandomEmail = function(boss,employee1,employee2){
     //emails from the boss get priority
-    if(boss.stats.happiness > 60 || boss.stats.happiness < 30){
-        return this.bossEmail()
-    } else {
-        if(employee1.stats.happiness > 80){
-
+    const r = Math.random();
+    if(r < .1){
+        if(boss.stats.happiness > 60 || boss.stats.happiness < 30){
+            return this.bossEmail(boss)
+        } else {
+            if(employee1.stats.happiness > 80){
+                //MTC needs to be replaced!
+                return this.happyEmail(employee1);
+            } else if (employee1.stats.happiness < 40) {
+                return this.complaintEmail(employee1,employee2);
+            } else {
+                return this.requestEmail(employee1);
+            }
         }
+    } else if (r<.5 && r > .1 ) {
+        return this.generateEmail(null,employee1,employee2);
+    } else {
+        return this.generateEmail(null,employee1,employee2);
     }
 }
 
@@ -33,6 +44,9 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
 
         case 'project':
             return this.projectEmail(employee1,employee2)
+
+        case 'complete':
+            return this.completeEmail(employee1,employee2)
 
         case 'welcome':
             return this.welcomeEmail(employee1);
@@ -66,16 +80,30 @@ RandomEmail.prototype.junkEmail = function(employee){
     return email;
 }
 
-RandomEmail.prototype.suggestionEmail = function(employee){
-    const suggestionSubject = ["Happy Birthday to " + employee.name.first,'Hike this weekend'];
-    const suggestionBody = ["Hey, it's " + employee.name.display + " 's birthday","Hey, anybody up for a hike this weekend?"];
+RandomEmail.prototype.requestEmail = function(employee){
+    const requestSubject = ['Request','Please help',"Just a thought"];
+    const requestBody = ["Could we get a new coffee machine?","I need some time off"];
     const email = {
-        subject: 'junk',
-        text: suggestionBody[Math.floor(Math.random()*suggestionBody.length)],
+        subject: this.helpers.RandomFromArray(requestSubject),
+        text: this.helpers.RandomFromArray(requestBody),
         sender: employee,
         time: new Date().toLocaleString(),
         read: false,
-        consider: true
+        accept: true
+    }
+    return email;
+}
+
+RandomEmail.prototype.complaintEmail = function(employee1, employee2){
+    const complaintSubject = ["A complaint", "I'm not happy", "We need to talk"];
+    const complaintBody = ["I don't like sitting next to " + employee2.name.full + ". Can I move desks?"];
+    const email = {
+        subject: this.helpers.RandomFromArray(complaintSubject),
+        text: this.helpers.RandomFromArray(complaintBody),
+        sender: employee1,
+        time: new Date().toLocaleString(),
+        read: false,
+        accept: true
     }
     return email;
 }
@@ -103,6 +131,19 @@ RandomEmail.prototype.projectEmail = function(project){
     const email = {
         subject: "New project for " + project.company.name,
         text: "Does your company have the bandwidth to complete a new " + project.type + " for " +project.company.name + "?",
+        sender: project.company.rep,
+        time: new Date().toLocaleString(),
+        read: false,
+        consider: true,
+        target: project
+    }
+    return email;
+}
+
+RandomEmail.prototype.completeEmail = function(project){
+    const email = {
+        subject: "Project complete for " + project.company.name,
+        text: "Congratulations on finishing the " + project.type + " for " +project.company.name + "?",
         sender: project.company.rep,
         time: new Date().toLocaleString(),
         read: false,
@@ -155,7 +196,7 @@ RandomEmail.prototype.happyEmail = function(employee){
 }
 
 RandomEmail.prototype.bossEmail = function(boss){
-    const bossSubject = [];
+    const bossSubject = ["I'm not happy","Things are going great"];
     const bossBody = [
         "Boss email",
     ];
@@ -169,8 +210,19 @@ RandomEmail.prototype.bossEmail = function(boss){
     return email;
 }
 
-RandomEmail.prototype.newProjectEmail = function(project,company){
-    
+RandomEmail.prototype.fireEmail = function(boss){
+    const bossSubject = ["This isn't working out"];
+    const bossBody = [
+        "Sorry things didn't work out, but I think you'll be happier at another company.",
+    ];
+    const email = {
+        subject: this.helpers.RandomFromArray(bossSubject),
+        text: this.helpers.RandomFromArray(bossBody),
+        sender: boss,
+        time: new Date().toLocaleString(),
+        read: false
+    }
+    return email;
 }
 
 export default RandomEmail

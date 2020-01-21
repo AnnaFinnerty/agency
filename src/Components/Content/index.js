@@ -11,6 +11,7 @@ import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
 import RandomEmail from '../../Scripts/RandomEmail';
+import RandomMessage from '../../Scripts/RandomMessage';
 import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
@@ -21,6 +22,7 @@ class Content extends Component {
     super();
     this.state = {
       //temp fix
+      fired: false,
       industry: new Industry(),
       agency: new Agency(),
       sidebarRight: true,
@@ -35,11 +37,15 @@ class Content extends Component {
       applicants: [],
       tasks: [],
       emails: [],
-      hour: 0,
-      day: 1,
+      messages: [],
+      // messageOpen: true,
+      // message: null,
+      hour: 1,
+      day: 20,
       month: 1,
-      year: 1,
-      hourLength: 2000,
+      year: 0,
+      startYear: null,
+      hourLength: 1000,
       timeRunning: false,
       activePane: 0,
       panes: [
@@ -47,15 +53,15 @@ class Content extends Component {
         {type:'tasks',pinned:true}
       ],
       updateParams: {
-        emailFrequency: .1,
+        emailFrequency: .15,
         projectFrequency: .05,
       },
-      message: null,
     }
     this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
     this.randomProjectGenerator = new RandomProject();
     this.randomEmailGenerator = new RandomEmail();
+    this.randomMessageGenerator = new RandomMessage();
     this.helpers = new Helpers();
   }
   componentDidMount(){
@@ -81,14 +87,19 @@ class Content extends Component {
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
       startEmails.push(appEmail);
       const startProject = industry.newProject(true);
-      console.log('start project',startProject)
       startProjects.push(startProject);
     }
     
+    
+
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
 
+    //update agency income/expenses based on employees/projects
+    agency.calculateAgencyParameters(startEmployees.employees,startProjects);
+
+    const startYear = new Date().getFullYear();
 
     this.setState({
       industry: industry,
@@ -98,7 +109,8 @@ class Content extends Component {
       projects: startEmployees.startProjects,
       applicants: startApplicants,
       emails: [...startEmails,welcomeEmail],
-      tasks: ['hire a new junior employee']
+      tasks: ['hire a new junior employee'],
+      startYear: startYear
     })
   }
   startTimer = () => {
@@ -145,10 +157,21 @@ class Content extends Component {
     const projects = this.state.projects;
     const tasks = this.state.tasks;
     const emails = this.state.emails;
+    const messages = this.state.messages;
     const employeeStatsRaw = {
       productivity: 0,
       happiness: 0,
       salary: 0,
+    }
+    //if the agency runs out of cash or the bosses happiness drops to 0
+    // you're fired
+    if(this.state.agency.coh <= 0 || this.state.employees[0].happiness <= 0){
+      const email = this.randomEmailGenerator.fireEmail(this.state.employees[0]);
+      emails.unshift(email);
+      this.setState({
+        emails: emails
+      })
+      return
     }
     const updateHour = Math.floor(Math.random())
     //daily updates
@@ -173,26 +196,40 @@ class Content extends Component {
         happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
         salary: Math.floor(employeeStatsRaw.salary/employees.length),
       }
-      
+      const projectsToDelete = [];
       //daily project update
       for(let a = 0; a < projects.length; a++){
         //run project update method
         const profit = projects[a].update();
         console.log('$profit',profit)
-        agency.profit(profit)
+        //get paid on the last day of the month
+        if(day === 30 || projects[a].complete){
+          agency.profit(profit)
+          if(projects[a].complete){
+            projectsToDelete.push(projects[a]);
+          }
+        } 
       }
     } 
     
     //hourly random events
     const r = Math.random();
     if(r < this.state.updateParams.emailFrequency){
-     
+    // if(true){
       //generate random emails
-      const employee = this.helpers.RandomFromArray(employees);
-      console.log(employee);
-      const email = this.randomEmailGenerator.generateEmail(null,employee);
+      const boss = employees[0];
+      const employee1 = this.helpers.RandomFromArray(employees);
+      const employee2 = this.helpers.RandomFromArray(employees);
+      // console.log(employee);
+      const email = this.randomEmailGenerator.generateRandomEmail(boss,employee1,employee2);
       emails.unshift(email)
       
+      //generate random message
+      const employee3 = this.helpers.RandomFromArray(employees);
+      const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee3);
+      console.log(message);
+      messages.push(message)
+
       if(hour%2===0 && this.state.applicants < 8){
         //generate a new applicant
         if(this.state.applicants.length < 10){
@@ -224,6 +261,7 @@ class Content extends Component {
       employees: employees,
       projects: projects,
       emails: emails,
+      messages: messages,
       tasks: tasks,
       agency: agency,
       employeeStats: newEmployeeStats,
@@ -244,24 +282,21 @@ class Content extends Component {
     })
   }
   updateEmployee = (updatedEmployee) => {
-    console.log('updating employee', updatedEmployee)
+    console.log('updating employee');
+    console.log(updatedEmployee);
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-    //special project update logic
-     
-    let projects = this.state.projects;
-    //when an employee has a project Id, they've been assigned a project
-    //the project should be updated to include the new employees version of project
-    //(which already contains the employee)
-    if(updatedEmployee.projectId){
-      projects = this.state.projects.map((project) => project.id !== updatedEmployee.project.id ? project: updatedEmployee.project);
-    } else {
-      //if the projectId has been set to null, but the employee has a stored project
-      //they have been removed from that project
-      
+    if(updatedEmployee.projectId === null){
+      updatedEmployee.project.removeWorker(updatedEmployee);
     }
+    updatedEmployee.project.calculateProductivity();
+    const projects = this.state.projects.filter((project) => project.id !== updatedEmployee.project.id ? project : updatedEmployee.project);
+    const agency = this.state.agency;
+    agency.calculateAgencyParameters(employees,projects);
+    console.log(updatedEmployee);
     this.setState({
       employees: employees,
-      projects: projects
+      projects: projects,
+      agency: agency
     })
   }
   updateEmployeeLevel = (updatedEmployee) => {
@@ -315,6 +350,9 @@ class Content extends Component {
     this.setState({
        tasks: this.state.tasks.filter((task,x) => x!==i )
     })
+  }
+  addMessage = (message) => {
+
   }
   considerProject = (consideredProject) => {
     console.log('considering project', consideredProject);
@@ -386,7 +424,7 @@ class Content extends Component {
     })
   }
   render(){
-    console.log('content state', this.state)
+    // console.log('content state', this.state)
     return (
       <React.Fragment>
           <div className="app">
@@ -397,10 +435,12 @@ class Content extends Component {
                                 dismissApplicant={this.dismissApplicant}
                       />
                         <div className="main-container">
-                        <Header hour={this.state.hour} 
+                        <Header 
+                          hour={this.state.hour} 
                           day={this.state.day}
                           month={this.state.month}
                           year={this.state.year}
+                          startYear={this.state.startYear}
                           timeRunning={this.state.timeRunning}   
                           startTimer={this.startTimer} 
                           stopTimer={this.stopTimer}
@@ -428,11 +468,12 @@ class Content extends Component {
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
+                                employees={this.state.employees} 
                                 />
                         </div>
                 <footer></footer>
                 </div>
-                <Message open={this.state.message} text={this.state.message} closeMessage={this.closeMessage}/>
+                <Message open={this.state.messageOpen} text={this.state.message} closeMessage={this.closeMessage} messages={this.state.messages}/>
       </React.Fragment>
     );
   }
