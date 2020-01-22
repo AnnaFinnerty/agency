@@ -25,14 +25,15 @@ const ViewEmailModal = (props) => (
             {props.email.text}
         </Modal.Description>
         </Modal.Content>
+        <h3>reply</h3>
+        <br></br>
         <Modal.Actions>
             {
                 props.email.considering !== undefined? "" :
-                <Button onClick={()=>props.addPane('project',props.email.target)}>Consider</Button>
-            }
-            {
-                props.email.considering !== undefined? "" :
-                <Button onClick={()=>props.addPane('project',props.email.target)}>Consider</Button>
+                <React.Fragment>
+                    <Button >Sure, we'll consider you</Button>
+                    <Button >Sorry, maybe another time</Button>
+                </React.Fragment>
             }
             {
                 props.email.accept !== undefined? "" :
@@ -41,8 +42,14 @@ const ViewEmailModal = (props) => (
                     <Button >Reject</Button>
                 </React.Fragment>
             }
-            <Button>Reply</Button>
-            <Button>Forward</Button>
+            {
+                props.email.accept !== undefined || props.email.considering !== undefined ? '' :
+                <React.Fragment>
+                    <Button>Reply</Button>
+                    <Button>Forward</Button>
+                </React.Fragment>
+            }
+            
         </Modal.Actions>
     </Modal>
 )

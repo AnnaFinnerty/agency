@@ -97,6 +97,7 @@ RandomEmail.prototype.requestEmail = function(employee){
 RandomEmail.prototype.complaintEmail = function(employee1, employee2){
     const complaintSubject = ["A complaint", "I'm not happy", "We need to talk"];
     const complaintBody = ["I don't like sitting next to " + employee2.name.full + ". Can I move desks?"];
+    const complaintTypes = ['change position']
     const email = {
         subject: this.helpers.RandomFromArray(complaintSubject),
         text: this.helpers.RandomFromArray(complaintBody),
@@ -122,6 +123,7 @@ RandomEmail.prototype.applicantEmail = function(employee){
         time: new Date().toLocaleString(),
         read: false,
         consider: true,
+        accept: false,
         target: employee
     }
     return email;

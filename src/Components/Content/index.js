@@ -38,14 +38,12 @@ class Content extends Component {
       tasks: [],
       emails: [],
       messages: [],
-      // messageOpen: true,
-      // message: null,
       hour: 1,
-      day: 20,
+      day: 29,
       month: 1,
       year: 0,
       startYear: null,
-      hourLength: 1000,
+      hourLength: 200,
       timeRunning: false,
       activePane: 0,
       panes: [
@@ -130,6 +128,19 @@ class Content extends Component {
     let day = this.state.day;
     let month = this.state.month;
     let year = this.state.year;
+    const employees = this.state.employees;
+    const applicants = this.state.applicants;
+    const projects = this.state.projects;
+    const tasks = this.state.tasks;
+    const emails = this.state.emails;
+    const messages = this.state.messages;
+    
+    const employeeStatsRaw = {
+      productivity: 0,
+      happiness: 0,
+      salary: 0,
+    }
+
     if(this.state.hour >= 11){
       //new day
       hour = 0;
@@ -152,17 +163,7 @@ class Content extends Component {
     }
     
     //daily updates
-    const employees = this.state.employees;
-    const applicants = this.state.applicants;
-    const projects = this.state.projects;
-    const tasks = this.state.tasks;
-    const emails = this.state.emails;
-    const messages = this.state.messages;
-    const employeeStatsRaw = {
-      productivity: 0,
-      happiness: 0,
-      salary: 0,
-    }
+    
     //if the agency runs out of cash or the bosses happiness drops to 0
     // you're fired
     if(this.state.agency.coh <= 0 || this.state.employees[0].happiness <= 0){
@@ -199,16 +200,24 @@ class Content extends Component {
       const projectsToDelete = [];
       //daily project update
       for(let a = 0; a < projects.length; a++){
-        //run project update method
         const profit = projects[a].update();
+        if(projects[a].percentComplete >= 100){
+          projectsToDelete.push(projects[a]);
+          agency.update(profit)
+        }
+        //run project update method
+        
         console.log('$profit',profit)
         //get paid on the last day of the month
         if(day === 30 || projects[a].complete){
-          agency.profit(profit)
-          if(projects[a].complete){
-            projectsToDelete.push(projects[a]);
-          }
+          agency.update(profit)
+          
+          console.log('end of the month!');
+          console.log(a);
         } 
+      }
+      for(let b = 0; b < projectsToDelete.length; b++){
+        projects.splice(projectsToDelete[b],1);
       }
     } 
     
@@ -251,7 +260,7 @@ class Content extends Component {
         }
       }
     }
-
+    const finalEmails = emails.length > 100 ? emails.slice(0,100) : emails;
     //set new state
     this.setState({
       hour: hour,
@@ -260,7 +269,7 @@ class Content extends Component {
       year: year,
       employees: employees,
       projects: projects,
-      emails: emails,
+      emails: finalEmails,
       messages: messages,
       tasks: tasks,
       agency: agency,
