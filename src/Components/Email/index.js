@@ -38,6 +38,7 @@ class Email extends Component{
     })
   }
   render(){
+    console.log('emails props',this.props.emails)
     let emails = this.props.emails;
     if(this.state.boxShowing === 'inbox'){
       emails = this.props.emails.filter((email)=> !email.read )
@@ -78,7 +79,13 @@ class Email extends Component{
         </Container>
         {
           !this.state.currentEmail ? '':
-          <ViewEmailModal open={this.state.openEmail} email={selectedEmail} closeEmail={this.closeEmail} addPane={this.props.addPane}/>
+          <ViewEmailModal open={this.state.openEmail} 
+                          email={selectedEmail} 
+                          closeEmail={this.closeEmail} 
+                          addPane={this.props.addPane}
+                          acceptProject={this.props.acceptProject}
+                          considerProject={this.props.considerProject}
+                          />
         }
         {
           !this.state.newEmail ? '':

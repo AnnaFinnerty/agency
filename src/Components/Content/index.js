@@ -43,7 +43,7 @@ class Content extends Component {
       month: 1,
       year: 0,
       startYear: null,
-      hourLength: 200,
+      hourLength: 750,
       timeRunning: false,
       activePane: 0,
       panes: [
@@ -236,7 +236,6 @@ class Content extends Component {
       //generate random message
       const employee3 = this.helpers.RandomFromArray(employees);
       const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee3);
-      console.log(message);
       messages.push(message)
 
       if(hour%2===0 && this.state.applicants < 8){
@@ -261,6 +260,7 @@ class Content extends Component {
       }
     }
     const finalEmails = emails.length > 100 ? emails.slice(0,100) : emails;
+    const finalMessages = messages.length > 100 ? messages.slice(0,100) : messages;
     //set new state
     this.setState({
       hour: hour,
@@ -270,7 +270,7 @@ class Content extends Component {
       employees: employees,
       projects: projects,
       emails: finalEmails,
-      messages: messages,
+      messages: finalMessages,
       tasks: tasks,
       agency: agency,
       employeeStats: newEmployeeStats,
@@ -365,7 +365,7 @@ class Content extends Component {
   }
   considerProject = (consideredProject) => {
     console.log('considering project', consideredProject);
-    consideredProject.considering = true;
+    consideredProject.consider = true;
     const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
     this.setState({
       projects: projects
