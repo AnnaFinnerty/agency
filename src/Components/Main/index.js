@@ -44,7 +44,9 @@ class Main extends Component {
         return <Email 
                   emails={this.props.emails} 
                   addPane={this.props.addPane} 
-                  considerProject={this.props.considerProject}/>
+                  considerProject={this.props.considerProject}
+                  acceptProject={this.props.acceptProject}
+                  />
 
       case "tasks":
         return <Tasks 

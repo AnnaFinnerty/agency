@@ -21,9 +21,11 @@ class Agency{
             totalSalaries+=employees[i].salary;
         }
         for(let i = 0; i < projects.length; i++){
-            const budget = projects[i].budget;
-            const monthes = projects[i].estimatedMonthsToCompletion;
-            totalIncome=totalIncome + Math.floor(budget/monthes);
+            if(projects[i].accepted){
+                const budget = projects[i].budget;
+                const monthes = projects[i].estimatedMonthsToCompletion;
+                totalIncome+= Math.floor(budget/monthes);
+            }
         }
         //increase overhead based on age of agency/number of employees
         const overhead = employees.length * this.yearsInOperation;

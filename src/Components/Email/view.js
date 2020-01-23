@@ -29,21 +29,22 @@ const ViewEmailModal = (props) => (
         <br></br>
         <Modal.Actions>
             {
-                props.email.considering !== undefined? "" :
+                !props.email.consider ? "" :
                 <React.Fragment>
-                    <Button >Sure, we'll consider you</Button>
+                    <Button onClick={()=>props.considerProject(props.email.target)}>Sure, we'll consider you</Button>
+                    <Button onClick={()=>props.acceptProject(props.email.target)}>Yeah, let's do it</Button>
                     <Button >Sorry, maybe another time</Button>
                 </React.Fragment>
             }
             {
-                props.email.accept !== undefined? "" :
+                !props.email.accept ? "" :
                 <React.Fragment>
                     <Button >Accept</Button>
                     <Button >Reject</Button>
                 </React.Fragment>
             }
             {
-                props.email.accept !== undefined || props.email.considering !== undefined ? '' :
+                props.email.accept || props.email.consider  ? '' :
                 <React.Fragment>
                     <Button>Reply</Button>
                     <Button>Forward</Button>

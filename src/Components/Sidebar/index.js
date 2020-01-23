@@ -107,7 +107,7 @@ function Sidebar(props) {
   ]
   return (
     <aside>
-      <div style={{backgroundColor:"white",height:'12.5vh',paddingTop:'3vh'}}>
+      <div style={{backgroundColor:"white",height:'14vh',paddingTop:'3vh'}}>
         <h1 style={{color:"black"}}>agency</h1>
       </div>
       <Tab panes={panes} /> 
