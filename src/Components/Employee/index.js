@@ -136,10 +136,16 @@ class Employee extends Component {
             {this.props.info.level}
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button onClick={this.promote}>Promote</Button>
+            {
+              this.props.type === 'applicant'||this.props.info.level === 5 ? '' :
+              <Button onClick={this.promote}>Promote</Button>
+            }
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button onClick={this.demote}>Demote</Button>
+            {
+              this.props.type === 'applicant'||this.props.info.level === 5 ? '' :
+              <Button onClick={this.demote}>Demote</Button>
+            }
           </Grid.Column>
         </Grid.Row>
         
@@ -151,10 +157,17 @@ class Employee extends Component {
             {salary}
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button onClick={this.raiseSalary}>Raise</Button>
+            {
+              this.props.type === 'applicant'||this.props.info.level === 5 ? '' :
+              <Button onClick={this.raiseSalary}>Raise</Button>
+            }
+           
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button onClick={this.lowerSalary}>Lower</Button>
+            {
+              this.props.type === 'applicant'||this.props.info.level === 5 ? '' :
+              <Button onClick={this.lowerSalary}>Lower</Button>
+            }
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

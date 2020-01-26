@@ -15,6 +15,7 @@ class Agency{
         //date founded
     }
     calculateAgencyParameters = function(employees,projects){
+        console.log('updating agency info');
         let totalSalaries = 0;
         let totalIncome = 0;
         for(let i = 0; i < employees.length; i++){
@@ -22,25 +23,30 @@ class Agency{
         }
         for(let i = 0; i < projects.length; i++){
             if(projects[i].accepted){
-                const budget = projects[i].budget;
-                const monthes = projects[i].estimatedMonthsToCompletion;
-                totalIncome+= Math.floor(budget/monthes);
+                const monthlyPayment = projects[i].calculatePayment();
+                totalIncome+= monthlyPayment;
             }
         }
         //increase overhead based on age of agency/number of employees
         const overhead = employees.length * this.yearsInOperation;
         const monthlySalaries = Math.floor(totalSalaries/12);
         this.monthlyExpenditures = monthlySalaries + Math.floor(overhead/12);
-        this.monthlyProfit = Math.floor(totalIncome);
+        this.monthlyProfit = totalIncome;
     }
-    update(profit){
-        if(!profit){
-            //if there's no profit, this is an AI agency, which will use update randomly
+    monthlyUpdate(projects){
+        console.log('end of month!')
+        let profit = 0;
+        for(let i = 0; i < projects.length; i++){
+            profit += projects[i].calculatePayment();
+        }
+        if(!projects){
+            //if there's no projects, this is an AI agency, which will use update randomly
             this.autoUpdate();
         } else {
             //if there's a profit, this agency belongs to a player.
             this.coh = this.coh + profit - this.monthlyExpenditures;
         }
+        return projects
     }
     autoUpdate(){
 

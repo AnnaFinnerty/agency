@@ -130,7 +130,7 @@ class Content extends Component {
     let year = this.state.year;
     const employees = this.state.employees;
     const applicants = this.state.applicants;
-    const projects = this.state.projects;
+    let projects = this.state.projects;
     const tasks = this.state.tasks;
     const emails = this.state.emails;
     const messages = this.state.messages;
@@ -198,23 +198,11 @@ class Content extends Component {
         salary: Math.floor(employeeStatsRaw.salary/employees.length),
       }
       const projectsToDelete = [];
-      //daily project update
+      //daily project update -- remove completed projects
       for(let a = 0; a < projects.length; a++){
-        const profit = projects[a].update();
-        if(projects[a].percentComplete >= 100){
+        if(projects[a].complete){
           projectsToDelete.push(projects[a]);
-          agency.update(profit)
         }
-        //run project update method
-        
-        console.log('$profit',profit)
-        //get paid on the last day of the month
-        if(day === 30 || projects[a].complete){
-          agency.update(profit)
-          
-          console.log('end of the month!');
-          console.log(a);
-        } 
       }
       for(let b = 0; b < projectsToDelete.length; b++){
         projects.splice(projectsToDelete[b],1);
@@ -259,8 +247,15 @@ class Content extends Component {
         }
       }
     }
-    const finalEmails = emails.length > 100 ? emails.slice(0,100) : emails;
-    const finalMessages = messages.length > 100 ? messages.slice(0,100) : messages;
+
+    //monthly updates
+    if(hour === 0 && day === 30){
+      projects = agency.monthlyUpdate(projects);
+    }
+
+    //constrain maximum amount of emails/messages
+    const finalEmails = emails.length > 100 ? emails.splice(0,100) : emails;
+    const finalMessages = messages.length > 100 ? messages.splice(0,100) : messages;
     //set new state
     this.setState({
       hour: hour,
@@ -361,7 +356,9 @@ class Content extends Component {
     })
   }
   addMessage = (message) => {
-
+    this.setState({
+      messages: [...this.state.messages,message]
+    })
   }
   considerProject = (consideredProject) => {
     console.log('considering project', consideredProject);
@@ -482,7 +479,7 @@ class Content extends Component {
                         </div>
                 <footer></footer>
                 </div>
-                <Message open={this.state.messageOpen} text={this.state.message} closeMessage={this.closeMessage} messages={this.state.messages}/>
+                <Message open={this.state.messageOpen} closeMessage={this.closeMessage} messages={this.state.messages} addMessage={this.addMessage}/>
       </React.Fragment>
     );
   }

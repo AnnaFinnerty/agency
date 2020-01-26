@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Feed,Input,Label,Button} from 'semantic-ui-react';
+import {Feed,Input,Header,Button} from 'semantic-ui-react';
 
 class Message extends Component{
     constructor(){
@@ -25,7 +25,7 @@ class Message extends Component{
         })
     }
     onSubmit = () => {
-
+        this.props.addMessage(this.state.text)
     }
     render(){
         const messages = this.props.messages.map((message)=> {
@@ -35,14 +35,9 @@ class Message extends Component{
         })
         return(
             <div style={{overflow:"hidden"}} className={this.state.open ? 'message message-open': 'message message-closed'}>
-                <div style={{position:'fixed',width:'100%'}}>
-                {
-                    this.state.open ? 
-                    <Button onClick={this.close} style={{right:'15px',position:'fixed',padding:'4px'}}>X</Button>
-                    :
-                    <Button onClick={this.open} style={{right:'15px',position:'fixed',padding:'4px'}}>X</Button>
-                }
-                </div>
+                <Header style={{position:'fixed',width:'100%',backgroundColor:"dimgray"}}>
+                    <Button onClick={this.state.open ? this.close : this.open} style={{right:'15px',position:'fixed',padding:'4px'}}>X</Button>
+                </Header>
                 {
                     !this.state.open ? "" :
                     <React.Fragment>

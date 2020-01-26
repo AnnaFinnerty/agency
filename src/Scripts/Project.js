@@ -12,6 +12,7 @@ class Project{
         this.requirements = requirements;
         this.budget = budget;
         this.totalPaid = 0;
+        this.payment = 0;
         this.payInInstallments = true;
         this.estimatedMonthsToCompletion = estimatedMonthsToCompletion;
         this.monthsToCompletion = estimatedMonthsToCompletion;
@@ -71,6 +72,28 @@ class Project{
         const onTime = (this.estimatedMonthsToCompletion-this.monthsActive)/productivity;
         console.log('on time calc',onTime);
         this.onTime = onTime;
+    }
+    calculatePayment(){
+        this.payment = 0;
+        if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete >= 100){
+            if(this.percentComplete === 100){
+                if(this.payInInstallments){
+                    console.log('project complete, paying last installment')
+                    this.payment = Math.floor(this.budget/this.estimatedMonthsToCompletion)
+                } else {
+                    console.log('project complete, paying full installment')
+                    this.payment = this.budget;
+                }
+            } else {
+                console.log('over time, no payment')
+            }
+        } else {
+            if(this.payInInstallments){
+                console.log('paying in installments!')
+                this.payment = Math.floor(this.budget/this.estimatedMonthsToCompletion);
+            }
+        }
+        return this.payment
     }
     printInfo(){
         console.log("project info");
