@@ -174,13 +174,15 @@ class Content extends Component {
       })
       return
     }
-    const updateHour = Math.floor(Math.random())
+    //MTC select random update hour
+    // const updateHour = Math.floor(Math.random())
     //daily updates
     if(hour === 0){
       //daily employee update
       for(let a = 0; a < employees.length; a++){
         //run employee update method
         employees[a].update();
+    
         //get new employee stats and add to stats dict
         employeeStatsRaw.productivity += employees[a].stats.productivity
         employeeStatsRaw.happiness += employees[a].stats.happiness
@@ -198,12 +200,16 @@ class Content extends Component {
         salary: Math.floor(employeeStatsRaw.salary/employees.length),
       }
       const projectsToDelete = [];
-      //daily project update -- remove completed projects
+      //daily project update
       for(let a = 0; a < projects.length; a++){
+        //update project productivity 
+        projects[a].calculateProductivity();
+        //find completed projects
         if(projects[a].complete){
           projectsToDelete.push(projects[a]);
         }
       }
+      //remove completed projects
       for(let b = 0; b < projectsToDelete.length; b++){
         projects.splice(projectsToDelete[b],1);
       }

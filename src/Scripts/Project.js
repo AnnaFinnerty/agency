@@ -26,32 +26,12 @@ class Project{
     }
     update(){
         console.log('updating project!');
-        let payment = 0;
-        console.log('monthes active',this.monthsActive);
-        this.monthsActive += 1;
+        
+      
+        
         this.calculateProductivity();
         console.log(this.percentComplete);
-        if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete >= 100){
-            if(this.percentComplete === 100){
-                console.log('project complete')
-                this.complete = true;
-                if(this.payInInstallments){
-                    payment = Math.floor(this.budget/this.estimatedMonthsToCompletion)
-                } else {
-                    payment = this.budget;
-                }
-            } else {
-                console.log("you're still not done!?!?!");
-                this.satisfaction -= 10;
-            }
-        } else {
-            if(this.payInInstallments){
-                console.log('paying in installments!')
-                payment = Math.floor(this.budget/this.estimatedMonthsToCompletion);
-                this.satisfaction += 1;
-            }
-        }
-        return payment
+      
     }
     addWorker(worker){
         this.workers.push(worker);
@@ -64,7 +44,7 @@ class Project{
     calculateProductivity(){
         let productivity = 0;
         for(let i = 0; i < this.workers.length; i++){
-            productivity += this.workers[i].stats.productivity/10 * this.workers[i].match ;
+            productivity += (this.workers[i].stats.productivity * this.workers[i].match)/100;
             }
         productivity = Math.floor(productivity/this.workers.length);
         this.percentComplete = this.percentComplete + productivity;
@@ -74,23 +54,26 @@ class Project{
         this.onTime = onTime;
     }
     calculatePayment(){
+        this.monthsActive += 1;
         this.payment = 0;
         if(this.monthsActive >= this.estimatedMonthsToCompletion || this.percentComplete >= 100){
             if(this.percentComplete === 100){
+                console.log('project complete')
+                this.complete = true;
                 if(this.payInInstallments){
-                    console.log('project complete, paying last installment')
                     this.payment = Math.floor(this.budget/this.estimatedMonthsToCompletion)
                 } else {
-                    console.log('project complete, paying full installment')
                     this.payment = this.budget;
                 }
             } else {
-                console.log('over time, no payment')
+                console.log("you're still not done!?!?!");
+                this.satisfaction -= 10;
             }
         } else {
             if(this.payInInstallments){
                 console.log('paying in installments!')
                 this.payment = Math.floor(this.budget/this.estimatedMonthsToCompletion);
+                this.satisfaction += 1;
             }
         }
         return this.payment

@@ -38,7 +38,7 @@ class Email extends Component{
     })
   }
   render(){
-    console.log('emails props',this.props.emails)
+    // console.log('emails props',this.props.emails)
     let emails = this.props.emails;
     if(this.state.boxShowing === 'inbox'){
       emails = this.props.emails.filter((email)=> !email.read )
