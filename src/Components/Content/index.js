@@ -88,8 +88,6 @@ class Content extends Component {
       startProjects.push(startProject);
     }
     
-    
-
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
@@ -179,10 +177,16 @@ class Content extends Component {
     //daily updates
     if(hour === 0){
       //daily employee update
+      const employeesByProject = {}
       for(let a = 0; a < employees.length; a++){
         //run employee update method
         employees[a].update();
-    
+        if(employees[a].projectId){
+          if(!employeesByProject[employees[a].projectId]){
+            employeesByProject[employees[a].projectId] = []
+          }
+          employeesByProject[employees[a].projectId].push(employees[a])
+        }
         //get new employee stats and add to stats dict
         employeeStatsRaw.productivity += employees[a].stats.productivity
         employeeStatsRaw.happiness += employees[a].stats.happiness
@@ -194,6 +198,7 @@ class Content extends Component {
           employees.splice(a,1)
         }
       }
+      console.log('employees by porj', employeesByProject)
       newEmployeeStats = {
         productivity: Math.floor(employeeStatsRaw.productivity/employees.length),
         happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
@@ -203,7 +208,7 @@ class Content extends Component {
       //daily project update
       for(let a = 0; a < projects.length; a++){
         //update project productivity 
-        projects[a].calculateProductivity();
+        projects[a].calculateProductivity(employeesByProject[projects[a].id]);
         //find completed projects
         if(projects[a].complete){
           projectsToDelete.push(projects[a]);

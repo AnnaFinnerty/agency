@@ -24,15 +24,12 @@ class Project{
         this.complete = false;
         this.satisfaction = 100-(this.estimatedMonthsToCompletion-this.monthsActive);    
     }
-    update(){
-        console.log('updating project!');
-        
+    // update(){
+    //     console.log('updating project!');
+    //     this.calculateProductivity();
+    //     console.log(this.percentComplete);
       
-        
-        this.calculateProductivity();
-        console.log(this.percentComplete);
-      
-    }
+    // }
     addWorker(worker){
         this.workers.push(worker);
         this.calculateProductivity();
@@ -41,13 +38,17 @@ class Project{
         this.workers.filter((w) => worker.id !== w.id)
         this.calculateProductivity();
     }
-    calculateProductivity(){
+    calculateProductivity(workers){
+        console.log('calcluating prod:')
+        console.log(workers);
         let productivity = 0;
-        for(let i = 0; i < this.workers.length; i++){
-            productivity += (this.workers[i].stats.productivity * this.workers[i].match)/100;
-            }
-        productivity = Math.floor(productivity/this.workers.length);
-        this.percentComplete = this.percentComplete + productivity;
+        if(workers && workers.length){
+            for(let i = 0; i < workers.length; i++){
+                productivity += (workers[i].stats.productivity * this.workers[i].match);
+                }
+            productivity = Math.floor(productivity/this.workers.length);
+        }
+        this.percentComplete = this.percentComplete + productivity/30;
         this.productivity = productivity;
         const onTime = (this.estimatedMonthsToCompletion-this.monthsActive)/productivity;
         console.log('on time calc',onTime);
