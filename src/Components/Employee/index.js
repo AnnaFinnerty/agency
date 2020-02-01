@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 
 import PersonalIcon from './icon';
 import Helpers from '../../Scripts/Helpers';
+import ProjectOptions from '../Project/ProjectOptions.js';
 
 import '../../App.css';
-import { Grid, Button, Dropdown } from 'semantic-ui-react'
+import { Grid, Button} from 'semantic-ui-react'
 
 class Employee extends Component {
   constructor(){
@@ -49,21 +50,7 @@ class Employee extends Component {
     })
   const helpers = new Helpers();
   const salary = helpers.monify(this.props.info.salary);
-  const projectOptions = this.props.type === "applicant" ? [] : this.props.projects.map((project,i)=>{
-                                                                                          return(
-                                                                                            {
-                                                                                              key: project.id,
-                                                                                              text: project.name,
-                                                                                              value: i
-                                                                                            }
-                                                                                          )
-                                                                                        })
   
-  projectOptions.unshift({
-    key: '000',
-    text: 'none',
-    value: null
-  })
                                                                                         const skillScores = this.props.info.skills.map((skill,i)=>{
     return <li key={'skill_'+i}>{this.props.info.skillset[skill]}</li>
   })
@@ -118,13 +105,9 @@ class Employee extends Component {
               Change Project:
             </Grid.Column>
             <Grid.Column width={4}>
-              <Dropdown
-                  placeholder='Switch Project'
-                  fluid
-                  selection
-                  options={projectOptions}
-                  onChange={this.changeProject}
-                />
+              <ProjectOptions projects={this.props.projects}
+                              changeProject={this.changeProject}
+              />
             </Grid.Column>
           </Grid.Row>
         }

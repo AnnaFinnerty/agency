@@ -21,6 +21,7 @@ class Main extends Component {
                   withdrawProject={this.props.withdrawProject} 
                   updateEmployee={this.props.updateEmployee}
                   employees={this.props.employees}
+                  projects={this.props.projects}
                   />
 
       case 'applicant':
