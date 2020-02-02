@@ -22,14 +22,9 @@ class Project{
         this.workers = [];
         this.productivity = 0;
         this.complete = false;
-        this.satisfaction = 100-(this.estimatedMonthsToCompletion-this.monthsActive);    
+        this.satisfaction = 100-(this.estimatedMonthsToCompletion-this.monthsActive);
+        console.log('project',this) 
     }
-    // update(){
-    //     console.log('updating project!');
-    //     this.calculateProductivity();
-    //     console.log(this.percentComplete);
-      
-    // }
     addWorker(worker){
         this.workers.push(worker);
         this.calculateProductivity();
@@ -44,7 +39,7 @@ class Project{
         let productivity = 0;
         if(workers && workers.length){
             for(let i = 0; i < workers.length; i++){
-                productivity += (workers[i].stats.productivity * this.workers[i].match);
+                productivity += (workers[i].stats.productivity * workers[i].match);
                 }
             productivity = Math.floor(productivity/this.workers.length);
         }

@@ -19,7 +19,7 @@ const SidebarWrapper = (props) => {
 
 //sections: employees, project
 function Sidebar(props) {
-  // console.log('sidebar props',props)
+  console.log('sidebar props',props)
   const employees = props.employees.map((employee) => {
     return(
       <div key={employee.id} className="hover">
