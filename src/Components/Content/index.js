@@ -373,7 +373,7 @@ class Content extends Component {
   }
   considerProject = (consideredProject) => {
     console.log('considering project', consideredProject);
-    consideredProject.consider = true;
+    consideredProject.considering = true;
     const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
     this.setState({
       projects: projects
@@ -383,6 +383,7 @@ class Content extends Component {
     console.log('accepting project', consideredProject);
     consideredProject.accepted = true;
     const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
+    console.log(projects);
     this.setState({
       projects: projects
     })
