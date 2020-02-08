@@ -47,6 +47,8 @@ class Main extends Component {
                   addPane={this.props.addPane} 
                   considerProject={this.props.considerProject}
                   acceptProject={this.props.acceptProject}
+                  readEmail={this.props.readEmail}
+                  archiveEmail={this.props.archiveEmail}
                   />
 
       case "tasks":

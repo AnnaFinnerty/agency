@@ -344,6 +344,24 @@ class Content extends Component {
        emails: [email, ...this.state.emails]
     })
   }
+  readEmail = (i) => {
+    console.log('reading email');
+    const updatedEmail = this.state.emails[i];
+    updatedEmail.read = true;
+    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
+    this.setState({
+      emails: emails
+    })
+  }
+  archiveEmail = (i) => {
+    console.log('archiving email');
+    const updatedEmail = this.state.emails[i];
+    updatedEmail.archived = true;
+    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
+    this.setState({
+      emails: emails
+    })
+  }
   deleteEmail = (i) => {
     this.setState({
       emails: this.state.emails.filter((email,x) => x !== i)
@@ -483,6 +501,8 @@ class Content extends Component {
                                 acceptProject={this.acceptProject}
                                 rejectProject={this.rejectProject}
                                 withdrawProject={this.withdrawProject}
+                                readEmail={this.readEmail}
+                                archiveEmail={this.archiveEmail}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
