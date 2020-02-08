@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import {Modal,Grid, Header,Button} from 'semantic-ui-react';
 
@@ -25,8 +25,7 @@ const ViewEmailModal = (props) => (
             {props.email.text}
         </Modal.Description>
         </Modal.Content>
-        <h3>reply</h3>
-        <br></br>
+        <Modal.Header>Reply</Modal.Header>
         <Modal.Actions>
             {
                 !props.email.consider ? "" :

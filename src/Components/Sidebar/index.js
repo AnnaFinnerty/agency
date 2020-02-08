@@ -55,10 +55,11 @@ function Sidebar(props) {
     )
   })
   const projects = props.projects.map((project) => {
-    if(project.considering || project.accepted){
+    if(project.accepted || project.considering){
       return(
         <Grid.Row className="hover" columns={4} key={project.id} onClick={()=>props.addPane('project',project)}>
           <Grid.Column width={7}>{project.name}</Grid.Column>
+          <Grid.Column width={1}><Icon name={project.accepted ? "check" : "question"}></Icon></Grid.Column>
           <Grid.Column width={1}>{project.workers.length}</Grid.Column>
           <Grid.Column width={1}>{project.productivity}%</Grid.Column>
           <Grid.Column width={1}>{project.monthsToCompletion}</Grid.Column>

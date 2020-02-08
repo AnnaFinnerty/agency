@@ -74,7 +74,6 @@ class Content extends Component {
     const startEmails = [];
 
     const newProject = industry.newProject(false);
-    startProjects.push(newProject);
     const newProjectEmail = this.randomEmailGenerator.generateEmail('project',newProject);
     startEmails.push(newProjectEmail);
 
@@ -87,7 +86,7 @@ class Content extends Component {
       const startProject = industry.newProject(true);
       startProjects.push(startProject);
     }
-    
+    console.log('start projects',startProjects)
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
@@ -102,7 +101,7 @@ class Content extends Component {
       agency: agency,
       employees: sortedEmployees,
       employeeStats: startEmployees.employeeStats,
-      projects: startEmployees.startProjects,
+      projects: [newProject, ...startEmployees.startProjects],
       applicants: startApplicants,
       emails: [...startEmails,welcomeEmail],
       tasks: ['hire a new junior employee'],
