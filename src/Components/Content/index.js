@@ -98,6 +98,14 @@ class Content extends Component {
 
     const startYear = new Date().getFullYear();
 
+    const startTask = {
+      text: "hire a new employee",
+      requester: "boss",
+      type: "request",
+      target: null,
+      action: "hire"
+    };
+
     this.setState({
       industry: industry,
       agency: agency,
@@ -106,7 +114,7 @@ class Content extends Component {
       projects: [newProject, ...startEmployees.startProjects],
       applicants: startApplicants,
       emails: [...startEmails,welcomeEmail],
-      tasks: ['hire a new junior employee'],
+      tasks: [startTask],
       startYear: startYear
     })
   }
@@ -290,11 +298,19 @@ class Content extends Component {
       timeRunning: false
     })
   }
-  hireApplicant = (info) => {
-    console.log('hiring applicant', info)
+  hireApplicant = (applicant) => {
+    console.log('hiring applicant', applicant)
     //TODO need to get new id number for applicant
+    const employees = this.sortEmployees([applicant, ...this.state.employees])
     this.setState({
-      employees: [info, ...this.state.employees]
+      employees: employees,
+      applicants:  this.state.applicants.filter((a) => applicant.id !== a.id)
+    })
+  }
+  dismissApplicant = (info) => {
+    console.log('dismissing applicant', info)
+    this.setState({
+      applicants:  this.state.applicants.filter((applicant) => applicant.id !== info.id)
     })
   }
   updateEmployee = (updatedEmployee) => {
@@ -333,12 +349,6 @@ class Content extends Component {
   sortEmployees = (employees) => {
     return employees.sort(function(a,b){return b.level - a.level})
   }
-  dismissApplicant = (info) => {
-    console.log('dismissing applicant', info)
-    this.setState({
-      applicants:  this.state.applicants.filter((applicant) => applicant.id !== info)
-    })
-  }
   generateEmail = (event) => {
     const email = "email";
     this.setState({
@@ -368,8 +378,14 @@ class Content extends Component {
       emails: this.state.emails.filter((email,x) => x !== i)
     })
   }
-  generateTask = (test,requester,type,target,action,) => {
-    const task = "task";
+  generateTask = (text,requester,type,target,action,) => {
+    const task = {
+      text: text,
+      requester: requester,
+      type: type,
+      target: target,
+      action: action
+    };
     this.setState({
        tasks: [task, ...this.state.tasks]
     })

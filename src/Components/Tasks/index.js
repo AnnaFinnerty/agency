@@ -26,7 +26,7 @@ class Tasks extends Component {
                  <Button style={{padding:'3px',borderRadius:'100%'}}>
                     <Icon style={{margin:'0'}} name='circle'></Icon>
                  </Button>
-                <span>{task}</span>
+                <span>{task.text}</span>
                 <Button onClick={()=>this.props.resolveTask(i)} style={{padding:'3px',borderRadius:'100%'}}>
                     <Icon style={{margin:'0'}} name='circle'></Icon>
                 </Button>

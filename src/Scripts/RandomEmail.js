@@ -93,6 +93,7 @@ RandomEmail.prototype.requestEmail = function(employee){
         accept: true,
         type:"request",
         importance: employee.level,
+        target: employee
     }
     return email;
 }
@@ -109,6 +110,7 @@ RandomEmail.prototype.complaintEmail = function(employee1, employee2){
         accept: true,
         type:"complaint",
         importance: employee1.level,
+        target: [employee1,employee2]
     }
     return email;
 }
