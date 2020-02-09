@@ -85,14 +85,17 @@ RandomEmail.prototype.junkEmail = function(employee){
 RandomEmail.prototype.requestEmail = function(employee){
     const requestSubject = ['Request','Please help',"Just a thought"];
     const requestBody = ["Could we get a new coffee machine?","I need some time off"];
+    const requestType = ['money','time'];
+    const r = this.helpers.RandomBetweenInts(0,requestBody.length)
     const email = {
         subject: this.helpers.RandomFromArray(requestSubject),
-        text: this.helpers.RandomFromArray(requestBody),
+        text: requestBody[r],
         sender: employee,
         time: new Date().toLocaleString(),
         read: false,
         accept: true,
         type:"request",
+        subtype: requestType[r],
         importance: employee.level,
         target: employee
     }
@@ -109,7 +112,7 @@ RandomEmail.prototype.complaintEmail = function(employee1, employee2){
         time: new Date().toLocaleString(),
         read: false,
         accept: true,
-        type:"request",
+        type:"task",
         importance: employee1.level,
         target: [employee1,employee2]
     }

@@ -399,6 +399,7 @@ class Content extends Component {
     return task
   }
   generateTask = (text,urgency,requester,type,target,action) => {
+    console.log('generating task')
     const player = this.state.player;
     player.augmentReputation();
     const newTask = this.createTask(text,urgency,requester,type,target,action);
@@ -407,22 +408,48 @@ class Content extends Component {
        player: player
     })
   }
-  resolveTask = (i) => {
-    console.log('resolving task: ' + i)
+  resolveTask = (i, task) => {
+    console.log('resolving task: ');
+    console.log(task)
     const player = this.state.player;
     player.augmentReputation();
+    let employees = this.state.employees;
+    let tasks = this.state.tasks;
+    if(task){
+       //increase employee happiness because of resolved task
+      if(task.type === "request" || task.type === "task"){
+        task.target.requestSatisfied();
+        employees = this.state.employees.map((employee) => employee.id !== task.target.id ? employee: task.target);
+      } 
+    }
+    //only remove existing tasks -- ie tasks that have an index number
+    if(i){
+      tasks = this.state.tasks.filter((t,x) => x !== t)
+    }
+    
     this.setState({
-      tasks: this.state.tasks.filter((tasks,x) => x !== i),
-      player: player
+      tasks: tasks,
+      player: player,
+      employees: employees
     })
   }
-  dismissTask = (i) => {
+  dismissTask = (i, task) => {
+    console.log('dismissing tasks')
     let tasks = i ?this.state.tasks.filter((task,x) => x!==i ): this.state.tasks;
     const player = this.state.player;
     player.decrementReputation();
+    let employees = this.state.employees;
+    if(task){
+       //increase employee happiness because of resolved task
+      if(task.type === "request" || task.type === "task"){
+        task.target.requestDenied();
+        employees = this.state.employees.map((employee) => employee.id !== task.target.id ? employee: task.target);
+      } 
+    }
     this.setState({
        tasks: tasks,
-       player: player
+       player: player,
+       employees: employees
     })
   }
   addMessage = (message) => {

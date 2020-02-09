@@ -13,6 +13,7 @@ class NewEmailModal extends Component{
         return(
             <Modal open={this.props.open}>
                 <Modal.Header>
+                    Subject
                     <Button onClick={this.props.closeEmail} style={{float:'right'}}>
                         X
                     </Button>
