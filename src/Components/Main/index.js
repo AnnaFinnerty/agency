@@ -60,7 +60,11 @@ class Main extends Component {
         return <Tasks 
                   tasks={this.props.tasks} 
                   addPane={this.props.addPane} 
-                  resolveTask={this.props.resolveTask}/>
+                  resolveTask={this.props.resolveTask}
+                  dismissTask={this.props.dismissTask}
+                  generateTask={this.props.generateTask}
+                />
+                  
 
       default:
         return null

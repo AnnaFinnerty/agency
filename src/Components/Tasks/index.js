@@ -9,6 +9,7 @@ class Tasks extends Component {
       this.state = {
           newTaskInput: '',
       }
+      this.urgencyColors = ['dimgray','black','yellow','orange','firebrick']
   }
   onSubmit = (e) => {
     this.props.addTask(this.state.newTaskInput)
@@ -24,11 +25,11 @@ class Tasks extends Component {
         return(
             <div key={i} className='task'>
                  <Button style={{padding:'3px',borderRadius:'100%'}}>
-                    <Icon style={{margin:'0'}} name='circle'></Icon>
+                    <Icon style={{margin:'0',color:this.urgencyColors[task.urgency]}} name='circle'></Icon>
                  </Button>
                 <span>{task.text}</span>
-                <Button onClick={()=>this.props.resolveTask(i)} style={{padding:'3px',borderRadius:'100%'}}>
-                    <Icon style={{margin:'0'}} name='circle'></Icon>
+                <Button onClick={()=>this.props.dismissTask(i)} style={{padding:'3px',borderRadius:'100%'}}>
+                    <Icon style={{margin:'0'}} name='remove'></Icon>
                 </Button>
             </div>
         )

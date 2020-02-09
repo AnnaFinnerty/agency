@@ -88,7 +88,6 @@ class Content extends Component {
       const startProject = industry.newProject(true);
       startProjects.push(startProject);
     }
-    console.log('start projects',startProjects)
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
@@ -98,13 +97,7 @@ class Content extends Component {
 
     const startYear = new Date().getFullYear();
 
-    const startTask = {
-      text: "hire a new employee",
-      requester: "boss",
-      type: "request",
-      target: null,
-      action: "hire"
-    };
+    const startTask = this.createTask("hire a new employee",3,"hire")
 
     this.setState({
       industry: industry,
@@ -201,7 +194,8 @@ class Content extends Component {
         employeeStatsRaw.happiness += employees[a].stats.happiness
         employeeStatsRaw.salary += employees[a].stats.salary
         if(employees[a]['quit']){
-          tasks.push('hire someone new');
+          const t = this.createTask("hire a new employee to replace " + employees[a].name.display,employees[a].level,"hire")
+          tasks.push(t);
           const quitEmail = this.randomEmailGenerator.generateEmail('quit',employees[a]);
           emails.unshift(quitEmail);
           employees.splice(a,1)
@@ -221,6 +215,8 @@ class Content extends Component {
         //find completed projects
         if(projects[a].complete){
           projectsToDelete.push(projects[a]);
+          const endTask = this.createTask("find a new project",3,"project")
+          tasks.push(endTask);
         }
       }
       //remove completed projects
@@ -378,16 +374,21 @@ class Content extends Component {
       emails: this.state.emails.filter((email,x) => x !== i)
     })
   }
-  generateTask = (text,requester,type,target,action,) => {
+  createTask = (text,urgency,action,requester,type,target) => {
     const task = {
       text: text,
-      requester: requester,
+      urgency: urgency,
+      requester: requester ? requester : "",
       type: type,
       target: target,
       action: action
     };
+    return task
+  }
+  generateTask = (text,urgency,requester,type,target,action) => {
+    const newTask = this.createTask(text,urgency,requester,type,target,action);
     this.setState({
-       tasks: [task, ...this.state.tasks]
+       tasks: [newTask, ...this.state.tasks]
     })
   }
   resolveTask = (i) => {
