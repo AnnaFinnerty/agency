@@ -1,3 +1,6 @@
+- management panel
+- player score
+- tasks
 - prevent duplicate panes from being opened
 - emails should show game time
 - withdrawn projects decrease company satisfaction
@@ -6,9 +9,8 @@
 - get footer back
 - connect applicant amounts to job openings
 - email replys/approvals
-- project completion
-- add message
-- email responses
-- income per month is wrong
 
++ project completion
++ add message
++ income per month is wrong
 + update project on employee project change

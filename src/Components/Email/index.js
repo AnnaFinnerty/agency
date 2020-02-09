@@ -96,6 +96,11 @@ class Email extends Component{
                           addPane={this.props.addPane}
                           acceptProject={this.props.acceptProject}
                           considerProject={this.props.considerProject}
+                          hireApplicant={this.props.hireApplicant}
+                          dismissApplicant={this.props.dismissApplicant}
+                          resolveTask={this.props.resolveTask}
+                          generateTask={this.props.generateTask}
+                          dismissTask={this.props.dismissTask}
                           />
         }
         {

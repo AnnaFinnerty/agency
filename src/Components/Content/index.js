@@ -55,7 +55,7 @@ class Content extends Component {
         projectFrequency: .05,
       },
     }
-    this.taskManager = new TaskManager();
+    // this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
     this.randomProjectGenerator = new RandomProject();
     this.randomEmailGenerator = new RandomEmail();
@@ -79,10 +79,12 @@ class Content extends Component {
 
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
+      //generate one random applicant per current project
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
       startEmails.push(appEmail);
+      //generate a random start project -- true flag means it will be in progress when it starts
       const startProject = industry.newProject(true);
       startProjects.push(startProject);
     }
@@ -495,6 +497,8 @@ class Content extends Component {
                                 updateEmployee={this.updateEmployee}
                                 updateEmployeeLevel={this.updateEmployeeLevel}
                                 fireEmployee={this.fireEmployee}
+                                generateTask={this.generateTask}
+                                dismissTask={this.dismissTask}
                                 resolveTask={this.resolveTask}
                                 considerProject={this.considerProject}
                                 acceptProject={this.acceptProject}

@@ -45,10 +45,15 @@ class Main extends Component {
         return <Email 
                   emails={this.props.emails} 
                   addPane={this.props.addPane} 
-                  considerProject={this.props.considerProject}
-                  acceptProject={this.props.acceptProject}
                   readEmail={this.props.readEmail}
                   archiveEmail={this.props.archiveEmail}
+                  considerProject={this.props.considerProject}
+                  acceptProject={this.props.acceptProject}
+                  hireApplicant={this.props.hireApplicant}
+                  dismissApplicant={this.props.dismissApplicant}
+                  resolveTask={this.resolveTask}
+                  dismissTask={this.dismissTask}
+                  generateTask={this.generateTask}
                   />
 
       case "tasks":
