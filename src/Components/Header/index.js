@@ -91,6 +91,7 @@ class Header extends Component{
                 </Grid.Column>
                 
                 <Grid.Column width={3} style={{padding:"0"}}>
+                <Grid.Row>Score:{this.props.score}/Rep:{this.props.reputation}</Grid.Row>
                   <Grid.Row>
                       <span>{this.props.hour < 10 ? "0" + this.props.hour + ":00" : this.props.hour + ":00"}</span>
                   </Grid.Row>

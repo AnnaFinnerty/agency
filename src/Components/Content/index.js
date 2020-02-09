@@ -5,9 +5,10 @@ import Main from '../Main';
 import Sidebar from '../Sidebar';
 import Message from '../Message';
 
+import Player from '../../Scripts/Player'
 import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
-import TaskManager from '../../Scripts/TaskManagers';
+// import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
 import RandomEmail from '../../Scripts/RandomEmail';
@@ -25,6 +26,7 @@ class Content extends Component {
       fired: false,
       industry: new Industry(),
       agency: new Agency(),
+      player: new Player(),
       sidebarRight: true,
       projects: [],
       totalPositions: 20,
@@ -89,6 +91,12 @@ class Content extends Component {
       startProjects.push(startProject);
     }
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
+
+    //now that employees have been assigned, update projects with employee info
+    for(let i = 0 ; i < startProjects.length; i ++){
+      startProjects[i].calculateProductivity(startEmployees.employeesByProject[startProjects[i].id]);
+    }
+
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
 
@@ -123,6 +131,7 @@ class Content extends Component {
   update = () => {
     //update time 
     const agency = this.state.agency;
+    let player = this.state.player;
     let newEmployeeStats = this.state.employeeStats;
     let hour = this.state.hour;
     let day = this.state.day;
@@ -198,10 +207,10 @@ class Content extends Component {
           tasks.push(t);
           const quitEmail = this.randomEmailGenerator.generateEmail('quit',employees[a]);
           emails.unshift(quitEmail);
-          employees.splice(a,1)
+          employees.splice(a,1);
+          player.decrementReputation();
         }
       }
-      console.log('employees by porj', employeesByProject)
       newEmployeeStats = {
         productivity: Math.floor(employeeStatsRaw.productivity/employees.length),
         happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
@@ -217,6 +226,9 @@ class Content extends Component {
           projectsToDelete.push(projects[a]);
           const endTask = this.createTask("find a new project",3,"project")
           tasks.push(endTask);
+          player.augmentScore(10);
+          player.augmentReputation();
+          player.augmentHappiness();
         }
       }
       //remove completed projects
@@ -285,6 +297,7 @@ class Content extends Component {
       tasks: tasks,
       agency: agency,
       employeeStats: newEmployeeStats,
+      player: player,
     })
   }
   stopTimer = () => {
@@ -386,20 +399,30 @@ class Content extends Component {
     return task
   }
   generateTask = (text,urgency,requester,type,target,action) => {
+    const player = this.state.player;
+    player.augmentReputation();
     const newTask = this.createTask(text,urgency,requester,type,target,action);
     this.setState({
-       tasks: [newTask, ...this.state.tasks]
+       tasks: [newTask, ...this.state.tasks],
+       player: player
     })
   }
   resolveTask = (i) => {
     console.log('resolving task: ' + i)
+    const player = this.state.player;
+    player.augmentReputation();
     this.setState({
-      tasks: this.state.tasks.filter((tasks,x) => x !== i)
+      tasks: this.state.tasks.filter((tasks,x) => x !== i),
+      player: player
     })
   }
   dismissTask = (i) => {
+    let tasks = i ?this.state.tasks.filter((task,x) => x!==i ): this.state.tasks;
+    const player = this.state.player;
+    player.decrementReputation();
     this.setState({
-       tasks: this.state.tasks.filter((task,x) => x!==i )
+       tasks: tasks,
+       player: player
     })
   }
   addMessage = (message) => {
@@ -502,6 +525,8 @@ class Content extends Component {
                           projects={this.state.projects}
                           industry={this.state.industry}
                           employeeStats={this.state.employeeStats}
+                          score={this.state.player.score}
+                          reputation={this.state.player.reputation}
                           />
                           
                           <Main panes={this.state.panes} 

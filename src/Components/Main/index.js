@@ -51,9 +51,9 @@ class Main extends Component {
                   acceptProject={this.props.acceptProject}
                   hireApplicant={this.props.hireApplicant}
                   dismissApplicant={this.props.dismissApplicant}
-                  resolveTask={this.resolveTask}
-                  dismissTask={this.dismissTask}
-                  generateTask={this.generateTask}
+                  resolveTask={this.props.resolveTask}
+                  dismissTask={this.props.dismissTask}
+                  generateTask={this.props.generateTask}
                   />
 
       case "tasks":

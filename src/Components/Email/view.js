@@ -24,10 +24,27 @@ class ViewEmailModal extends Component{
         this.props.dismissApplicant(this.props.email.target);
         this.props.closeEmail();
     }
+    generateTask = () => {
+        this.props.generateTask(this.props.email.text,this.props.email.sender.level, this.props.email.sender);
+        this.props.closeEmail();
+    }
+    dismissTask = () => {
+        this.props.dismissTask();
+        this.props.closeEmail();
+    }
     render(){
-        console.log(this.props.email)
+        console.log('email view props', this.props)
         let actions;
         switch(this.props.email.type){
+
+            case "request":
+                actions =
+                    <React.Fragment>
+                        <Button onClick={this.generateTask}>Yeah, let's do it</Button>
+                        <Button onClick={this.dismissTask}>Sorry, maybe another time</Button>
+                    </React.Fragment>
+                break
+
             case "project":
                 actions =
                     <React.Fragment>
@@ -42,7 +59,6 @@ class ViewEmailModal extends Component{
                     <React.Fragment>
                         <Button onClick={this.hireApplicant}>You're hired!</Button>
                         <Button onClick={this.dismissApplicant}>Sorry, maybe another time</Button>
-                        <Button ></Button>
                     </React.Fragment>
                 break
 

@@ -75,7 +75,7 @@ function Sidebar(props) {
         {applicant.name.display}
         </Grid.Column>
         <Grid.Column width={10} onClick={()=>props.addPane('applicant',applicant)}>
-          {applicant.skills.map((skill)=><span>{skill}/</span>)}
+          {applicant.skills.map((skill)=><span key={applicant.id+"_"+skill}>{skill}/</span>)}
         </Grid.Column>
         <Grid.Column width={2}>
           <button onClick={()=>props.dismissApplicant(applicant.id)} >x</button>

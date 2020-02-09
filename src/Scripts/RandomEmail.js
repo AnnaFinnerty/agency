@@ -70,9 +70,10 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
 RandomEmail.prototype.junkEmail = function(employee){
     const junkSubject = ["Happy Birthday to " + employee.name.first,'Hike this weekend'];
     const junkBody = ["Hey, it's " + employee.name.display + " 's birthday","Hey, anybody up for a hike this weekend?"];
+    const r = this.helpers.RandomBetweenInts(0,junkBody.length);
     const email = {
-        subject: this.helpers.RandomFromArray(junkSubject),
-        text: this.helpers.RandomFromArray(junkBody),
+        subject: junkSubject[r],
+        text: junkBody[r],
         sender: employee,
         time: new Date().toLocaleString(),
         read: false,
@@ -108,7 +109,7 @@ RandomEmail.prototype.complaintEmail = function(employee1, employee2){
         time: new Date().toLocaleString(),
         read: false,
         accept: true,
-        type:"complaint",
+        type:"request",
         importance: employee1.level,
         target: [employee1,employee2]
     }
