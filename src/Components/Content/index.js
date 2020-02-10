@@ -202,6 +202,7 @@ class Content extends Component {
         employeeStatsRaw.productivity += employees[a].stats.productivity
         employeeStatsRaw.happiness += employees[a].stats.happiness
         employeeStatsRaw.salary += employees[a].stats.salary
+        //flag and remove employees who have quit
         if(employees[a]['quit']){
           const t = this.createTask("hire a new employee to replace " + employees[a].name.display,employees[a].level,"hire")
           tasks.push(t);
@@ -310,6 +311,7 @@ class Content extends Component {
   hireApplicant = (applicant) => {
     console.log('hiring applicant', applicant)
     //TODO need to get new id number for applicant
+    applicant.id = this.randomEmployeeGenerator.generateEmployeeID();
     const employees = this.sortEmployees([applicant, ...this.state.employees])
     this.setState({
       employees: employees,

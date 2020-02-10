@@ -78,7 +78,7 @@ class ViewEmailModal extends Component{
                 actions =
                     <React.Fragment>
                         <Button><Icon name="reply"></Icon></Button>
-                        <Button><Icon name="mail forward"></Icon></Button>
+                        <Button onClick={this.dismissTask}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break
         }
