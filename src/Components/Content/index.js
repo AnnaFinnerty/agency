@@ -352,7 +352,9 @@ class Content extends Component {
     const employees = this.state.employees.filter((employee) => employee.id !== info);
     const sortedEmployees = this.sortEmployees(employees);
     this.setState({
-      employees: sortedEmployees
+      employees: sortedEmployees,
+      panes: this.state.panes.filter((pane) => pane.id !== "employee_"+info),
+      activePane: this.state.activePane - 1
     })
   }
   sortEmployees = (employees) => {
@@ -483,10 +485,6 @@ class Content extends Component {
   withdrawProject = (withdrawnProject) => {
     console.log('withdraw project', withdrawnProject)
     //call to industry to decrease company satisfaction
-    // console.log('removing pane', i);
-    // const activePane = this.state.activePane === i ? i - 1: this.state.activePane;
-    // console.log('old active pane', this.state.activePane);
-    // console.log('new active pane', activePane);
     console.log(this.state.projects);
     this.setState({
       projects: this.state.projects.filter((project) => project.id !== withdrawnProject),
