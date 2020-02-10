@@ -16,24 +16,40 @@ class Employee{
         this.project = project;
         this.projectId = project ? project.id : null;
         this.match = null;
-        this.problems = 0;
-        this.problems = [];
+        this.currentRequest = false;
+        this.daysWaitedOnRequest = 0;
+        this.onVaction = false;
+        this.vacationDaysRemaining = 0;
     }
     update(){
         console.log('updating employee!');
         const r = Math.random();
-        if(r < .1){
-            this.stats.happiness -= 1;
-        } else if (r > .9){
-            this.stats.happiness += 1;
+        if(this.currentRequest){
+            //the employee will always lose happiness/productivity if they have a current unfilled request
+            if(this.daysWaitedOnRequest >=10 ){
+                //employee gives up on request if they've wait more than 10 days
+                this.currentRequest = false;
+                this.daysWaitedOnRequest = 0;
+            } else {
+                this.stats.happiness -= this.daysWaitedOnRequest;
+                this.stats.productivity -= this.daysWaitedOnRequest;
+            }
+
+        } else {
+            if(r < .1){
+                this.stats.happiness -= 1;
+            } else if (r > .9){
+                this.stats.happiness += 1;
+            }
+            const r2 = Math.random();
+            if(r2 < .1){
+                this.stats.productivity -= 1;
+            } else if (r > .9){
+                this.stats.productivity += 1;
+            }
         }
-        const r2 = Math.random();
-        if(r2 < .1){
-            this.stats.productivity -= 1;
-        } else if (r > .9){
-            this.stats.productivity += 1;
-        }
-        if(this.stats.happiness < 5 || this.problems > 5){
+
+        if(this.stats.happiness < 5){
             this.quit = true;
         }
     }
@@ -60,6 +76,17 @@ class Employee{
         //title will be change back in content
         this.stats.happiness = this.stats.happiness - 10 <= 0 ? 0 : this.stats.happiness - 10;
         this.stats.productivity = this.stats.productivity - 1 <= 0 ? 0 : this.stats.productivity - 1;
+    }
+    makeRequest(){
+        this.currentRequest = true;
+    }
+    requestSatisfied(){
+        console.log('thanks, my request was satisified');
+        this.stats.happiness = this.stats.happiness + 10 >= 100 ? 100 : this.stats.happiness + 10;
+    }
+    requestDenied(){
+        console.log('that sucks, my request was denied');
+        this.stats.happiness = this.stats.happiness - 10 <= 0 ? 0 : this.stats.happiness - 10;
     }
     updateSkills(projectSkills){
 

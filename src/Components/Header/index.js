@@ -75,7 +75,7 @@ class Header extends Component{
                     <button onClick={()=>this.openModal('industryModalOpen')}>industry</button>
                   </Grid.Row>
                 </Grid.Column>
-                <Grid.Column width={3} style={{padding:"0"}}>
+                <Grid.Column width={3} style={{padding:"0 10px",textAlign:"right"}}>
                   <Grid.Row>Cash on Hand</Grid.Row>
                   <Grid.Row>Income/Month</Grid.Row>
                   <Grid.Row>Loss/Month</Grid.Row>
@@ -91,6 +91,7 @@ class Header extends Component{
                 </Grid.Column>
                 
                 <Grid.Column width={3} style={{padding:"0"}}>
+                <Grid.Row>Score:{this.props.score}/Rep:{this.props.reputation}</Grid.Row>
                   <Grid.Row>
                       <span>{this.props.hour < 10 ? "0" + this.props.hour + ":00" : this.props.hour + ":00"}</span>
                   </Grid.Row>
@@ -100,15 +101,15 @@ class Header extends Component{
                   <Grid.Row >
                     {
                       !this.props.timeRunning ? 
-                      <Button color="green" size="small" style={{padding:"10%"}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
+                      <Button color="green" size="small" style={{padding:"7%",height:'5vh'}} onClick={this.props.startTimer}><Icon name="play"></Icon></Button>
                       :
-                      <Button onClick={this.props.stopTimer} style={{padding:"10%"}}><Icon color="red" name="stop"></Icon></Button>
+                      <Button onClick={this.props.stopTimer} style={{padding:"7%",height:'5vh'}}><Icon color="red" name="stop"></Icon></Button>
                     }
                     {
                       !this.state.fullscreen ?
-                      <Button onClick={this.openFull} style={{padding:"10%"}}><Icon name="window maximize outline"></Icon></Button>
+                      <Button onClick={this.openFull} style={{padding:"7%",height:'5vh'}}><Icon name="window maximize outline"></Icon></Button>
                       :
-                      <Button onClick={this.closeFull} style={{padding:"10%"}}><Icon name="window restore outline"></Icon></Button>
+                      <Button onClick={this.closeFull} style={{padding:"7%",height:'5vh'}}><Icon name="window restore outline"></Icon></Button>
                     }
                   </Grid.Row>
                 </Grid.Column>     

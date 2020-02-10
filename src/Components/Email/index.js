@@ -16,6 +16,11 @@ class Email extends Component{
       currentEmail: null
     }
   }
+  changeVisibleInbox = (type) => {
+    this.setState({
+      boxShowing: type
+    })
+  }
   newEmail = () => {
     this.setState({
       currentEmail: null,
@@ -25,6 +30,7 @@ class Email extends Component{
     })
   }
   openEmail = (emailIndex) => {
+    this.props.readEmail(emailIndex);
     this.setState({
       currentEmail: emailIndex,
       openEmail: true
@@ -41,25 +47,30 @@ class Email extends Component{
     // console.log('emails props',this.props.emails)
     let emails = this.props.emails;
     if(this.state.boxShowing === 'inbox'){
-      emails = this.props.emails.filter((email)=> !email.read )
+      emails = this.props.emails.filter((email)=> !email.archived )
     } else if (this.state.boxShowing === 'sent'){
       emails = this.props.emails.filter((email)=> email.sent )
     }
     const selectedEmails = !emails.length ? '' : emails.map((email,i)=>{
       return(
-        <Grid key={'email_'+i} columns={5} onClick={()=>this.openEmail(i)} className="hover" style={{height:"5vh",overflow:'hidden'}}>
-          <Grid.Column width={1}>
-            <Icon name="mail"></Icon>
+        <Grid key={'email_'+i} columns={5} className="hover" style={{height:"5vh",overflow:'hidden'}}>
+          <Grid.Column width={1} onClick={()=>this.openEmail(i)}>
+            <Icon style={{color:email.read?"gray":"black"}} name="mail"></Icon>
           </Grid.Column>
-          <Grid.Column width={3}>{email.sender.name.display} </Grid.Column>  
-          <Grid.Column width={3}>
+          <Grid.Column width={3} onClick={()=>this.openEmail(i)}>
+            {email.sender.name.display} 
+          </Grid.Column>  
+          <Grid.Column width={3} onClick={()=>this.openEmail(i)}>
             {email.subject}
           </Grid.Column>
-          <Grid.Column width={5}>
+          <Grid.Column width={5} onClick={()=>this.openEmail(i)}>
              {email.text}
           </Grid.Column>
-          <Grid.Column width={4}>
+          <Grid.Column width={2}onClick={()=>this.openEmail(i)}>
              {email.time}
+          </Grid.Column>
+          <Grid.Column width={1} onClick={()=>this.props.archiveEmail(i)}>
+            <Icon name="archive"></Icon>  
           </Grid.Column>         
         </Grid> 
 
@@ -71,9 +82,9 @@ class Email extends Component{
         <Container style={{height:'85vh'}}>
           <h2>Email</h2>
           <Button onClick={this.newEmail}>+</Button>
-          <Button>inbox</Button>
-          <Button>sent</Button>
-          <Button>all</Button>
+          <Button onClick={()=>this.changeVisibleInbox('inbox')}>inbox</Button>
+          <Button onClick={()=>this.changeVisibleInbox('sent')}>sent</Button>
+          <Button onClick={()=>this.changeVisibleInbox('all')}>all</Button>
           <hr style={{marginBottom:"5vh"}}></hr>
           {selectedEmails}
         </Container>
@@ -85,6 +96,11 @@ class Email extends Component{
                           addPane={this.props.addPane}
                           acceptProject={this.props.acceptProject}
                           considerProject={this.props.considerProject}
+                          hireApplicant={this.props.hireApplicant}
+                          dismissApplicant={this.props.dismissApplicant}
+                          resolveTask={this.props.resolveTask}
+                          generateTask={this.props.generateTask}
+                          dismissTask={this.props.dismissTask}
                           />
         }
         {

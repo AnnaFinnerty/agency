@@ -13,7 +13,7 @@ function RandomEmployee(){
 
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
     console.log('generating start employees');
-    console.log(startProjects);
+    const employeesByProject = {}
     //remove projects that aren't accepted from start projects
     startProjects = startProjects.filter((project)=> project.accepted)
     const employeeStats = {
@@ -47,6 +47,12 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
         project.calculateProductivity();
         //add to employee array
         startEmployees.push(employee);
+        if(employee.projectId){
+            if(!employeesByProject[employee.projectId]){
+              employeesByProject[employee.projectId] = []
+            }
+            employeesByProject[employee.projectId].push(employee)
+        }
     }
     //average intial employee stats
     for(let i in employeeStats){
@@ -55,7 +61,8 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
     return {
         employees: startEmployees,
         employeeStats: employeeStats,
-        startProjects: startProjects
+        startProjects: startProjects,
+        employeesByProject: employeesByProject
     }
 }
 

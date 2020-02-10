@@ -22,8 +22,7 @@ class Project{
         this.workers = [];
         this.productivity = 0;
         this.complete = false;
-        this.satisfaction = 100-(this.estimatedMonthsToCompletion-this.monthsActive);
-        console.log('project',this) 
+        this.satisfaction = 100-(this.estimatedMonthsToCompletion-this.monthsActive); 
     }
     addWorker(worker){
         this.workers.push(worker);
@@ -45,7 +44,7 @@ class Project{
         }
         this.percentComplete = this.percentComplete + productivity/30;
         this.productivity = productivity;
-        const onTime = (this.estimatedMonthsToCompletion-this.monthsActive)/productivity;
+        const onTime = (this.estimatedMonthsToCompletion*productivity)/this.estimatedMonthsToCompletion;
         console.log('on time calc',onTime);
         this.onTime = onTime;
     }

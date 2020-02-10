@@ -19,7 +19,6 @@ const SidebarWrapper = (props) => {
 
 //sections: employees, project
 function Sidebar(props) {
-  console.log('sidebar props',props)
   const employees = props.employees.map((employee) => {
     return(
       <div key={employee.id} className="hover">
@@ -55,10 +54,11 @@ function Sidebar(props) {
     )
   })
   const projects = props.projects.map((project) => {
-    if(project.considering || project.accepted){
+    if(project.accepted || project.considering){
       return(
         <Grid.Row className="hover" columns={4} key={project.id} onClick={()=>props.addPane('project',project)}>
           <Grid.Column width={7}>{project.name}</Grid.Column>
+          <Grid.Column width={1}><Icon name={project.accepted ? "check" : "question"}></Icon></Grid.Column>
           <Grid.Column width={1}>{project.workers.length}</Grid.Column>
           <Grid.Column width={1}>{project.productivity}%</Grid.Column>
           <Grid.Column width={1}>{project.monthsToCompletion}</Grid.Column>
@@ -70,13 +70,13 @@ function Sidebar(props) {
   const applicants = props.applicants.map((applicant) => {
     return(
       <Grid.Row className="hover" columns={3} key={applicant.id}> 
-        <Grid.Column onClick={()=>props.addPane('applicant',applicant)}>
+        <Grid.Column width={4} onClick={()=>props.addPane('applicant',applicant)}>
         {applicant.name.display}
         </Grid.Column>
-        <Grid.Column onClick={()=>props.addPane('applicant',applicant)}>
-        {applicant.skills}
+        <Grid.Column width={10} onClick={()=>props.addPane('applicant',applicant)}>
+          {applicant.skills.map((skill)=><span key={applicant.id+"_"+skill}>{skill}/</span>)}
         </Grid.Column>
-        <Grid.Column>
+        <Grid.Column width={2}>
           <button onClick={()=>props.dismissApplicant(applicant.id)} >x</button>
         </Grid.Column>
       </Grid.Row>
@@ -92,8 +92,9 @@ function Sidebar(props) {
       render: () => 
       <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
         <Grid columns={1}>
-          <Grid.Row columns={4}>
-            <Grid.Column width={7}>name</Grid.Column>
+          <Grid.Row columns={4} style={{borderBottom:".5px solid dimgray"}}>
+            <Grid.Column width={7}></Grid.Column>
+            <Grid.Column width={1}></Grid.Column>
             <Grid.Column width={1}><Icon name="user"/></Grid.Column>
             <Grid.Column width={1}><Icon name="fire"/></Grid.Column>
             <Grid.Column width={1}><Icon name="calendar alternate"/></Grid.Column>
@@ -102,8 +103,8 @@ function Sidebar(props) {
           {projects}
         </Grid>
       </Tab.Pane> },
-    { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Jobs</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Grid columns={1}>jobs</Grid></Tab.Pane> },
+    // { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Jobs</Menu.Item>), 
+    //   render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Grid columns={1}>jobs</Grid></Tab.Pane> },
   ]
   return (
     <aside>

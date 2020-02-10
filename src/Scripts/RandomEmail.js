@@ -11,17 +11,17 @@ RandomEmail.prototype.generateRandomEmail = function(boss,employee1,employee2){
         if(boss.stats.happiness > 60 || boss.stats.happiness < 30){
             return this.bossEmail(boss)
         } else {
-            if(employee1.stats.happiness > 80){
-                //MTC needs to be replaced!
-                return this.happyEmail(employee1);
-            } else if (employee1.stats.happiness < 40) {
-                return this.complaintEmail(employee1,employee2);
-            } else {
-                return this.requestEmail(employee1);
-            }
+            return this.generateEmail(null,employee1,employee1)
         }
     } else if (r<.5 && r > .1 ) {
-        return this.generateEmail(null,employee1,employee2);
+        if(employee1.stats.happiness > 80){
+            //MTC needs to be replaced!
+            return this.happyEmail(employee1);
+        } else if (employee1.stats.happiness < 40) {
+            return this.complaintEmail(employee1,employee2);
+        } else {
+            return this.requestEmail(employee1);
+        }
     } else {
         return this.generateEmail(null,employee1,employee2);
     }
@@ -70,12 +70,14 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
 RandomEmail.prototype.junkEmail = function(employee){
     const junkSubject = ["Happy Birthday to " + employee.name.first,'Hike this weekend'];
     const junkBody = ["Hey, it's " + employee.name.display + " 's birthday","Hey, anybody up for a hike this weekend?"];
+    const r = this.helpers.RandomBetweenInts(0,junkBody.length);
     const email = {
-        subject: this.helpers.RandomFromArray(junkSubject),
-        text: this.helpers.RandomFromArray(junkBody),
+        subject: junkSubject[r],
+        text: junkBody[r],
         sender: employee,
         time: new Date().toLocaleString(),
-        read: false
+        read: false,
+        importance: 0,
     }
     return email;
 }
@@ -83,28 +85,36 @@ RandomEmail.prototype.junkEmail = function(employee){
 RandomEmail.prototype.requestEmail = function(employee){
     const requestSubject = ['Request','Please help',"Just a thought"];
     const requestBody = ["Could we get a new coffee machine?","I need some time off"];
+    const requestType = ['money','time'];
+    const r = this.helpers.RandomBetweenInts(0,requestBody.length)
     const email = {
         subject: this.helpers.RandomFromArray(requestSubject),
-        text: this.helpers.RandomFromArray(requestBody),
+        text: requestBody[r],
         sender: employee,
         time: new Date().toLocaleString(),
         read: false,
-        accept: true
+        accept: true,
+        type:"request",
+        subtype: requestType[r],
+        importance: employee.level,
+        target: employee
     }
     return email;
 }
 
 RandomEmail.prototype.complaintEmail = function(employee1, employee2){
-    const complaintSubject = ["A complaint", "I'm not happy", "We need to talk"];
+    const complaintSubject = ["A complaint", "I'm not happy", "We need to talk","This sucks"];
     const complaintBody = ["I don't like sitting next to " + employee2.name.full + ". Can I move desks?"];
-    const complaintTypes = ['change position']
     const email = {
         subject: this.helpers.RandomFromArray(complaintSubject),
         text: this.helpers.RandomFromArray(complaintBody),
         sender: employee1,
         time: new Date().toLocaleString(),
         read: false,
-        accept: true
+        accept: true,
+        type:"task",
+        importance: employee1.level,
+        target: [employee1,employee2]
     }
     return email;
 }
@@ -124,7 +134,9 @@ RandomEmail.prototype.applicantEmail = function(employee){
         read: false,
         consider: true,
         accept: false,
-        target: employee
+        target: employee,
+        type:"application",
+        importance: 3,
     }
     return email;
 }
@@ -137,7 +149,9 @@ RandomEmail.prototype.projectEmail = function(project){
         time: new Date().toLocaleString(),
         read: false,
         consider: true,
-        target: project
+        target: project,
+        type:"project",
+        importance: 4,
     }
     return email;
 }
@@ -150,7 +164,7 @@ RandomEmail.prototype.completeEmail = function(project){
         time: new Date().toLocaleString(),
         read: false,
         consider: true,
-        target: project
+        target: project,
     }
     return email;
 }
@@ -177,7 +191,8 @@ RandomEmail.prototype.quitEmail = function(employee){
         text: this.helpers.RandomFromArray(quitBody),
         sender: employee,
         time: new Date().toLocaleString(),
-        read: false
+        read: false,
+        importance: employee.level,
     }
     return email;
 }
@@ -185,7 +200,7 @@ RandomEmail.prototype.quitEmail = function(employee){
 RandomEmail.prototype.happyEmail = function(employee){
     const happySubject = ["Great news",'Announcement',"Let's celebrate"];
     const happyBody = [
-        "Great news!, " + employee.name.display + ' is having a baby!', 
+        "Great news!, " + employee.name.display + ' is having a baby!',  "Hey guys, " + employee.name.display + ' bachelor party is this weekend!',
     ];
     const email = {
         subject: this.helpers.RandomFromArray(happySubject),
@@ -207,7 +222,9 @@ RandomEmail.prototype.bossEmail = function(boss){
         text: this.helpers.RandomFromArray(bossBody),
         sender: boss,
         time: new Date().toLocaleString(),
-        read: false
+        read: false,
+        type:"boss",
+        importance: 5,
     }
     return email;
 }

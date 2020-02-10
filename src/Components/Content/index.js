@@ -5,9 +5,10 @@ import Main from '../Main';
 import Sidebar from '../Sidebar';
 import Message from '../Message';
 
+import Player from '../../Scripts/Player'
 import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
-import TaskManager from '../../Scripts/TaskManagers';
+// import TaskManager from '../../Scripts/TaskManagers';
 import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
 import RandomEmail from '../../Scripts/RandomEmail';
@@ -25,6 +26,7 @@ class Content extends Component {
       fired: false,
       industry: new Industry(),
       agency: new Agency(),
+      player: new Player(),
       sidebarRight: true,
       projects: [],
       totalPositions: 20,
@@ -55,7 +57,7 @@ class Content extends Component {
         projectFrequency: .05,
       },
     }
-    this.taskManager = new TaskManager();
+    // this.taskManager = new TaskManager();
     this.randomEmployeeGenerator = new RandomEmployee();
     this.randomProjectGenerator = new RandomProject();
     this.randomEmailGenerator = new RandomEmail();
@@ -74,21 +76,27 @@ class Content extends Component {
     const startEmails = [];
 
     const newProject = industry.newProject(false);
-    startProjects.push(newProject);
     const newProjectEmail = this.randomEmailGenerator.generateEmail('project',newProject);
     startEmails.push(newProjectEmail);
 
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
+      //generate one random applicant per current project
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
       const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
       startEmails.push(appEmail);
+      //generate a random start project -- true flag means it will be in progress when it starts
       const startProject = industry.newProject(true);
       startProjects.push(startProject);
     }
-    
     const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
+
+    //now that employees have been assigned, update projects with employee info
+    for(let i = 0 ; i < startProjects.length; i ++){
+      startProjects[i].calculateProductivity(startEmployees.employeesByProject[startProjects[i].id]);
+    }
+
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
     const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0]);
 
@@ -97,15 +105,17 @@ class Content extends Component {
 
     const startYear = new Date().getFullYear();
 
+    const startTask = this.createTask("hire a new employee",3,"hire")
+
     this.setState({
       industry: industry,
       agency: agency,
       employees: sortedEmployees,
       employeeStats: startEmployees.employeeStats,
-      projects: startEmployees.startProjects,
+      projects: [newProject, ...startEmployees.startProjects],
       applicants: startApplicants,
       emails: [...startEmails,welcomeEmail],
-      tasks: ['hire a new junior employee'],
+      tasks: [startTask],
       startYear: startYear
     })
   }
@@ -121,6 +131,7 @@ class Content extends Component {
   update = () => {
     //update time 
     const agency = this.state.agency;
+    let player = this.state.player;
     let newEmployeeStats = this.state.employeeStats;
     let hour = this.state.hour;
     let day = this.state.day;
@@ -192,13 +203,14 @@ class Content extends Component {
         employeeStatsRaw.happiness += employees[a].stats.happiness
         employeeStatsRaw.salary += employees[a].stats.salary
         if(employees[a]['quit']){
-          tasks.push('hire someone new');
+          const t = this.createTask("hire a new employee to replace " + employees[a].name.display,employees[a].level,"hire")
+          tasks.push(t);
           const quitEmail = this.randomEmailGenerator.generateEmail('quit',employees[a]);
           emails.unshift(quitEmail);
-          employees.splice(a,1)
+          employees.splice(a,1);
+          player.decrementReputation();
         }
       }
-      console.log('employees by porj', employeesByProject)
       newEmployeeStats = {
         productivity: Math.floor(employeeStatsRaw.productivity/employees.length),
         happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
@@ -212,6 +224,11 @@ class Content extends Component {
         //find completed projects
         if(projects[a].complete){
           projectsToDelete.push(projects[a]);
+          const endTask = this.createTask("find a new project",3,"project")
+          tasks.push(endTask);
+          player.augmentScore(10);
+          player.augmentReputation();
+          player.augmentHappiness();
         }
       }
       //remove completed projects
@@ -280,6 +297,7 @@ class Content extends Component {
       tasks: tasks,
       agency: agency,
       employeeStats: newEmployeeStats,
+      player: player,
     })
   }
   stopTimer = () => {
@@ -289,11 +307,19 @@ class Content extends Component {
       timeRunning: false
     })
   }
-  hireApplicant = (info) => {
-    console.log('hiring applicant', info)
+  hireApplicant = (applicant) => {
+    console.log('hiring applicant', applicant)
     //TODO need to get new id number for applicant
+    const employees = this.sortEmployees([applicant, ...this.state.employees])
     this.setState({
-      employees: [info, ...this.state.employees]
+      employees: employees,
+      applicants:  this.state.applicants.filter((a) => applicant.id !== a.id)
+    })
+  }
+  dismissApplicant = (info) => {
+    console.log('dismissing applicant', info)
+    this.setState({
+      applicants:  this.state.applicants.filter((applicant) => applicant.id !== info.id)
     })
   }
   updateEmployee = (updatedEmployee) => {
@@ -326,17 +352,13 @@ class Content extends Component {
     const employees = this.state.employees.filter((employee) => employee.id !== info);
     const sortedEmployees = this.sortEmployees(employees);
     this.setState({
-      employees: sortedEmployees
+      employees: sortedEmployees,
+      panes: this.state.panes.filter((pane) => pane.id !== "employee_"+info),
+      activePane: this.state.activePane - 1
     })
   }
   sortEmployees = (employees) => {
     return employees.sort(function(a,b){return b.level - a.level})
-  }
-  dismissApplicant = (info) => {
-    console.log('dismissing applicant', info)
-    this.setState({
-      applicants:  this.state.applicants.filter((applicant) => applicant.id !== info)
-    })
   }
   generateEmail = (event) => {
     const email = "email";
@@ -344,26 +366,92 @@ class Content extends Component {
        emails: [email, ...this.state.emails]
     })
   }
+  readEmail = (i) => {
+    console.log('reading email');
+    const updatedEmail = this.state.emails[i];
+    updatedEmail.read = true;
+    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
+    this.setState({
+      emails: emails
+    })
+  }
+  archiveEmail = (i) => {
+    console.log('archiving email');
+    const updatedEmail = this.state.emails[i];
+    updatedEmail.archived = true;
+    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
+    this.setState({
+      emails: emails
+    })
+  }
   deleteEmail = (i) => {
     this.setState({
       emails: this.state.emails.filter((email,x) => x !== i)
     })
   }
-  generateTask = (test,requester,type,target,action,) => {
-    const task = "task";
+  createTask = (text,urgency,action,requester,type,target) => {
+    const task = {
+      text: text,
+      urgency: urgency,
+      requester: requester ? requester : "",
+      type: type,
+      target: target,
+      action: action
+    };
+    return task
+  }
+  generateTask = (text,urgency,requester,type,target,action) => {
+    console.log('generating task')
+    const player = this.state.player;
+    player.augmentReputation();
+    const newTask = this.createTask(text,urgency,requester,type,target,action);
     this.setState({
-       tasks: [task, ...this.state.tasks]
+       tasks: [newTask, ...this.state.tasks],
+       player: player
     })
   }
-  resolveTask = (i) => {
-    console.log('resolving task: ' + i)
+  resolveTask = (i, task) => {
+    console.log('resolving task: ');
+    console.log(task)
+    const player = this.state.player;
+    player.augmentReputation();
+    let employees = this.state.employees;
+    let tasks = this.state.tasks;
+    if(task){
+       //increase employee happiness because of resolved task
+      if(task.type === "request" || task.type === "task"){
+        task.target.requestSatisfied();
+        employees = this.state.employees.map((employee) => employee.id !== task.target.id ? employee: task.target);
+      } 
+    }
+    //only remove existing tasks -- ie tasks that have an index number
+    if(i){
+      tasks = this.state.tasks.filter((t,x) => x !== t)
+    }
+    
     this.setState({
-      tasks: this.state.tasks.filter((tasks,x) => x !== i)
+      tasks: tasks,
+      player: player,
+      employees: employees
     })
   }
-  dismissTask = (i) => {
+  dismissTask = (i, task) => {
+    console.log('dismissing tasks')
+    let tasks = i ?this.state.tasks.filter((task,x) => x!==i ): this.state.tasks;
+    const player = this.state.player;
+    player.decrementReputation();
+    let employees = this.state.employees;
+    if(task){
+       //increase employee happiness because of resolved task
+      if(task.type === "request" || task.type === "task"){
+        task.target.requestDenied();
+        employees = this.state.employees.map((employee) => employee.id !== task.target.id ? employee: task.target);
+      } 
+    }
     this.setState({
-       tasks: this.state.tasks.filter((task,x) => x!==i )
+       tasks: tasks,
+       player: player,
+       employees: employees
     })
   }
   addMessage = (message) => {
@@ -397,10 +485,6 @@ class Content extends Component {
   withdrawProject = (withdrawnProject) => {
     console.log('withdraw project', withdrawnProject)
     //call to industry to decrease company satisfaction
-    // console.log('removing pane', i);
-    // const activePane = this.state.activePane === i ? i - 1: this.state.activePane;
-    // console.log('old active pane', this.state.activePane);
-    // console.log('new active pane', activePane);
     console.log(this.state.projects);
     this.setState({
       projects: this.state.projects.filter((project) => project.id !== withdrawnProject),
@@ -466,6 +550,8 @@ class Content extends Component {
                           projects={this.state.projects}
                           industry={this.state.industry}
                           employeeStats={this.state.employeeStats}
+                          score={this.state.player.score}
+                          reputation={this.state.player.reputation}
                           />
                           
                           <Main panes={this.state.panes} 
@@ -478,11 +564,15 @@ class Content extends Component {
                                 updateEmployee={this.updateEmployee}
                                 updateEmployeeLevel={this.updateEmployeeLevel}
                                 fireEmployee={this.fireEmployee}
+                                generateTask={this.generateTask}
+                                dismissTask={this.dismissTask}
                                 resolveTask={this.resolveTask}
                                 considerProject={this.considerProject}
                                 acceptProject={this.acceptProject}
                                 rejectProject={this.rejectProject}
                                 withdrawProject={this.withdrawProject}
+                                readEmail={this.readEmail}
+                                archiveEmail={this.archiveEmail}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
