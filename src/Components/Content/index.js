@@ -312,10 +312,13 @@ class Content extends Component {
     console.log('hiring applicant', applicant)
     //TODO need to get new id number for applicant
     applicant.id = this.randomEmployeeGenerator.generateEmployeeID();
+    const agency = this.state.agency;
     const employees = this.sortEmployees([applicant, ...this.state.employees])
+    agency.calculateAgencyParameters(employees,this.state.projects);
     this.setState({
       employees: employees,
-      applicants:  this.state.applicants.filter((a) => applicant.id !== a.id)
+      applicants:  this.state.applicants.filter((a) => applicant.id !== a.id),
+      agency: agency
     })
   }
   dismissApplicant = (info) => {
@@ -353,6 +356,8 @@ class Content extends Component {
     console.log('firing employee', info)
     const employees = this.state.employees.filter((employee) => employee.id !== info);
     const sortedEmployees = this.sortEmployees(employees);
+    const agency = this.state.agency;
+    agency.calculateAgencyParameters(employees,this.state.projects);
     this.setState({
       employees: sortedEmployees,
       panes: this.state.panes.filter((pane) => pane.id !== "employee_"+info),
