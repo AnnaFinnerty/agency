@@ -76,6 +76,8 @@ RandomEmail.prototype.junkEmail = function(employee){
         text: junkBody[r],
         sender: employee,
         time: new Date().toLocaleString(),
+        type: "request",
+        subtype: "junk",
         read: false,
         importance: 0,
     }

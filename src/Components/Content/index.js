@@ -309,6 +309,7 @@ class Content extends Component {
     })
   }
   hireApplicant = (applicant) => {
+    //mtc check to see if this completes a task
     console.log('hiring applicant', applicant)
     //TODO need to get new id number for applicant
     applicant.id = this.randomEmployeeGenerator.generateEmployeeID();
@@ -328,6 +329,7 @@ class Content extends Component {
     })
   }
   updateEmployee = (updatedEmployee) => {
+    //mtc check to see if this completes a task
     console.log('updating employee');
     console.log(updatedEmployee);
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
@@ -346,6 +348,7 @@ class Content extends Component {
     })
   }
   updateEmployeeLevel = (updatedEmployee) => {
+    //mtc check to see if this completes a task
     console.log('promoting or demoting employee');
     const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
     this.setState({
@@ -357,11 +360,14 @@ class Content extends Component {
     const employees = this.state.employees.filter((employee) => employee.id !== info);
     const sortedEmployees = this.sortEmployees(employees);
     const agency = this.state.agency;
+    //mtc check to see if this completes a task, and remove task
+    const tasks = this.state.tasks.filter((task) => task.subtype !== "move" && task.target.id !== info)
     agency.calculateAgencyParameters(employees,this.state.projects);
     this.setState({
       employees: sortedEmployees,
       panes: this.state.panes.filter((pane) => pane.id !== "employee_"+info),
-      activePane: this.state.activePane - 1
+      activePane: this.state.activePane - 1,
+      tasks: tasks
     })
   }
   sortEmployees = (employees) => {
@@ -421,6 +427,7 @@ class Content extends Component {
     console.log('resolving task: ');
     console.log(task)
     const player = this.state.player;
+    const agency = this.state.agency;
     player.augmentReputation();
     let employees = this.state.employees;
     let tasks = this.state.tasks;
@@ -429,6 +436,13 @@ class Content extends Component {
       if(task.type === "request" || task.type === "task"){
         task.target.requestSatisfied();
         employees = this.state.employees.map((employee) => employee.id !== task.target.id ? employee: task.target);
+      }
+      if(task.type === "request"){
+        if(task.subtype){
+          if(task.subtype === "money"){
+            agency.debit(task.importance * (this.state.year - this.state.startYear))
+          }
+        }
       } 
     }
     //only remove existing tasks -- ie tasks that have an index number
@@ -439,7 +453,8 @@ class Content extends Component {
     this.setState({
       tasks: tasks,
       player: player,
-      employees: employees
+      employees: employees,
+      agency: agency,
     })
   }
   dismissTask = (i, task) => {
