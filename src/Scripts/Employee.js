@@ -99,6 +99,9 @@ class Employee{
         console.log('that sucks, my request was denied');
         this.stats.happiness = this.stats.happiness - 10 <= 0 ? 0 : this.stats.happiness - 10;
     }
+    satisfy(amt){
+        this.stats.happiness = this.stats.happiness + amt >= 100 ? 100 : this.stats.happiness + amt;
+    }
     updateSkills(projectSkills){
 
     }

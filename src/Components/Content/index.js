@@ -381,15 +381,20 @@ class Content extends Component {
   sendEmail = (email) => {
     const player = this.state.player;
     const agency = this.state.agency;
+    let employees = this.state.employees;
     if(email.type === 'request'){
       player.augmentReputation();
       player.decrementHappiness();
-      agency.debit(email.cost)
+      agency.debit(email.cost);
+      employees = employees.map((employee)=>{employee.satisfy(10);return employee})
     } else {
       player.decrementReputation();
     }
     this.setState({
-       emails: [email, ...this.state.emails]
+       emails: [email, ...this.state.emails],
+       employees: employees,
+       agency: agency,
+       player: player
     })
   }
   readEmail = (i) => {
