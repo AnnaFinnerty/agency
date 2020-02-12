@@ -552,6 +552,16 @@ class Content extends Component {
   }
   addPane = (type,info) => {
     console.log('adding pane',info);
+    const id = type+"_"+info.id;
+    //check to see if the request pane if already open
+    for(let i = 0; i < this.state.panes.length; i++){
+      if(this.state.panes[i].id === id){
+        this.setState({
+          activePane: i
+        })
+        return
+      }
+    }
     const pane = {type:type,info:info,pinned:false,id:type+"_"+info.id}
     this.setState({
       panes: [...this.state.panes,pane],
