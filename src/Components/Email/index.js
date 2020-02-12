@@ -70,7 +70,10 @@ class Email extends Component{
              {/* {email.time} */}
           </Grid.Column>
           <Grid.Column width={1} onClick={()=>this.props.archiveEmail(i)}>
-            <Icon name="archive"></Icon>  
+            {
+              this.state.boxShowing !== 'inbox' ? '' :
+              <Icon name="archive"></Icon> 
+            } 
           </Grid.Column>         
         </Grid> 
 
@@ -92,7 +95,8 @@ class Email extends Component{
           !this.state.currentEmail ? '':
           <ViewEmailModal open={this.state.openEmail} 
                           email={selectedEmail} 
-                          closeEmail={this.closeEmail} 
+                          closeEmail={this.closeEmail}
+                          sendEmail={this.sendEmail}  
                           addPane={this.props.addPane}
                           acceptProject={this.props.acceptProject}
                           considerProject={this.props.considerProject}
@@ -105,7 +109,10 @@ class Email extends Component{
         }
         {
           !this.state.newEmail ? '':
-          <NewEmailModal open={this.state.newEmail} closeEmail={this.closeEmail} />
+          <NewEmailModal open={this.state.newEmail} 
+                         closeEmail={this.closeEmail}
+                         sendEmail={this.props.sendEmail} 
+                         />
         }
       </React.Fragment>
     );

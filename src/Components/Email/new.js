@@ -5,6 +5,9 @@ import {Modal,Dropdown,Button} from 'semantic-ui-react';
 class NewEmailModal extends Component{
     constructor(){
         super()
+        this.state = {
+            selected: 0,
+        }
         this.suggestions = [
             {
                 subject:"Hey, let's have a party",
@@ -26,7 +29,31 @@ class NewEmailModal extends Component{
             }
         ]
     }
-    
+    onChange = (e,data) => {
+        this.setState({
+            selected:data.value
+        })
+    }
+    onSubmit = () => {
+        this.props.closeEmail();
+        const email = {
+            subject: this.suggestions[this.state.selected].subject,
+            text: this.suggestions[this.state.selected].subject,
+            sender: {name:{
+                first:"", 
+                last: "", 
+                full:"me",
+                display: "me",
+                short: "me",
+                email: 'me@'
+            }},
+            time: 'time',
+            sent: true,
+            type: 'request',
+            subtype: 'money'
+        }
+        this.props.sendEmail(email);
+    }
     render(){
         const suggestionOptions = this.suggestions.map((suggestion,i)=>(
             {
@@ -36,13 +63,17 @@ class NewEmailModal extends Component{
             }
         ))
         return(
-            <Modal open={this.props.open}>
+            <Modal open={this.props.open} style={{height:'60vh'}}>
                 <Modal.Header>
-                Subject: <Dropdown
-                    placeholder='Select Friend'
+               
+                Subject: 
+                <Dropdown
+                    style={{width:"20vw",display:"inline"}}
+                    value={this.state.selected}
                     fluid
                     selection
                     options={suggestionOptions}
+                    onChange={this.onChange}
                 />
                     <Button onClick={this.props.closeEmail} style={{float:'right'}}>
                         X
@@ -50,11 +81,11 @@ class NewEmailModal extends Component{
                 </Modal.Header>
                 <Modal.Content>
                 <Modal.Description>
-              
+                    {this.suggestions[this.state.selected].text}
                 </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button>Reply</Button>
+                    <Button onClick={this.onSubmit}>Send</Button>
                 </Modal.Actions>
             </Modal>
         )

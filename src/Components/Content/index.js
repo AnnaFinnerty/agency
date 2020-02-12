@@ -378,8 +378,7 @@ class Content extends Component {
   sortEmployees = (employees) => {
     return employees.sort(function(a,b){return b.level - a.level})
   }
-  generateEmail = (event) => {
-    const email = "email";
+  sendEmail = (email) => {
     this.setState({
        emails: [email, ...this.state.emails]
     })
@@ -609,6 +608,7 @@ class Content extends Component {
                                 rejectProject={this.rejectProject}
                                 withdrawProject={this.withdrawProject}
                                 readEmail={this.readEmail}
+                                sendEmail={this.sendEmail}
                                 archiveEmail={this.archiveEmail}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
