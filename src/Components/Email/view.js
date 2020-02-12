@@ -36,6 +36,13 @@ class ViewEmailModal extends Component{
         this.props.dismissTask(null, this.props.email);
         this.props.closeEmail();
     }
+    forward = () => {
+        this.props.closeEmail();
+        const email = this.props.email;
+        email.sent = true;
+        email.forward = true;
+        this.props.sendEmail(email);
+    }
     render(){
         console.log('email view props', this.props)
         let actions;
@@ -46,6 +53,7 @@ class ViewEmailModal extends Component{
                     <React.Fragment>
                         <Button onClick={this.generateTask}>Yeah, let's do it</Button>
                         <Button onClick={this.dismissTask}>Sorry, maybe another time</Button>
+                        <Button onClick={this.dismissTask}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break
 
@@ -54,6 +62,7 @@ class ViewEmailModal extends Component{
                     <React.Fragment>
                         <Button onClick={this.resolveTask}>Sure, no problem</Button>
                         <Button onClick={this.dismissTask}>Sorry, maybe another time</Button>
+                        <Button onClick={this.dismissTask}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break
 
@@ -63,6 +72,7 @@ class ViewEmailModal extends Component{
                         <Button onClick={this.considerProject}>Sure, we'll consider you</Button>
                         <Button onClick={this.acceptProject}>Yeah, let's do it</Button>
                         <Button >Sorry, maybe another time</Button>
+                        <Button onClick={this.forward}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break
 
@@ -71,14 +81,14 @@ class ViewEmailModal extends Component{
                     <React.Fragment>
                         <Button onClick={this.hireApplicant}>You're hired!</Button>
                         <Button onClick={this.dismissApplicant}>Sorry, maybe another time</Button>
+                        <Button onClick={this.forward}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break
 
             default:
                 actions =
                     <React.Fragment>
-                        <Button><Icon name="reply"></Icon></Button>
-                        <Button onClick={this.dismissTask}><Icon name="mail forward"></Icon></Button>
+                        <Button onClick={this.forward}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break
         }

@@ -96,7 +96,7 @@ class Email extends Component{
           <ViewEmailModal open={this.state.openEmail} 
                           email={selectedEmail} 
                           closeEmail={this.closeEmail}
-                          sendEmail={this.sendEmail}  
+                          sendEmail={this.props.sendEmail}  
                           addPane={this.props.addPane}
                           acceptProject={this.props.acceptProject}
                           considerProject={this.props.considerProject}
