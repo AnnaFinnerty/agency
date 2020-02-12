@@ -555,6 +555,7 @@ class Content extends Component {
     const id = type+"_"+info.id;
     //check to see if the request pane if already open
     for(let i = 0; i < this.state.panes.length; i++){
+      console.log('id',this.state.panes[i].id)
       if(this.state.panes[i].id === id){
         this.setState({
           activePane: i
