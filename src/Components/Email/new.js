@@ -50,7 +50,8 @@ class NewEmailModal extends Component{
             time: 'time',
             sent: true,
             type: 'request',
-            subtype: 'money'
+            subtype: 'money',
+            cost: this.suggestions[this.state.selected].cost
         }
         this.props.sendEmail(email);
     }

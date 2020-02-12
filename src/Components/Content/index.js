@@ -379,6 +379,15 @@ class Content extends Component {
     return employees.sort(function(a,b){return b.level - a.level})
   }
   sendEmail = (email) => {
+    const player = this.state.player;
+    const agency = this.state.agency;
+    if(email.type === 'request'){
+      player.augmentReputation();
+      player.decrementHappiness();
+      agency.debit(email.cost)
+    } else {
+      player.decrementReputation();
+    }
     this.setState({
        emails: [email, ...this.state.emails]
     })
