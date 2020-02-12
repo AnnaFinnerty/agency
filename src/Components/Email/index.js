@@ -12,7 +12,7 @@ class Email extends Component{
     this.state = {
       boxShowing: 'inbox',
       openEmail: false,
-      openNew: false,
+      newEmail: false,
       currentEmail: null
     }
   }
@@ -40,7 +40,7 @@ class Email extends Component{
     this.setState({
       currentEmail: null,
       openEmail: false,
-      openNew: false,
+      newEmail: false,
     })
   }
   render(){
@@ -67,7 +67,7 @@ class Email extends Component{
              {email.text}
           </Grid.Column>
           <Grid.Column width={2}onClick={()=>this.openEmail(i)}>
-             {email.time}
+             {/* {email.time} */}
           </Grid.Column>
           <Grid.Column width={1} onClick={()=>this.props.archiveEmail(i)}>
             <Icon name="archive"></Icon>  

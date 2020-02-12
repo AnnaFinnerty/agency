@@ -23,7 +23,7 @@ function Sidebar(props) {
     return(
       <div key={employee.id} className="hover">
         <Grid celled onClick={()=>props.addPane('employee',employee)}>
-          <Grid.Row columns={2}  style={{padding:'0'}}>
+          <Grid.Row columns={3}  style={{padding:'0'}}>
               <Grid.Column width={6}>
                 <PersonalIcon icon={employee.icon}/>
                 {employee.name.display}
@@ -31,19 +31,22 @@ function Sidebar(props) {
                   employee.level === 5 ? "*" : ""
                 }
               </Grid.Column>
-              <Grid.Column width={8}>
+              <Grid.Column width={7}>
                 {employee.title}
               </Grid.Column>
+              <Grid.Column width={1}>
+                {employee.level}
+              </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={2} style={{padding:'0'}}>
+            <Grid.Row columns={3} style={{padding:'0'}}>
               <Grid.Column width={10}>
                 {
                   !employee.projectId ? '' :
                   employee.project.shortName
                 }
               </Grid.Column>
-              <Grid.Column width={1}>
-                {employee.level}
+              <Grid.Column width={2}>
+                {employee.onVacation ? '0': employee.stats.productivity}%
               </Grid.Column>
               <Grid.Column width={1}>
                 {employee.stats.happiness}

@@ -40,22 +40,22 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
             break 
 
         case 'applicant':
-            return this.applicantEmail(employee1)
+            return this.applicantEmail(employee1,time)
 
         case 'project':
-            return this.projectEmail(employee1,employee2)
+            return this.projectEmail(employee1,employee2,time)
 
         case 'complete':
-            return this.completeEmail(employee1,employee2)
+            return this.completeEmail(employee1,employee2,time)
 
         case 'welcome':
-            return this.welcomeEmail(employee1);
+            return this.welcomeEmail(employee1,time);
 
         case 'quit':
-            return this.quitEmail(employee1);
+            return this.quitEmail(employee1,time);
 
         default: 
-            return this.junkEmail(employee1); 
+            return this.junkEmail(employee1,time); 
     }
     const email = {
         subject: subject,
@@ -67,7 +67,7 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
     return email
 }
 
-RandomEmail.prototype.junkEmail = function(employee){
+RandomEmail.prototype.junkEmail = function(employee,time){
     const junkSubject = ["Happy Birthday to " + employee.name.first,'Hike this weekend'];
     const junkBody = ["Hey, it's " + employee.name.display + " 's birthday","Hey, anybody up for a hike this weekend?"];
     const r = this.helpers.RandomBetweenInts(0,junkBody.length);
@@ -75,7 +75,7 @@ RandomEmail.prototype.junkEmail = function(employee){
         subject: junkSubject[r],
         text: junkBody[r],
         sender: employee,
-        time: new Date().toLocaleString(),
+        time: time,
         type: "request",
         subtype: "junk",
         read: false,
@@ -84,16 +84,16 @@ RandomEmail.prototype.junkEmail = function(employee){
     return email;
 }
 
-RandomEmail.prototype.requestEmail = function(employee){
+RandomEmail.prototype.requestEmail = function(employee,time){
     const requestSubject = ['Request','Please help',"Just a thought"];
     const requestBody = ["Could we get a new coffee machine?","I need some time off"];
     const requestType = ['money','time'];
     const r = this.helpers.RandomBetweenInts(0,requestBody.length)
     const email = {
         subject: this.helpers.RandomFromArray(requestSubject),
-        text: requestBody[r],
+        text: requestBody[1],
         sender: employee,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false,
         accept: true,
         type:"request",
@@ -104,14 +104,14 @@ RandomEmail.prototype.requestEmail = function(employee){
     return email;
 }
 
-RandomEmail.prototype.complaintEmail = function(employee1, employee2){
+RandomEmail.prototype.complaintEmail = function(employee1, employee2,time){
     const complaintSubject = ["A complaint", "I'm not happy", "We need to talk","This sucks"];
     const complaintBody = ["I don't like sitting next to " + employee2.name.full + ". Can I move desks?"];
     const email = {
         subject: this.helpers.RandomFromArray(complaintSubject),
         text: this.helpers.RandomFromArray(complaintBody),
         sender: employee1,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false,
         accept: true,
         type:"task",
@@ -121,7 +121,7 @@ RandomEmail.prototype.complaintEmail = function(employee1, employee2){
     return email;
 }
 
-RandomEmail.prototype.applicantEmail = function(employee){
+RandomEmail.prototype.applicantEmail = function(employee,time){
     const applicantSubject = ["Application", 'Open Position','Your job posting','I need a job'];
     const applicantBody = [
         "Hello, my name is " + employee.name.display + " and I would like to apply for a position at your company. Attached, pleased find my resume and cover letter",
@@ -132,7 +132,7 @@ RandomEmail.prototype.applicantEmail = function(employee){
         subject: this.helpers.RandomFromArray(applicantSubject),
         text: this.helpers.RandomFromArray(applicantBody),
         sender: employee,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false,
         consider: true,
         accept: false,
@@ -143,12 +143,12 @@ RandomEmail.prototype.applicantEmail = function(employee){
     return email;
 }
 
-RandomEmail.prototype.projectEmail = function(project){
+RandomEmail.prototype.projectEmail = function(project,time){
     const email = {
         subject: "New project for " + project.company.name,
         text: "Does your company have the bandwidth to complete a new " + project.type + " for " +project.company.name + "?",
         sender: project.company.rep,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false,
         consider: true,
         target: project,
@@ -158,12 +158,12 @@ RandomEmail.prototype.projectEmail = function(project){
     return email;
 }
 
-RandomEmail.prototype.completeEmail = function(project){
+RandomEmail.prototype.completeEmail = function(project,time){
     const email = {
         subject: "Project complete for " + project.company.name,
         text: "Congratulations on finishing the " + project.type + " for " +project.company.name + "?",
         sender: project.company.rep,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false,
         consider: true,
         target: project,
@@ -171,18 +171,18 @@ RandomEmail.prototype.completeEmail = function(project){
     return email;
 }
 
-RandomEmail.prototype.welcomeEmail = function(employee){
+RandomEmail.prototype.welcomeEmail = function(employee,time){
     const email = {
         subject: 'Thanks again',
         text: "Hey, thanks for taking over the personnel decisions. Sure it shouldn't be too hard!",
         sender: employee,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false
     }
     return email;
 }
 
-RandomEmail.prototype.quitEmail = function(employee){
+RandomEmail.prototype.quitEmail = function(employee,time){
     const quitSubject = ['I quit',"I'm out",'Notice of resignation',"Can't take it"]
     const quitBody = [
         "I quit. Sincerely, " + employee.name.display,
@@ -192,14 +192,14 @@ RandomEmail.prototype.quitEmail = function(employee){
         subject: this.helpers.RandomFromArray(quitSubject),
         text: this.helpers.RandomFromArray(quitBody),
         sender: employee,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false,
         importance: employee.level,
     }
     return email;
 }
 
-RandomEmail.prototype.happyEmail = function(employee){
+RandomEmail.prototype.happyEmail = function(employee,time){
     const happySubject = ["Great news",'Announcement',"Let's celebrate"];
     const happyBody = [
         "Great news!, " + employee.name.display + ' is having a baby!',  "Hey guys, " + employee.name.display + ' bachelor party is this weekend!',
@@ -208,13 +208,13 @@ RandomEmail.prototype.happyEmail = function(employee){
         subject: this.helpers.RandomFromArray(happySubject),
         text: this.helpers.RandomFromArray(happyBody),
         sender: employee,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false
     }
     return email;
 }
 
-RandomEmail.prototype.bossEmail = function(boss){
+RandomEmail.prototype.bossEmail = function(boss,time){
     const bossSubject = ["I'm not happy","Things are going great"];
     const bossBody = [
         "Boss email",
@@ -223,7 +223,7 @@ RandomEmail.prototype.bossEmail = function(boss){
         subject: this.helpers.RandomFromArray(bossSubject),
         text: this.helpers.RandomFromArray(bossBody),
         sender: boss,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false,
         type:"boss",
         importance: 5,
@@ -231,7 +231,7 @@ RandomEmail.prototype.bossEmail = function(boss){
     return email;
 }
 
-RandomEmail.prototype.fireEmail = function(boss){
+RandomEmail.prototype.fireEmail = function(boss,time){
     const bossSubject = ["This isn't working out"];
     const bossBody = [
         "Sorry things didn't work out, but I think you'll be happier at another company.",
@@ -240,7 +240,7 @@ RandomEmail.prototype.fireEmail = function(boss){
         subject: this.helpers.RandomFromArray(bossSubject),
         text: this.helpers.RandomFromArray(bossBody),
         sender: boss,
-        time: new Date().toLocaleString(),
+        time: time,
         read: false
     }
     return email;
