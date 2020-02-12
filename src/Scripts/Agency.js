@@ -14,6 +14,9 @@ class Agency{
         this.completedProjects = 0;
         //date founded
     }
+    debit = (amt) => {
+        this.coh -= amt;
+    }
     calculateAgencyParameters = function(employees,projects){
         console.log('updating agency info');
         let totalSalaries = 0;

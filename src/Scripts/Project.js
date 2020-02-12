@@ -38,8 +38,10 @@ class Project{
         let productivity = 0;
         if(workers && workers.length){
             for(let i = 0; i < workers.length; i++){
-                productivity += (workers[i].stats.productivity * workers[i].match);
+                if(!workers[i].onVacation){
+                    productivity += (workers[i].stats.productivity * workers[i].match);
                 }
+            }
             productivity = Math.floor(productivity/this.workers.length);
         }
         this.percentComplete = this.percentComplete + productivity/30;

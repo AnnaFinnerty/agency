@@ -158,7 +158,7 @@ RandomEmployee.prototype.randomSkills = function(focusOne,focusTwo){
 RandomEmployee.prototype.randomStats = function(){
     const stats = {
         productivity: this.randomBetweenInts(1,101),
-        happiness: this.randomBetweenInts(1,101),
+        happiness: this.randomBetweenInts(30,101),
         creativity: this.randomBetweenInts(1,101),
         accuracy: this.randomBetweenInts(1,101),
         curiosity: this.randomBetweenInts(1,101),

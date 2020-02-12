@@ -54,6 +54,7 @@ class Main extends Component {
                   resolveTask={this.props.resolveTask}
                   dismissTask={this.props.dismissTask}
                   generateTask={this.props.generateTask}
+                  sendEmail={this.props.sendEmail}
                   />
 
       case "tasks":
