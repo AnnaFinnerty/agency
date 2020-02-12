@@ -85,7 +85,7 @@ class Content extends Component {
     }
 
     const newProject = industry.newProject(false);
-    const newProjectEmail = this.randomEmailGenerator.generateEmail('project',newProject,time);
+    const newProjectEmail = this.randomEmailGenerator.generateEmail('project',newProject,null,time);
     startEmails.push(newProjectEmail);
 
     numStartProjects = numStartProjects ? numStartProjects : 3;
@@ -93,7 +93,7 @@ class Content extends Component {
       //generate one random applicant per current project
       const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
       startApplicants.push(applicant);
-      const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant,time);
+      const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant,null,time);
       startEmails.push(appEmail);
       //generate a random start project -- true flag means it will be in progress when it starts
       const startProject = industry.newProject(true);
@@ -107,7 +107,7 @@ class Content extends Component {
     }
 
     const sortedEmployees = this.sortEmployees(startEmployees.employees);
-    const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0],time);
+    const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0],null,time);
 
     //update agency income/expenses based on employees/projects
     agency.calculateAgencyParameters(startEmployees.employees,startProjects);
@@ -151,6 +151,14 @@ class Content extends Component {
     const emails = this.state.emails;
     const messages = this.state.messages;
     
+    const time = {
+      hour: this.state.hour,
+      day: this.state.day,
+      month: this.state.month,
+      year: this.state.year,
+      startYear: this.state.startYear,
+    }
+
     const employeeStatsRaw = {
       productivity: 0,
       happiness: 0,
@@ -213,7 +221,7 @@ class Content extends Component {
         if(employees[a]['quit']){
           const t = this.createTask("hire a new employee to replace " + employees[a].name.display,employees[a].level,"hire")
           tasks.push(t);
-          const quitEmail = this.randomEmailGenerator.generateEmail('quit',employees[a]);
+          const quitEmail = this.randomEmailGenerator.generateEmail('quit',employees[a],null,time);
           emails.unshift(quitEmail);
           employees.splice(a,1);
           player.decrementReputation();
@@ -254,7 +262,7 @@ class Content extends Component {
       const employee1 = this.helpers.RandomFromArray(employees);
       const employee2 = this.helpers.RandomFromArray(employees);
       // console.log(employee);
-      const email = this.randomEmailGenerator.generateRandomEmail(boss,employee1,employee2);
+      const email = this.randomEmailGenerator.generateRandomEmail(boss,employee1,employee2,time);
       emails.unshift(email)
       
       //generate random message
@@ -267,7 +275,7 @@ class Content extends Component {
         if(this.state.applicants.length < 10){
           const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
           applicants.push(applicant);
-          const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant);
+          const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant,null,time);
           emails.unshift(appEmail);
         }
       }
@@ -278,7 +286,7 @@ class Content extends Component {
           //add: be able to use an old company
           const project = this.state.industry.newProject();
           projects.push(project);
-          const newProjectEmail = this.randomEmailGenerator.generateEmail('project',project);
+          const newProjectEmail = this.randomEmailGenerator.generateEmail('project',project,null,time);
           emails.unshift(newProjectEmail);
         }
       }

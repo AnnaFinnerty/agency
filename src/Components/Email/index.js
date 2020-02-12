@@ -67,7 +67,7 @@ class Email extends Component{
              {email.text}
           </Grid.Column>
           <Grid.Column width={2}onClick={()=>this.openEmail(i)}>
-             {/* {email.time} */}
+             {email.time.hour < 10 ? "0" + email.time.hour + ":00" : email.time.hour + ":00"} {email.time.day}/ {email.time.month}/{email.time.year}
           </Grid.Column>
           <Grid.Column width={1} onClick={()=>this.props.archiveEmail(i)}>
             {

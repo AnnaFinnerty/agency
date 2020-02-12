@@ -4,35 +4,37 @@ function RandomEmail(){
     this.helpers = new Helpers();
 }
 
-RandomEmail.prototype.generateRandomEmail = function(boss,employee1,employee2){
+RandomEmail.prototype.generateRandomEmail = function(boss,employee1,employee2,time){
     //emails from the boss get priority
     const r = Math.random();
     if(r < .1){
         if(boss.stats.happiness > 60 || boss.stats.happiness < 30){
             return this.bossEmail(boss)
         } else {
-            return this.generateEmail(null,employee1,employee1)
+            return this.generateEmail(null,employee1,employee1,time)
         }
     } else if (r<.5 && r > .1 ) {
         if(employee1.stats.happiness > 80){
             //MTC needs to be replaced!
-            return this.happyEmail(employee1);
+            return this.happyEmail(employee1,time);
         } else if (employee1.stats.happiness < 40) {
-            return this.complaintEmail(employee1,employee2);
+            return this.complaintEmail(employee1,employee2,time);
         } else {
-            return this.requestEmail(employee1);
+            return this.requestEmail(employee1,time);
         }
     } else {
-        return this.generateEmail(null,employee1,employee2);
+        return this.generateEmail(null,employee1,employee2,time);
     }
 }
 
-RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
+RandomEmail.prototype.generateEmail = function(type,employee1,employee2,time){
+    console.log('gen email');
+    console.log(time);
     let text;
     let subject = 'Hello';
     let sender = employee1;
     //bring in time
-    const time =  new Date().toLocaleString();
+    // const time =  new Date().toLocaleString();
     switch(type){
 
         case 'start':
@@ -43,7 +45,7 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2){
             return this.applicantEmail(employee1,time)
 
         case 'project':
-            return this.projectEmail(employee1,employee2,time)
+            return this.projectEmail(employee1,time)
 
         case 'complete':
             return this.completeEmail(employee1,employee2,time)
@@ -122,6 +124,8 @@ RandomEmail.prototype.complaintEmail = function(employee1, employee2,time){
 }
 
 RandomEmail.prototype.applicantEmail = function(employee,time){
+    console.log('app email');
+    console.log(time);
     const applicantSubject = ["Application", 'Open Position','Your job posting','I need a job'];
     const applicantBody = [
         "Hello, my name is " + employee.name.display + " and I would like to apply for a position at your company. Attached, pleased find my resume and cover letter",

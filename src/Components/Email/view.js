@@ -87,7 +87,8 @@ class ViewEmailModal extends Component{
     return(
         <Modal open={this.props.open}>
         <Modal.Header>
-            {this.props.email.subject}
+            {this.props.email.subject}|
+            {this.props.email.time.hour < 10 ? "0" + this.props.email.time.hour + ":00" : this.props.email.time.hour + ":00"} {this.props.email.time.day}/ {this.props.email.time.month}/{this.props.email.time.year}
             <Button onClick={this.props.closeEmail} style={{float:'right'}}>
                 X
             </Button>
@@ -95,7 +96,6 @@ class ViewEmailModal extends Component{
         <Modal.Content>
         <Header>{this.props.email.sender.name.email}</Header>
         <Header>to: you@companyname.com</Header>
-        <Header>{this.props.email.time}</Header>
         <Modal.Description>
             {this.props.email.text}
         </Modal.Description>
