@@ -10,7 +10,7 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      testing: false,
+      testing: true,
       appModalOpen: true,
       appModalView: "instructions"
     }
