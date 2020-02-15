@@ -2,7 +2,7 @@ import React from 'react';
 import {Icon} from 'semantic-ui-react';
 
 const Logo = (props) => (
-    <div style={{backgroundColor:"white",height:'14vh',paddingTop:'3vh'}}>
+    <div className="logo">
         <Icon 
               onClick={()=>props.appOpenModal('about')}
               style={{position:"fixed",left:"1vw"}} 

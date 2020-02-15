@@ -611,7 +611,7 @@ class Content extends Component {
                       />
                 }
                       
-                        <div className="main-container">
+                  <div className="main-container">
                         <Header 
                           hour={this.state.hour} 
                           day={this.state.day}
@@ -627,9 +627,20 @@ class Content extends Component {
                           employeeStats={this.state.employeeStats}
                           score={this.state.player.score}
                           reputation={this.state.player.reputation}
+                          appOpenModal={this.props.appOpenModal}
                           mobile={this.props.mobile}
                           />
-                          
+                          {
+                            !this.props.mobile ? '' :
+                            <Sidebar  employees={this.state.employees} 
+                                          projects={this.state.projects} 
+                                          applicants={this.state.applicants} 
+                                          addPane={this.addPane}
+                                          dismissApplicant={this.dismissApplicant}
+                                          appOpenModal={this.props.appOpenModal}
+                                          mobile={this.props.mobile}
+                                />
+                          }
                           <Main panes={this.state.panes} 
                                 activePane={this.state.activePane}
                                 addPane={this.addPane}

@@ -113,7 +113,10 @@ function Sidebar(props) {
   ]
   return (
     <aside>
-      <Logo appOpenModal={props.appOpenModal}/>
+      {
+        props.mobile ? '' :
+        <Logo appOpenModal={props.appOpenModal}/> 
+      }
       <Tab panes={panes} /> 
     </aside>
   );
