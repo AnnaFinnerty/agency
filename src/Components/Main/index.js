@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 
 import Email from '../Email';
 import Tasks from '../Tasks';
-import Employee from '../Employee';
-import Project from '../Project';
+import Employee from '../Employee/view.js';
+import Project from '../Project/view.js';
 
 import { Menu, Tab, Icon } from 'semantic-ui-react'
 import '../../App.css';
