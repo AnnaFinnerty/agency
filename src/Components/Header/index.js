@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import IndustryModal from '../Industry/modal';
 import AgencyModal from '../Agency/modal';
+import Logo from '../Logo';
 import Helpers from '../../Scripts/Helpers';
 
 
@@ -65,6 +66,10 @@ class Header extends Component{
     return (
       <React.Fragment>
         <header>
+          {
+            !this.props.mobile ? '' :
+            <Logo appOpenModal={this.props.appOpenModal}/> 
+          }
           <nav>
             <Grid celled='internally'>
                 <Grid.Column width={5} style={{padding:"0 10px"}}>
