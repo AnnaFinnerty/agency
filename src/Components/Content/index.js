@@ -604,6 +604,7 @@ class Content extends Component {
                                 applicants={this.state.applicants} 
                                 addPane={this.addPane}
                                 dismissApplicant={this.dismissApplicant}
+                                appOpenModal={this.props.appOpenModal}
                       />
                         <div className="main-container">
                         <Header 

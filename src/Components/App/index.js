@@ -12,13 +12,13 @@ class App extends Component {
     this.state = {
       testing: false,
       appModalOpen: true,
-      appModalView: "new"
+      appModalView: "instructions"
     }
   }
   //build out login/logout
   openModal = (view) => {
     this.setState({
-      appModalOpen: false,
+      appModalOpen: true,
       appModalView: view ? view : "instructions"
     })
   }

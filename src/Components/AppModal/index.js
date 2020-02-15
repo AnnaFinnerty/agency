@@ -34,17 +34,21 @@ class AppModal extends Component{
 
         }
         return(
-            <Modal open={this.props.open}>
+            <Modal open={this.props.open} style={{height:"50vh"}}>
                 <Modal.Header>
-                    Instructions
+                    {this.props.view}
                     <Button onClick={this.props.closeModal} style={{float:'right'}}>
                         X
                     </Button>
                 </Modal.Header>
-                <Modal.Content>
+                <Modal.Content style={{height:"40vh"}}>
                     {content}
-                    <span>about</span>
                 </Modal.Content>
+                <Modal.Actions style={{textAlign:'center'}}>
+                    {/* <span onClick={()=>{this.props.openModal('settings')}} className="fanchor">settings</span> */}
+                    <span onClick={()=>{this.props.openModal('instructions')}} className="fanchor">instructions</span>
+                    <span onClick={()=>{this.props.openModal('about')}} className="fanchor">about</span>
+                </Modal.Actions>
             </Modal>
         )
     }
