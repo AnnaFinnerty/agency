@@ -12,11 +12,21 @@ class App extends Component {
     this.state = {
       testing: true,
       appModalOpen: true,
-      appModalView: "instructions"
+      appModalView: "instructions",
+      instructionOnOpen: false,
+      mobile: window.innerWidth < 800
     }
+    window.addEventListener('resize',this.resize)
+  }
+  resize = () => {
+    console.log('resized');
+    this.setState({
+      mobile: window.innerWidth < 800
+    })
   }
   //build out login/logout
   openModal = (view) => {
+    console.log('opening modal:'+view)
     this.setState({
       appModalOpen: true,
       appModalView: view ? view : "instructions"
@@ -31,8 +41,11 @@ class App extends Component {
   render(){
     return (
       <React.Fragment>
-        <Content testing={this.state.testing} appOpenModal ={this.openModal}/>
-        <AppModal open={this.state.appModalOpen && !this.state.testing} 
+        <Content  testing={this.state.testing} 
+                  appOpenModal ={this.openModal}
+                  mobile={this.state.mobile}
+                  />
+        <AppModal open={this.state.appModalOpen && this.state.instructionOnOpen} 
                   view={this.state.appModalView} 
                   openModal={this.openModal}
                   closeModal={this.closeModal}

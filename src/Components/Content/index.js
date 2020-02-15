@@ -599,13 +599,18 @@ class Content extends Component {
     return (
       <React.Fragment>
           <div className="app">
-                      <Sidebar  employees={this.state.employees} 
+                {
+                  this.props.mobile ? '' :
+                  <Sidebar  employees={this.state.employees} 
                                 projects={this.state.projects} 
                                 applicants={this.state.applicants} 
                                 addPane={this.addPane}
                                 dismissApplicant={this.dismissApplicant}
                                 appOpenModal={this.props.appOpenModal}
+                                mobile={this.props.mobile}
                       />
+                }
+                      
                         <div className="main-container">
                         <Header 
                           hour={this.state.hour} 
@@ -622,6 +627,7 @@ class Content extends Component {
                           employeeStats={this.state.employeeStats}
                           score={this.state.player.score}
                           reputation={this.state.player.reputation}
+                          mobile={this.props.mobile}
                           />
                           
                           <Main panes={this.state.panes} 
