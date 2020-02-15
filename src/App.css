@@ -95,3 +95,11 @@ li{
 .hover:hover{
   background: goldenrod;
 }
+
+.fanchor{
+  margin: 0 2vw;
+}
+
+.fanchor:hover{
+  text-decoration: underline;
+}
