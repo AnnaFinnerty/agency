@@ -147,14 +147,11 @@ class Content extends Component {
     //update time 
     const agency = this.state.agency;
     let player = this.state.player;
-    // let newEmployeeStats = this.state.employeeStats;
     let hour = this.state.hour;
     let day = this.state.day;
     let month = this.state.month;
     let year = this.state.year;
-    // const employees = this.state.employees;
-    // const applicants = this.state.applicants;
-    let projects = this.state.projects;
+    // let projects = this.state.projects;
     const tasks = this.state.tasks;
 
     
@@ -192,7 +189,6 @@ class Content extends Component {
     //if the agency runs out of cash or the bosses happiness drops to 0, you're fired
     if(this.state.agency.coh <= 0 || this.state.employees[0].happiness <= 0){
       this.emailManager.generateEmail(time,this.state.employees[0]);
-      // emails.unshift(email);
       this.setState({
         emails: this.emailManager.emails
       })
@@ -210,26 +206,23 @@ class Content extends Component {
         this.emailManager.generateEmail('quit',quitEmployees[i],null,time);
         player.decrementReputation();
       }
-   
-      const projectsToDelete = [];
+      
+      //update and find completed projects
+      const completedProjects = this.projectManager.updateProjects(this.projectManager.employeesByProject);
       //daily project update
-      for(let a = 0; a < projects.length; a++){
-        //update project productivity 
-        const employees = this.employeeManager.getEmployeesByProject(projects[a].id);
-        projects[a].calculateProductivity(employees);
-        //find completed projects
-        if(projects[a].complete){
-          projectsToDelete.push(projects[a]);
-          const endTask = this.createTask("find a new project",3,"project")
-          tasks.push(endTask);
-          player.augmentScore(10);
-          player.augmentReputation();
-          player.augmentHappiness();
-        }
+      //remove complete projects
+      for(let a = 0; a < completedProjects.completed.length; a++){
+        const endTask = this.createTask("find a new project",3,"project")
+        tasks.push(endTask);
+        player.augmentScore(10);
+        player.augmentReputation();
+        player.augmentHappiness();
       }
-      //remove completed projects
-      for(let b = 0; b < projectsToDelete.length; b++){
-        projects.splice(projectsToDelete[b],1);
+      //remove failed projects
+      for(let b = 0; b < completedProjects.failed.length; b++){
+        player.augmentScore(-10);
+        player.decrementReputation();
+        player.decrementHappiness();
       }
     } 
     
@@ -263,7 +256,7 @@ class Content extends Component {
           //generate new project
           //add: be able to use an old company
           const project = this.state.industry.newProject();
-          projects.push(project);
+          this.projectManager.addProject(project);
           this.emailManager.generateEmail('project',project,null,time);
         }
       }
@@ -271,7 +264,7 @@ class Content extends Component {
 
     //monthly updates
     if(hour === 0 && day === 30){
-      projects = agency.monthlyUpdate(projects);
+      agency.monthlyUpdate(this.projectManager.projects);
     }
 
     //set new state
@@ -282,7 +275,7 @@ class Content extends Component {
       year: year,
       employees: this.employeeManager.employees,
       applicants: this.employeeManager.applicants,
-      projects: projects,
+      projects: this.projectManager.projects,
       emails: this.emailManager.emails,
       messages: this.messageManager.messages,
       tasks: tasks,
@@ -298,111 +291,6 @@ class Content extends Component {
       timeRunning: false
     })
   }
-  // hireApplicant = (applicant) => {
-  //   //mtc check to see if this completes a task
-  //   console.log('hiring applicant', applicant)
-  //   //TODO need to get new id number for applicant
-  //   applicant.id = this.randomEmployeeGenerator.generateEmployeeID();
-  //   const agency = this.state.agency;
-  //   const employees = this.sortEmployees([applicant, ...this.state.employees])
-  //   agency.calculateAgencyParameters(employees,this.state.projects);
-  //   this.setState({
-  //     employees: employees,
-  //     applicants:  this.state.applicants.filter((a) => applicant.id !== a.id),
-  //     agency: agency
-  //   })
-  // }
-  // dismissApplicant = (info) => {
-  //   console.log('dismissing applicant', info)
-  //   this.setState({
-  //     applicants:  this.state.applicants.filter((applicant) => applicant.id !== info.id)
-  //   })
-  // }
-  // updateEmployee = (updatedEmployee) => {
-  //   //mtc check to see if this completes a task
-  //   console.log('updating employee');
-  //   console.log(updatedEmployee);
-  //   const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-  //   if(updatedEmployee.projectId === null){
-  //     updatedEmployee.project.removeWorker(updatedEmployee);
-  //   }
-  //   updatedEmployee.project.calculateProductivity();
-  //   const projects = this.state.projects.filter((project) => project.id !== updatedEmployee.project.id ? project : updatedEmployee.project);
-  //   const agency = this.state.agency;
-  //   agency.calculateAgencyParameters(employees,projects);
-  //   console.log(updatedEmployee);
-  //   this.setState({
-  //     employees: employees,
-  //     projects: projects,
-  //     agency: agency
-  //   })
-  // }
-  // updateEmployeeLevel = (updatedEmployee) => {
-  //   //mtc check to see if this completes a task
-  //   console.log('promoting or demoting employee');
-  //   const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-  //   this.setState({
-  //     employees: employees
-  //   })
-  // }
-  // fireEmployee = (info) => {
-  //   console.log('firing employee', info)
-  //   const employees = this.state.employees.filter((employee) => employee.id !== info);
-  //   const sortedEmployees = this.sortEmployees(employees);
-  //   const agency = this.state.agency;
-  //   //mtc check to see if this completes a task, and remove task
-  //   agency.calculateAgencyParameters(employees,this.state.projects);
-  //   this.setState({
-  //     employees: sortedEmployees,
-  //     panes: this.state.panes.filter((pane) => pane.id !== "employee_"+info),
-  //     activePane: this.state.activePane - 1,
-  //   })
-  // }
-  // sortEmployees = (employees) => {
-  //   return employees.sort(function(a,b){return b.level - a.level})
-  // }
-  // sendEmail = (email) => {
-  //   const player = this.state.player;
-  //   const agency = this.state.agency;
-  //   let employees = this.state.employees;
-  //   if(email.type === 'request'){
-  //     player.augmentReputation();
-  //     player.decrementHappiness();
-  //     agency.debit(email.cost);
-  //     employees = employees.map((employee)=>{employee.satisfy(10);return employee})
-  //   } else {
-  //     player.decrementReputation();
-  //   }
-  //   this.setState({
-  //      emails: [email, ...this.state.emails],
-  //      employees: employees,
-  //      agency: agency,
-  //      player: player
-  //   })
-  // }
-  // readEmail = (i) => {
-  //   console.log('reading email');
-  //   const updatedEmail = this.state.emails[i];
-  //   updatedEmail.read = true;
-  //   const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
-  //   this.setState({
-  //     emails: emails
-  //   })
-  // }
-  // archiveEmail = (i) => {
-  //   console.log('archiving email');
-  //   const updatedEmail = this.state.emails[i];
-  //   updatedEmail.archived = true;
-  //   const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
-  //   this.setState({
-  //     emails: emails
-  //   })
-  // }
-  // deleteEmail = (i) => {
-  //   this.setState({
-  //     emails: this.state.emails.filter((email,x) => x !== i)
-  //   })
-  // }
   createTask = (text,urgency,action,requester,type,target) => {
     const task = {
       text: text,
@@ -492,39 +380,39 @@ class Content extends Component {
   //     messages: [...this.state.messages,message]
   //   })
   // }
-  considerProject = (consideredProject) => {
-    console.log('considering project', consideredProject);
-    consideredProject.considering = true;
-    const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
-    this.setState({
-      projects: projects
-    })
-  }
-  acceptProject = (consideredProject) => {
-    console.log('accepting project', consideredProject);
-    consideredProject.accepted = true;
-    const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
-    console.log(projects);
-    this.setState({
-      projects: projects
-    })
-  }
-  rejectProject = (rejectedProject) => {
-    console.log('rejecting project', rejectedProject)
-    this.setState({
-      projects: this.state.projects.filter((project) => project.id !== rejectedProject)
-    })
-  }
-  withdrawProject = (withdrawnProject) => {
-    console.log('withdraw project', withdrawnProject)
-    //call to industry to decrease company satisfaction
-    console.log(this.state.projects);
-    this.setState({
-      projects: this.state.projects.filter((project) => project.id !== withdrawnProject),
-      panes: this.state.panes.filter((pane) => pane.id !== "project_"+withdrawnProject),
-      activePane: this.state.activePane - 1
-    })
-  }
+  // considerProject = (consideredProject) => {
+  //   console.log('considering project', consideredProject);
+  //   consideredProject.considering = true;
+  //   const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
+  //   this.setState({
+  //     projects: projects
+  //   })
+  // }
+  // acceptProject = (consideredProject) => {
+  //   console.log('accepting project', consideredProject);
+  //   consideredProject.accepted = true;
+  //   const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
+  //   console.log(projects);
+  //   this.setState({
+  //     projects: projects
+  //   })
+  // }
+  // rejectProject = (rejectedProject) => {
+  //   console.log('rejecting project', rejectedProject)
+  //   this.setState({
+  //     projects: this.state.projects.filter((project) => project.id !== rejectedProject)
+  //   })
+  // }
+  // withdrawProject = (withdrawnProject) => {
+  //   console.log('withdraw project', withdrawnProject)
+  //   //call to industry to decrease company satisfaction
+  //   console.log(this.state.projects);
+  //   this.setState({
+  //     projects: this.state.projects.filter((project) => project.id !== withdrawnProject),
+  //     panes: this.state.panes.filter((pane) => pane.id !== "project_"+withdrawnProject),
+  //     activePane: this.state.activePane - 1
+  //   })
+  // }
   updateCollection = (collection,action,data) => {
     const collectionEmitters = {
        employees: this.employeeManager.emit,

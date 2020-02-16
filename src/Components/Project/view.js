@@ -166,7 +166,7 @@ function Project(props) {
       {!props.info.accepted ? 
           "" 
             : 
-          <Button onClick={()=>props.withdrawProject(props.info.id)}>withdraw from project</Button>
+          <Button onClick={()=>props.updateCollection("projects","withdraw",props.info)}>withdraw from project</Button>
       }
     </div>
   );

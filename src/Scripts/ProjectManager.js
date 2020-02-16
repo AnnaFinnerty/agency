@@ -10,7 +10,8 @@ ProjectManager.prototype.emit = function(action,data){
         add: this.addProject.bind(this),
         consider: this.considerProject.bind(this),
         accept: this.acceptProject.bind(this),
-        reject: this.rejectProject.bind(this)
+        reject: this.rejectProject.bind(this),
+        withdraw: this.withdrawFromProject.bind(this)
     }
     if(paths[action]){
         const cb =paths[action];
@@ -39,7 +40,26 @@ ProjectManager.prototype.acceptProject = function(project){
 
 ProjectManager.prototype.rejectProject = function(project){
     console.log('rejecting project')
-    this.projects.filter((p) => p.id !== project.id)
+    this.projects = this.projects.filter((p) => p.id !== project.id)
+}
+
+ProjectManager.prototype.withdrawFromProject = function(project){
+    this.projects = this.projects.filter((p) => p.id !== project.id)
+}
+
+ProjectManager.prototype.updateProjects = function(employeesByProject){
+    const completedProjects = [];
+    const failedProjects = [];
+    for(let i = 0; i < this.projects.length; i++){
+        this.projects[i].calculateProductivity(employeesByProject[this.projects[i].id]);
+        if(this.projects[i].completed){
+            completedProjects.push(this.projects[i])
+        }
+    }
+    return {
+        completed: completedProjects,
+        failed: failedProjects
+    }
 }
 
 ProjectManager.prototype.updateProjectProductity = function(employeesByProject){
