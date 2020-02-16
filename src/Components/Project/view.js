@@ -79,8 +79,8 @@ function Project(props) {
         {props.info.accepted ? "active" : "not accepted"}
         {!props.info.accepted ? 
           <React.Fragment>
-            <Button onClick={()=>props.acceptProject(props.info)}>accept</Button>
-            <Button onClick={()=>props.rejectProject(props.info.id)}>reject</Button>
+            <Button onClick={()=>props.updateCollection("projects","accept",props.info)}>accept</Button>
+            <Button onClick={()=>props.updateCollection("projects","reject",props.info)}>reject</Button>
           </React.Fragment> 
             : 
           ""

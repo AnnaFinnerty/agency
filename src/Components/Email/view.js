@@ -9,11 +9,15 @@ class ViewEmailModal extends Component{
         }
     }
     considerProject = () => {
-        this.props.considerProject(this.props.email.target);
+        this.props.updateCollection('projects','consider',this.props.email.target)
         this.props.closeEmail();
     }
     acceptProject = () => {
-        this.props.acceptProject(this.props.email.target);
+        this.props.updateCollection('projects','accept',this.props.email.target)
+        this.props.closeEmail();
+    }
+    rejectProject = () => {
+        this.props.updateCollection('projects','reject',this.props.email.target)
         this.props.closeEmail();
     }
     hireApplicant = () => {
@@ -71,7 +75,7 @@ class ViewEmailModal extends Component{
                     <React.Fragment>
                         <Button onClick={this.considerProject}>Sure, we'll consider you</Button>
                         <Button onClick={this.acceptProject}>Yeah, let's do it</Button>
-                        <Button >Sorry, maybe another time</Button>
+                        <Button onClick={this.rejectProject}>Sorry, maybe another time</Button>
                         <Button onClick={this.forward}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break
