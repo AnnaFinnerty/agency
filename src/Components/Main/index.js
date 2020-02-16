@@ -22,7 +22,7 @@ class Main extends Component {
                   updateEmployee={this.props.updateEmployee}
                   employees={this.props.employees}
                   projects={this.props.projects}
-                  updateCollection={this.updateCollection}
+                  updateCollection={this.props.updateCollection}
                   />
 
       case 'applicant':
@@ -30,7 +30,7 @@ class Main extends Component {
                   {...info} 
                   hireApplicant={this.props.hireApplicant} 
                   addPane={this.props.addPane}
-                  updateCollection={this.updateCollection}
+                  updateCollection={this.props.updateCollection}
                 />
 
       case 'employee':
@@ -41,7 +41,7 @@ class Main extends Component {
                   fireEmployee={this.props.fireEmployee} 
                   addPane={this.props.addPane} 
                   projects={this.props.projects}
-                  updateCollection={this.updateCollection}
+                  updateCollection={this.props.updateCollection}
                 />
 
       case "email":
@@ -58,7 +58,7 @@ class Main extends Component {
                   dismissTask={this.props.dismissTask}
                   generateTask={this.props.generateTask}
                   sendEmail={this.props.sendEmail}
-                  updateCollection={this.updateCollection}
+                  updateCollection={this.props.updateCollection}
                   />
 
       case "tasks":
@@ -68,7 +68,7 @@ class Main extends Component {
                   resolveTask={this.props.resolveTask}
                   dismissTask={this.props.dismissTask}
                   generateTask={this.props.generateTask}
-                  updateCollection={this.updateCollection}
+                  updateCollection={this.props.updateCollection}
                 />
                   
 
