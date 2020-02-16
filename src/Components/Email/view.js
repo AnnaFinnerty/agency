@@ -17,11 +17,11 @@ class ViewEmailModal extends Component{
         this.props.closeEmail();
     }
     hireApplicant = () => {
-        this.props.hireApplicant(this.props.email.target);
+        this.props.updateCollection('applicants','hire',this.props.email.target)
         this.props.closeEmail();
     }
     dismissApplicant = () => {
-        this.props.dismissApplicant(this.props.email.target);
+        this.props.updateCollection('applicants','dismiss',this.props.email.target)
         this.props.closeEmail();
     }
     resolveTask = () => {

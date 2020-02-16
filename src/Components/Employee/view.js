@@ -66,7 +66,10 @@ class Employee extends Component {
             {this.props.info.title}
           </Grid.Column>
           <Grid.Column width={4}>
-            ID:{this.props.info.id}
+            {
+              this.props.type !== "applicant" ? this.props.info.id :
+              <Button onClick={()=>this.props.updateCollection('applicants','dismiss',this.props.info)}>dismiss</Button>
+            }
           </Grid.Column>
           <Grid.Column width={4}>
             {

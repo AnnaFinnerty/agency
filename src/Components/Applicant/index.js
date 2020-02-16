@@ -13,7 +13,7 @@ const Applicants = (props) => (
           {applicant.skills.map((skill)=><span key={applicant.id+"_"+skill}>{skill}/</span>)}
         </Grid.Column>
         <Grid.Column width={2}>
-          <button onClick={()=>props.dismissApplicant(applicant.id)} >x</button>
+          <button onClick={()=>props.updateCollection('applicants','dismiss',applicant)} >x</button>
         </Grid.Column>
       </Grid.Row>
     )

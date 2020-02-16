@@ -3,6 +3,7 @@ import MatchEmployeeToProject from './MatchEmployeeToProject';
 
 function RandomEmployee(){
     this.employeeId = 100000001;
+    this.applicantId = 200000001;
     this.maxLeaders = 2;
     this.currentLeaders = 0;
     this.usedNames = [];
@@ -16,18 +17,10 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
     const employeesByProject = {}
     //remove projects that aren't accepted from start projects
     startProjects = startProjects.filter((project)=> project.accepted)
-    // const employeeStats = {
-    //                         productivity: 0,
-    //                         happiness: 0,
-    //                         salary: 0,
-    //                       }
     const startEmployees = [];
     //generate random leader and add their stats to initial employee stats
     for(let i = 0; i < numLeaders; i++){ 
         const employee = this.generateRandomEmployee(false,null,5);
-        // employeeStats.productivity += employee.stats.productivity;
-        // employeeStats.happiness += employee.stats.happiness;
-        // employeeStats.salary += employee.salary;
         startEmployees.push(employee);
     }
     //generate start employees
@@ -37,9 +30,6 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
         const project = this.randomFromArray(startProjects);
         //generate new employee using that project and add their stats to initial employee stats
         const employee = this.generateRandomEmployee(false,project);
-        // employeeStats.productivity += employee.stats.productivity;
-        // employeeStats.happiness += employee.stats.happiness;
-        // employeeStats.salary += employee.salary;
         const match = MatchEmployeeToProject(employee,project);
         employee.match = match;
         //add employee to project's workers array
@@ -54,10 +44,6 @@ RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLead
             employeesByProject[employee.projectId].push(employee)
         }
     }
-    // //average intial employee stats
-    // for(let i in employeeStats){
-    //     employeeStats[i] = Math.floor(employeeStats[i]/(numEmployees))
-    // }
     return {
         employees: startEmployees,
         // employeeStats: employeeStats,
@@ -72,10 +58,16 @@ RandomEmployee.prototype.generateEmployeeID = function(){
     return id
 }
 
+RandomEmployee.prototype.generateApplicantID = function(){
+    const id = this.applicantId;
+    this.applicantId += 1;
+    return id
+}
+
 RandomEmployee.prototype.generateRandomEmployee = function(applicant, project, positionLevel){
     // console.log("generating random employee");
     //generate ids for start employees only. Employees usually recieve id on hire.
-    const id = !applicant ? this.generateEmployeeID() : null;
+    const id = !applicant ? this.generateEmployeeID() : this.generateApplicantID();
     //set random employee properties
     const gender = this.randomGender();
     const icon = gender === "male" ? this.randomFromArray(this.maleIcons) : gender === "female" ? this.randomFromArray(this.femaleIcons) : this.randomFromArray(this.neutralIcons);

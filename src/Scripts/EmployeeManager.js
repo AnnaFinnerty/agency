@@ -12,6 +12,7 @@ function EmployeeManager(){
 
 EmployeeManager.prototype.emit = function(action,data){
     const paths = {
+        dismiss: this.dismissApplicant.bind(this),
         hire: this.hireApplicant.bind(this),
         fire: this.fireEmployee.bind(this),
         update: this.updateEmployee.bind(this)
@@ -33,33 +34,55 @@ EmployeeManager.prototype.newEmployees = function(numEmployees,numLeader,project
     this.updateEmployeeStats();
     this.sortEmployeesbyProject();
     console.log('new employees')
-    
     return startStuff
 }
 
-EmployeeManager.prototype.dismissApplicant = function(applicantId){
-    this.applicants = this.applicants.filter((applicant)=>applicant.id !== applicantId)
+EmployeeManager.prototype.newApplicant = function(){
+    const applicant = this.randomEmployee.generateRandomEmployee(true);
+    this.applicants.unshift(applicant)
+    return applicant
 }
 
-EmployeeManager.prototype.hireApplicant = function(applicantId){
+EmployeeManager.prototype.dismissApplicant = function(applicant){
+    this.applicants = this.applicants.filter((a)=>applicant.id !== a.id)
+}
+
+EmployeeManager.prototype.hireApplicant = function(applicant){
     console.log('hiring applicant')
-    const applicant = this.applicants.find((applicant)=>applicant.id === applicantId);
+    this.applicants = this.applicants.filter((a)=>applicant.id !== a.id)
+    console.log(applicant);
     applicant.id = this.randomEmployee.generateEmployeeID();
-    this.applicants = this.applicants.filter((applicant)=>applicant.id !== applicantId)
+    
     this.employees.push(applicant);
     this.sortEmployees();
 }
 
 EmployeeManager.prototype.updateEmployee = function(employee){
     this.employees = this.employees.filter((e)=>employee.id !== e.id ? e : employee)
+    this.sortEmployeesbyProject();
     this.sortEmployees();
     this.updateEmployeeStats();
 }
 
 EmployeeManager.prototype.fireEmployee = function(employeeId){
     this.employees = this.employees.filter((employee)=>employee.id !== employeeId)
+    this.sortEmployeesbyProject();
     this.sortEmployees();
     this.updateEmployeeStats();
+}
+
+EmployeeManager.prototype.updateEmployees = function(){
+    console.log('updating employees!');
+    const quit_employees = [];
+    for(let i = 0; i < this.employees.length; i++){
+        this.employees[i].update();
+        if(this.employees[i].quit){
+            quit_employees.push(this.employee[i]);
+        }
+    }
+    this.sortEmployees();
+    this.updateEmployeeStats();
+    return quit_employees
 }
 
 EmployeeManager.prototype.updateEmployeeStats = function(){

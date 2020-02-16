@@ -26,10 +26,19 @@ const SidebarWrapper = (props) => {
 function Sidebar(props) {
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Employees employees={props.employees} addPane={props.addPane} updateCollection={props.updateCollection}/></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
+                      <Employees employees={props.employees} 
+                                addPane={props.addPane} updateCollection={props.updateCollection}/>
+                    </Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
       render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
-                        <Grid columns={1}><Applicants applicants={props.applicants} addPane={props.addPane}/> </Grid></Tab.Pane> },
+                        <Grid columns={1}>
+                          <Applicants applicants={props.applicants} 
+                                      addPane={props.addPane}
+                                      updateCollection={props.updateCollection}
+                                      /> 
+                        </Grid>
+                    </Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 
       render: () => 
       <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
@@ -43,7 +52,10 @@ function Sidebar(props) {
             <Grid.Column width={1}><Icon name="percent"/></Grid.Column>
           </Grid.Row>
           {/* {projects} */}
-          <Projects projects={props.projects} addPane={props.addPane}/>
+          <Projects projects={props.projects} 
+                    addPane={props.addPane}
+                    updateCollection={props.updateCollection}
+                    />
         </Grid>
       </Tab.Pane> },
     // { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Jobs</Menu.Item>), 
