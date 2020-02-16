@@ -10,18 +10,17 @@ import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
 // import TaskManager from '../../Scripts/TaskManagers';
 // import RandomEmployee from '../../Scripts/RandomEmployee';
-import RandomProject from '../../Scripts/RandomProject';
+// import RandomProject from '../../Scripts/RandomProject';
 // import RandomEmail from '../../Scripts/RandomEmail';
 import RandomMessage from '../../Scripts/RandomMessage';
 import EmployeeManager from '../../Scripts/EmployeeManager';
 import ProjectManager from '../../Scripts/ProjectManager';
 import EmailManager from '../../Scripts/EmailManager';
 import TaskManager from '../../Scripts/TaskManager';
+import MessageManager from '../../Scripts/MessageManager';
 import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
-import MessageManager from '../../Scripts/MessageManager';
-
 
 class Content extends Component {
   constructor(){
@@ -62,11 +61,11 @@ class Content extends Component {
         projectFrequency: .05,
       },
     }
-    // this.taskManager = new TaskManager();
+
     // this.randomEmployeeGenerator = new RandomEmployee();
-    this.randomProjectGenerator = new RandomProject();
+    // this.randomProjectGenerator = new RandomProject();
     // this.randomEmailGenerator = new RandomEmail();
-    this.randomMessageGenerator = new RandomMessage();
+    // this.randomMessageGenerator = new RandomMessage();
     this.employeeManager = new EmployeeManager();
     this.projectManager = new ProjectManager();
     this.emailManager = new EmailManager();
@@ -368,57 +367,13 @@ class Content extends Component {
        employees: employees
     })
   }
-  checkTaskResolution = (array,taskType,targetId) => {
-    for(let i = 0; i < array.length; i++){
-      if(array[i].type === taskType){
-        console.log('task found')
-      }
-    }
-  }
-  // addMessage = (message) => {
-  //   this.setState({
-  //     messages: [...this.state.messages,message]
-  //   })
-  // }
-  // considerProject = (consideredProject) => {
-  //   console.log('considering project', consideredProject);
-  //   consideredProject.considering = true;
-  //   const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
-  //   this.setState({
-  //     projects: projects
-  //   })
-  // }
-  // acceptProject = (consideredProject) => {
-  //   console.log('accepting project', consideredProject);
-  //   consideredProject.accepted = true;
-  //   const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
-  //   console.log(projects);
-  //   this.setState({
-  //     projects: projects
-  //   })
-  // }
-  // rejectProject = (rejectedProject) => {
-  //   console.log('rejecting project', rejectedProject)
-  //   this.setState({
-  //     projects: this.state.projects.filter((project) => project.id !== rejectedProject)
-  //   })
-  // }
-  // withdrawProject = (withdrawnProject) => {
-  //   console.log('withdraw project', withdrawnProject)
-  //   //call to industry to decrease company satisfaction
-  //   console.log(this.state.projects);
-  //   this.setState({
-  //     projects: this.state.projects.filter((project) => project.id !== withdrawnProject),
-  //     panes: this.state.panes.filter((pane) => pane.id !== "project_"+withdrawnProject),
-  //     activePane: this.state.activePane - 1
-  //   })
-  // }
   updateCollection = (collection,action,data) => {
     const collectionEmitters = {
        employees: this.employeeManager.emit,
        applicants: this.employeeManager.emit,
        emails: this.emailManager.emit,
        projects: this.projectManager.emit,
+       tasks: this.taskManager.emit
     }
     if(collectionEmitters[collection]){
       //pass action and data to requested data collection
@@ -435,8 +390,8 @@ class Content extends Component {
         activePane = this.state.activePane -1;
       }
 
-      if(action === "hire"){
-        //if someone's been hired, we need to update employees and applicants
+      if(collection === "employees" || collection === "applicants"){
+        //we need to update employees and applicants together because they are returned together
         this.setState({
           employees: result.employees,
           applicants: result.applicants,
