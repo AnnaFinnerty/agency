@@ -13,9 +13,12 @@ import RandomEmployee from '../../Scripts/RandomEmployee';
 import RandomProject from '../../Scripts/RandomProject';
 import RandomEmail from '../../Scripts/RandomEmail';
 import RandomMessage from '../../Scripts/RandomMessage';
+import EmployeeManager from '../../Scripts/EmployeeManager';
+import TaskManager from '../../Scripts/TaskManager';
 import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
+import MessageManager from '../../Scripts/MessageManager';
 
 
 class Content extends Component {
@@ -62,6 +65,9 @@ class Content extends Component {
     this.randomProjectGenerator = new RandomProject();
     this.randomEmailGenerator = new RandomEmail();
     this.randomMessageGenerator = new RandomMessage();
+    this.employeeManager = new EmployeeManager();
+    this.taskManager = new TaskManager();
+    this.messageManager = new MessageManager();
     this.helpers = new Helpers();
   }
   componentDidMount(){
@@ -149,7 +155,7 @@ class Content extends Component {
     let projects = this.state.projects;
     const tasks = this.state.tasks;
     const emails = this.state.emails;
-    const messages = this.state.messages;
+    // const messages = this.state.messages;
     
     const time = {
       hour: this.state.hour,
@@ -267,8 +273,10 @@ class Content extends Component {
       
       //generate random message
       const employee3 = this.helpers.RandomFromArray(employees);
-      const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee3);
-      messages.push(message)
+      // const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee3);
+      // messages.push(message)
+      this.messageManager.addRandomMessage(employee3,time);
+      console.log(this.messageManager);
 
       if(hour%2===0 && this.state.applicants < 8){
         //generate a new applicant
@@ -299,7 +307,7 @@ class Content extends Component {
 
     //constrain maximum amount of emails/messages
     const finalEmails = emails.length > 100 ? emails.splice(0,100) : emails;
-    const finalMessages = messages.length > 100 ? messages.splice(0,100) : messages;
+    // const finalMessages = messages.length > 100 ? messages.splice(0,100) : messages;
     //set new state
     this.setState({
       hour: hour,
@@ -309,7 +317,7 @@ class Content extends Component {
       employees: employees,
       projects: projects,
       emails: finalEmails,
-      messages: finalMessages,
+      messages: this.messageManager.messages,
       tasks: tasks,
       agency: agency,
       employeeStats: newEmployeeStats,
@@ -550,6 +558,21 @@ class Content extends Component {
       activePane: this.state.activePane - 1
     })
   }
+  updateCollection = (collection,action,data) => {
+    const collectionEmitters = {
+       employees: this.employeeManager.emit
+    }
+    if(collectionEmitters[collection]){
+      const cb = collectionEmitters[collection];
+      const result = cb(action,data);
+      this.setState({
+        [collection]: result,
+      })
+    } else {
+      console.log('collection emitter not found for ' + collection)
+    }
+
+  }
   addPane = (type,info) => {
     console.log('adding pane',info);
     const id = type+"_"+info.id;
@@ -602,12 +625,13 @@ class Content extends Component {
                 {
                   this.props.mobile ? '' :
                   <Sidebar  employees={this.state.employees} 
-                                projects={this.state.projects} 
-                                applicants={this.state.applicants} 
-                                addPane={this.addPane}
-                                dismissApplicant={this.dismissApplicant}
-                                appOpenModal={this.props.appOpenModal}
-                                mobile={this.props.mobile}
+                            projects={this.state.projects} 
+                            applicants={this.state.applicants} 
+                            addPane={this.addPane}
+                            dismissApplicant={this.dismissApplicant}
+                            appOpenModal={this.props.appOpenModal}
+                            mobile={this.props.mobile}
+                            updateCollection={this.updateCollection}
                       />
                 }
                       
@@ -639,6 +663,7 @@ class Content extends Component {
                                           dismissApplicant={this.dismissApplicant}
                                           appOpenModal={this.props.appOpenModal}
                                           mobile={this.props.mobile}
+                                          updateCollection={this.updateCollection}
                                 />
                           }
                           <Main panes={this.state.panes} 
@@ -664,7 +689,8 @@ class Content extends Component {
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
-                                employees={this.state.employees} 
+                                employees={this.state.employees}
+                                updateCollection={this.updateCollection} 
                                 />
                         </div>
                 <footer></footer>

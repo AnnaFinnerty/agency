@@ -1,8 +1,6 @@
-import { func } from "prop-types";
-
 function TaskManager(){
     console.log('task manager running');
-    this.tasks = ["hire applicant"];
+    this.tasks = [];
 }
 
 TaskManager.prototype.addTask = function(task){

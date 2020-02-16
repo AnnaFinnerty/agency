@@ -26,7 +26,7 @@ const SidebarWrapper = (props) => {
 function Sidebar(props) {
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Employees employees={props.employees} addPane={props.addPane}/></Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}><Employees employees={props.employees} addPane={props.addPane} updateCollection={props.updateCollection}/></Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
       render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
                         <Grid columns={1}><Applicants applicants={props.applicants} addPane={props.addPane}/> </Grid></Tab.Pane> },
