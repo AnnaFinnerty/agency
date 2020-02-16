@@ -4,29 +4,6 @@ function RandomEmail(){
     this.helpers = new Helpers();
 }
 
-RandomEmail.prototype.generateRandomEmail = function(boss,employee1,employee2,time){
-    //emails from the boss get priority
-    const r = Math.random();
-    if(r < .1){
-        if(boss.stats.happiness > 60 || boss.stats.happiness < 30){
-            return this.bossEmail(boss)
-        } else {
-            return this.generateEmail(null,employee1,employee1,time)
-        }
-    } else if (r<.5 && r > .1 ) {
-        if(employee1.stats.happiness > 80){
-            //MTC needs to be replaced!
-            return this.happyEmail(employee1,time);
-        } else if (employee1.stats.happiness < 40) {
-            return this.complaintEmail(employee1,employee2,time);
-        } else {
-            return this.requestEmail(employee1,time);
-        }
-    } else {
-        return this.generateEmail(null,employee1,employee2,time);
-    }
-}
-
 RandomEmail.prototype.generateEmail = function(type,employee1,employee2,time){
     console.log('gen email');
     console.log(time);
@@ -55,6 +32,9 @@ RandomEmail.prototype.generateEmail = function(type,employee1,employee2,time){
 
         case 'quit':
             return this.quitEmail(employee1,time);
+
+        case 'fire':
+            return this.fireEmail(employee1,time);
 
         default: 
             return this.junkEmail(employee1,time); 

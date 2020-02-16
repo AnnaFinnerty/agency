@@ -3,10 +3,13 @@ import React from 'react';
 
 import ModalContext from '../Modal/context';
 import Logo from '../Logo';
+import Projects from '../Project';
+import Applicants from '../Applicant';
 import PersonalIcon from '../Employee/icon';
 
 import '../../App.css';
 import { Tab, Grid, Menu, Icon } from 'semantic-ui-react'
+import Employees from '../Employee';
 
 const SidebarWrapper = (props) => {
 
@@ -21,78 +24,21 @@ const SidebarWrapper = (props) => {
 
 //sections: employees, project
 function Sidebar(props) {
-  const employees = props.employees.map((employee) => {
-    return(
-      <div key={employee.id} className="hover">
-        <Grid celled onClick={()=>props.addPane('employee',employee)}>
-          <Grid.Row columns={3}  style={{padding:'0'}}>
-              <Grid.Column width={6}>
-                <PersonalIcon icon={employee.icon}/>
-                {employee.name.display}
-                {
-                  employee.level === 5 ? "*" : ""
-                }
-              </Grid.Column>
-              <Grid.Column width={7}>
-                {employee.title}
-              </Grid.Column>
-              <Grid.Column width={1}>
-                {employee.level}
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={3} style={{padding:'0'}}>
-              <Grid.Column width={10}>
-                {
-                  !employee.projectId ? '' :
-                  employee.project.shortName
-                }
-              </Grid.Column>
-              <Grid.Column width={2}>
-                {employee.onVacation ? '0': employee.stats.productivity}%
-              </Grid.Column>
-              <Grid.Column width={1}>
-                {employee.stats.happiness}
-              </Grid.Column>
-          </Grid.Row>
-      </Grid>
-      </div>
-    )
-  })
-  const projects = props.projects.map((project) => {
-    if(project.accepted || project.considering){
-      return(
-        <Grid.Row className="hover" columns={4} key={project.id} onClick={()=>props.addPane('project',project)}>
-          <Grid.Column width={7}>{project.name}</Grid.Column>
-          <Grid.Column width={1}><Icon name={project.accepted ? "check" : "question"}></Icon></Grid.Column>
-          <Grid.Column width={1}>{project.workers.length}</Grid.Column>
-          <Grid.Column width={1}>{project.productivity}%</Grid.Column>
-          <Grid.Column width={1}>{project.monthsToCompletion}</Grid.Column>
-          <Grid.Column width={1}>{project.percentComplete}%</Grid.Column>
-        </Grid.Row>
-      )
-    }
-  })
-  const applicants = props.applicants.map((applicant) => {
-    return(
-      <Grid.Row className="hover" columns={3} key={applicant.id}> 
-        <Grid.Column width={4} onClick={()=>props.addPane('applicant',applicant)}>
-        {applicant.name.display}
-        </Grid.Column>
-        <Grid.Column width={10} onClick={()=>props.addPane('applicant',applicant)}>
-          {applicant.skills.map((skill)=><span key={applicant.id+"_"+skill}>{skill}/</span>)}
-        </Grid.Column>
-        <Grid.Column width={2}>
-          <button onClick={()=>props.dismissApplicant(applicant.id)} >x</button>
-        </Grid.Column>
-      </Grid.Row>
-    )
-  })
   const panes = [
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Employees</Menu.Item>), 
-      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>{employees}</Tab.Pane> },
+      render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
+                      <Employees employees={props.employees} 
+                                addPane={props.addPane} updateCollection={props.updateCollection}/>
+                    </Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Applicants</Menu.Item>), 
       render: () => <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
-                        <Grid columns={1}> {applicants}</Grid></Tab.Pane> },
+                        <Grid columns={1}>
+                          <Applicants applicants={props.applicants} 
+                                      addPane={props.addPane}
+                                      updateCollection={props.updateCollection}
+                                      /> 
+                        </Grid>
+                    </Tab.Pane> },
     { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Projects</Menu.Item>), 
       render: () => 
       <Tab.Pane style={{height: '85vh',overflowY:"scroll",backgroundColor:'gainsboro'}}>
@@ -105,7 +51,11 @@ function Sidebar(props) {
             <Grid.Column width={1}><Icon name="calendar alternate"/></Grid.Column>
             <Grid.Column width={1}><Icon name="percent"/></Grid.Column>
           </Grid.Row>
-          {projects}
+          {/* {projects} */}
+          <Projects projects={props.projects} 
+                    addPane={props.addPane}
+                    updateCollection={props.updateCollection}
+                    />
         </Grid>
       </Tab.Pane> },
     // { menuItem: (<Menu.Item style={{padding: '1vh 1vw'}}>Jobs</Menu.Item>), 

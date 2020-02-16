@@ -9,14 +9,18 @@ import Player from '../../Scripts/Player'
 import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
 // import TaskManager from '../../Scripts/TaskManagers';
-import RandomEmployee from '../../Scripts/RandomEmployee';
-import RandomProject from '../../Scripts/RandomProject';
-import RandomEmail from '../../Scripts/RandomEmail';
+// import RandomEmployee from '../../Scripts/RandomEmployee';
+// import RandomProject from '../../Scripts/RandomProject';
+// import RandomEmail from '../../Scripts/RandomEmail';
 import RandomMessage from '../../Scripts/RandomMessage';
+import EmployeeManager from '../../Scripts/EmployeeManager';
+import ProjectManager from '../../Scripts/ProjectManager';
+import EmailManager from '../../Scripts/EmailManager';
+import TaskManager from '../../Scripts/TaskManager';
+import MessageManager from '../../Scripts/MessageManager';
 import Helpers from '../../Scripts/Helpers';
 
 import '../../App.css';
-
 
 class Content extends Component {
   constructor(){
@@ -57,11 +61,16 @@ class Content extends Component {
         projectFrequency: .05,
       },
     }
-    // this.taskManager = new TaskManager();
-    this.randomEmployeeGenerator = new RandomEmployee();
-    this.randomProjectGenerator = new RandomProject();
-    this.randomEmailGenerator = new RandomEmail();
-    this.randomMessageGenerator = new RandomMessage();
+
+    // this.randomEmployeeGenerator = new RandomEmployee();
+    // this.randomProjectGenerator = new RandomProject();
+    // this.randomEmailGenerator = new RandomEmail();
+    // this.randomMessageGenerator = new RandomMessage();
+    this.employeeManager = new EmployeeManager();
+    this.projectManager = new ProjectManager();
+    this.emailManager = new EmailManager();
+    this.taskManager = new TaskManager();
+    this.messageManager = new MessageManager();
     this.helpers = new Helpers();
   }
   componentDidMount(){
@@ -71,9 +80,9 @@ class Content extends Component {
     console.log("starting game");
     const industry = new Industry();
     const agency = new Agency();
-    const startProjects = [];
-    const startApplicants = [];
-    const startEmails = [];
+    // const startProjects = [];
+    // const startApplicants = [];
+    // const startEmails = [];
 
     const startYear = new Date().getFullYear() - 1;
     const time = {
@@ -85,43 +94,41 @@ class Content extends Component {
     }
 
     const newProject = industry.newProject(false);
-    const newProjectEmail = this.randomEmailGenerator.generateEmail('project',newProject,null,time);
-    startEmails.push(newProjectEmail);
+    console.log(this.projectManager)
+    this.projectManager.addProject(newProject);
+    this.emailManager.generateEmail('project',newProject,null,time);
+    // startEmails.push(newProjectEmail);
 
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
       //generate one random applicant per current project
-      const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
-      startApplicants.push(applicant);
-      const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant,null,time);
-      startEmails.push(appEmail);
+      const applicant = this.employeeManager.newApplicant();
+      this.emailManager.generateEmail('applicant',applicant,null,time);
       //generate a random start project -- true flag means it will be in progress when it starts
       const startProject = industry.newProject(true);
-      startProjects.push(startProject);
+      this.projectManager.addProject(startProject);
     }
-    const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
+    this.employeeManager.newEmployees(7,1,this.projectManager.projects);
 
     //now that employees have been assigned, update projects with employee info
-    for(let i = 0 ; i < startProjects.length; i ++){
-      startProjects[i].calculateProductivity(startEmployees.employeesByProject[startProjects[i].id]);
-    }
+    this.projectManager.updateProjectProductity(this.employeeManager.employeesByProject)
 
-    const sortedEmployees = this.sortEmployees(startEmployees.employees);
-    const welcomeEmail = this.randomEmailGenerator.generateEmail('start',sortedEmployees[0],null,time);
+    //generate welcome email
+    this.emailManager.generateEmail('start',this.employeeManager.boss,null,time);
 
     //update agency income/expenses based on employees/projects
-    agency.calculateAgencyParameters(startEmployees.employees,startProjects);
+    agency.calculateAgencyParameters(this.employeeManager.employees,this.projectManager.projects);
 
     const startTask = this.createTask("hire a new employee",3,"hire")
 
     this.setState({
       industry: industry,
       agency: agency,
-      employees: sortedEmployees,
-      employeeStats: startEmployees.employeeStats,
-      projects: [newProject, ...startEmployees.startProjects],
-      applicants: startApplicants,
-      emails: [...startEmails,welcomeEmail],
+      employees: this.employeeManager.employees,
+      employeeStats: this.employeeManager.employeeStats,
+      projects: this.projectManager.projects,
+      applicants: this.employeeManager.applicants,
+      emails: this.emailManager.emails,
       tasks: [startTask],
       startYear: startYear
     })
@@ -139,17 +146,13 @@ class Content extends Component {
     //update time 
     const agency = this.state.agency;
     let player = this.state.player;
-    let newEmployeeStats = this.state.employeeStats;
     let hour = this.state.hour;
     let day = this.state.day;
     let month = this.state.month;
     let year = this.state.year;
-    const employees = this.state.employees;
-    const applicants = this.state.applicants;
-    let projects = this.state.projects;
+    // let projects = this.state.projects;
     const tasks = this.state.tasks;
-    const emails = this.state.emails;
-    const messages = this.state.messages;
+
     
     const time = {
       hour: this.state.hour,
@@ -157,12 +160,6 @@ class Content extends Component {
       month: this.state.month,
       year: this.state.year,
       startYear: this.state.startYear,
-    }
-
-    const employeeStatsRaw = {
-      productivity: 0,
-      happiness: 0,
-      salary: 0,
     }
 
     if(this.state.hour >= 11){
@@ -188,13 +185,11 @@ class Content extends Component {
     
     //daily updates
     
-    //if the agency runs out of cash or the bosses happiness drops to 0
-    // you're fired
+    //if the agency runs out of cash or the bosses happiness drops to 0, you're fired
     if(this.state.agency.coh <= 0 || this.state.employees[0].happiness <= 0){
-      const email = this.randomEmailGenerator.fireEmail(this.state.employees[0]);
-      emails.unshift(email);
+      this.emailManager.generateEmail(time,this.state.employees[0]);
       this.setState({
-        emails: emails
+        emails: this.emailManager.emails
       })
       return
     }
@@ -202,54 +197,31 @@ class Content extends Component {
     // const updateHour = Math.floor(Math.random())
     //daily updates
     if(hour === 0){
-      //daily employee update
-      const employeesByProject = {}
-      for(let a = 0; a < employees.length; a++){
-        //run employee update method
-        employees[a].update();
-        if(employees[a].projectId){
-          if(!employeesByProject[employees[a].projectId]){
-            employeesByProject[employees[a].projectId] = []
-          }
-          employeesByProject[employees[a].projectId].push(employees[a])
-        }
-        //get new employee stats and add to stats dict
-        employeeStatsRaw.productivity += employees[a].stats.productivity
-        employeeStatsRaw.happiness += employees[a].stats.happiness
-        employeeStatsRaw.salary += employees[a].stats.salary
-        //flag and remove employees who have quit
-        if(employees[a]['quit']){
-          const t = this.createTask("hire a new employee to replace " + employees[a].name.display,employees[a].level,"hire")
-          tasks.push(t);
-          const quitEmail = this.randomEmailGenerator.generateEmail('quit',employees[a],null,time);
-          emails.unshift(quitEmail);
-          employees.splice(a,1);
-          player.decrementReputation();
-        }
+      //update employees and identify employees that have quit
+      const quitEmployees = this.employeeManager.updateEmployees();
+      for(let i = 0; i < quitEmployees.length; i++){
+        const t = this.createTask("hire a new employee to replace " + quitEmployees[i].name.display,quitEmployees[i].level,"hire")
+        tasks.push(t);
+        this.emailManager.generateEmail('quit',quitEmployees[i],null,time);
+        player.decrementReputation();
       }
-      newEmployeeStats = {
-        productivity: Math.floor(employeeStatsRaw.productivity/employees.length),
-        happiness: Math.floor(employeeStatsRaw.happiness/employees.length),
-        salary: Math.floor(employeeStatsRaw.salary/employees.length),
-      }
-      const projectsToDelete = [];
+      
+      //update and find completed projects
+      const completedProjects = this.projectManager.updateProjects(this.projectManager.employeesByProject);
       //daily project update
-      for(let a = 0; a < projects.length; a++){
-        //update project productivity 
-        projects[a].calculateProductivity(employeesByProject[projects[a].id]);
-        //find completed projects
-        if(projects[a].complete){
-          projectsToDelete.push(projects[a]);
-          const endTask = this.createTask("find a new project",3,"project")
-          tasks.push(endTask);
-          player.augmentScore(10);
-          player.augmentReputation();
-          player.augmentHappiness();
-        }
+      //remove complete projects
+      for(let a = 0; a < completedProjects.completed.length; a++){
+        const endTask = this.createTask("find a new project",3,"project")
+        tasks.push(endTask);
+        player.augmentScore(10);
+        player.augmentReputation();
+        player.augmentHappiness();
       }
-      //remove completed projects
-      for(let b = 0; b < projectsToDelete.length; b++){
-        projects.splice(projectsToDelete[b],1);
+      //remove failed projects
+      for(let b = 0; b < completedProjects.failed.length; b++){
+        player.augmentScore(-10);
+        player.decrementReputation();
+        player.decrementHappiness();
       }
     } 
     
@@ -258,25 +230,23 @@ class Content extends Component {
     if(r < this.state.updateParams.emailFrequency){
     // if(true){
       //generate random emails
-      const boss = employees[0];
-      const employee1 = this.helpers.RandomFromArray(employees);
-      const employee2 = this.helpers.RandomFromArray(employees);
+      const boss = this.employeeManager.boss;
+      const employee1 = this.helpers.RandomFromArray(this.employeeManager.employees);
+      const employee2 = this.helpers.RandomFromArray(this.employeeManager.employees);
       // console.log(employee);
-      const email = this.randomEmailGenerator.generateRandomEmail(boss,employee1,employee2,time);
-      emails.unshift(email)
+      this.emailManager.generateRandomEmail(boss,employee1,employee2,time);
+  
       
       //generate random message
-      const employee3 = this.helpers.RandomFromArray(employees);
-      const message = this.randomMessageGenerator.generateMessage(null,"3:00pm",employee3);
-      messages.push(message)
+      const employee3 = this.helpers.RandomFromArray(this.employeeManager.employees);
+      this.messageManager.addRandomMessage(employee3,time);
+  
 
       if(hour%2===0 && this.state.applicants < 8){
         //generate a new applicant
         if(this.state.applicants.length < 10){
-          const applicant = this.randomEmployeeGenerator.generateRandomEmployee();
-          applicants.push(applicant);
-          const appEmail = this.randomEmailGenerator.generateEmail('applicant',applicant,null,time);
-          emails.unshift(appEmail);
+          const applicant = this.employeeManager.newApplicant();
+          this.emailManager.generateEmail('applicant',applicant,null,time);
         }
       }
       if(r < this.state.updateParams.projectFrequency){
@@ -285,34 +255,31 @@ class Content extends Component {
           //generate new project
           //add: be able to use an old company
           const project = this.state.industry.newProject();
-          projects.push(project);
-          const newProjectEmail = this.randomEmailGenerator.generateEmail('project',project,null,time);
-          emails.unshift(newProjectEmail);
+          this.projectManager.addProject(project);
+          this.emailManager.generateEmail('project',project,null,time);
         }
       }
     }
 
     //monthly updates
     if(hour === 0 && day === 30){
-      projects = agency.monthlyUpdate(projects);
+      agency.monthlyUpdate(this.projectManager.projects);
     }
 
-    //constrain maximum amount of emails/messages
-    const finalEmails = emails.length > 100 ? emails.splice(0,100) : emails;
-    const finalMessages = messages.length > 100 ? messages.splice(0,100) : messages;
     //set new state
     this.setState({
       hour: hour,
       day: day,
       month: month,
       year: year,
-      employees: employees,
-      projects: projects,
-      emails: finalEmails,
-      messages: finalMessages,
+      employees: this.employeeManager.employees,
+      applicants: this.employeeManager.applicants,
+      projects: this.projectManager.projects,
+      emails: this.emailManager.emails,
+      messages: this.messageManager.messages,
       tasks: tasks,
       agency: agency,
-      employeeStats: newEmployeeStats,
+      employeeStats: this.employeeManager.employeeStats,
       player: player,
     })
   }
@@ -321,111 +288,6 @@ class Content extends Component {
     clearInterval(this.interval);
     this.setState({
       timeRunning: false
-    })
-  }
-  hireApplicant = (applicant) => {
-    //mtc check to see if this completes a task
-    console.log('hiring applicant', applicant)
-    //TODO need to get new id number for applicant
-    applicant.id = this.randomEmployeeGenerator.generateEmployeeID();
-    const agency = this.state.agency;
-    const employees = this.sortEmployees([applicant, ...this.state.employees])
-    agency.calculateAgencyParameters(employees,this.state.projects);
-    this.setState({
-      employees: employees,
-      applicants:  this.state.applicants.filter((a) => applicant.id !== a.id),
-      agency: agency
-    })
-  }
-  dismissApplicant = (info) => {
-    console.log('dismissing applicant', info)
-    this.setState({
-      applicants:  this.state.applicants.filter((applicant) => applicant.id !== info.id)
-    })
-  }
-  updateEmployee = (updatedEmployee) => {
-    //mtc check to see if this completes a task
-    console.log('updating employee');
-    console.log(updatedEmployee);
-    const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-    if(updatedEmployee.projectId === null){
-      updatedEmployee.project.removeWorker(updatedEmployee);
-    }
-    updatedEmployee.project.calculateProductivity();
-    const projects = this.state.projects.filter((project) => project.id !== updatedEmployee.project.id ? project : updatedEmployee.project);
-    const agency = this.state.agency;
-    agency.calculateAgencyParameters(employees,projects);
-    console.log(updatedEmployee);
-    this.setState({
-      employees: employees,
-      projects: projects,
-      agency: agency
-    })
-  }
-  updateEmployeeLevel = (updatedEmployee) => {
-    //mtc check to see if this completes a task
-    console.log('promoting or demoting employee');
-    const employees = this.state.employees.map((employee) => employee.id !== updatedEmployee.id ? employee: updatedEmployee);
-    this.setState({
-      employees: employees
-    })
-  }
-  fireEmployee = (info) => {
-    console.log('firing employee', info)
-    const employees = this.state.employees.filter((employee) => employee.id !== info);
-    const sortedEmployees = this.sortEmployees(employees);
-    const agency = this.state.agency;
-    //mtc check to see if this completes a task, and remove task
-    agency.calculateAgencyParameters(employees,this.state.projects);
-    this.setState({
-      employees: sortedEmployees,
-      panes: this.state.panes.filter((pane) => pane.id !== "employee_"+info),
-      activePane: this.state.activePane - 1,
-    })
-  }
-  sortEmployees = (employees) => {
-    return employees.sort(function(a,b){return b.level - a.level})
-  }
-  sendEmail = (email) => {
-    const player = this.state.player;
-    const agency = this.state.agency;
-    let employees = this.state.employees;
-    if(email.type === 'request'){
-      player.augmentReputation();
-      player.decrementHappiness();
-      agency.debit(email.cost);
-      employees = employees.map((employee)=>{employee.satisfy(10);return employee})
-    } else {
-      player.decrementReputation();
-    }
-    this.setState({
-       emails: [email, ...this.state.emails],
-       employees: employees,
-       agency: agency,
-       player: player
-    })
-  }
-  readEmail = (i) => {
-    console.log('reading email');
-    const updatedEmail = this.state.emails[i];
-    updatedEmail.read = true;
-    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
-    this.setState({
-      emails: emails
-    })
-  }
-  archiveEmail = (i) => {
-    console.log('archiving email');
-    const updatedEmail = this.state.emails[i];
-    updatedEmail.archived = true;
-    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
-    this.setState({
-      emails: emails
-    })
-  }
-  deleteEmail = (i) => {
-    this.setState({
-      emails: this.state.emails.filter((email,x) => x !== i)
     })
   }
   createTask = (text,urgency,action,requester,type,target) => {
@@ -505,50 +367,49 @@ class Content extends Component {
        employees: employees
     })
   }
-  checkTaskResolution = (array,taskType,targetId) => {
-    for(let i = 0; i < array.length; i++){
-      if(array[i].type === taskType){
-        console.log('task found')
-      }
+  updateCollection = (collection,action,data) => {
+    const collectionEmitters = {
+       employees: this.employeeManager.emit,
+       applicants: this.employeeManager.emit,
+       emails: this.emailManager.emit,
+       projects: this.projectManager.emit,
+       tasks: this.taskManager.emit
     }
-  }
-  addMessage = (message) => {
-    this.setState({
-      messages: [...this.state.messages,message]
-    })
-  }
-  considerProject = (consideredProject) => {
-    console.log('considering project', consideredProject);
-    consideredProject.considering = true;
-    const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
-    this.setState({
-      projects: projects
-    })
-  }
-  acceptProject = (consideredProject) => {
-    console.log('accepting project', consideredProject);
-    consideredProject.accepted = true;
-    const projects = this.state.projects.map((project) => project.id !== consideredProject.id ? project: consideredProject);
-    console.log(projects);
-    this.setState({
-      projects: projects
-    })
-  }
-  rejectProject = (rejectedProject) => {
-    console.log('rejecting project', rejectedProject)
-    this.setState({
-      projects: this.state.projects.filter((project) => project.id !== rejectedProject)
-    })
-  }
-  withdrawProject = (withdrawnProject) => {
-    console.log('withdraw project', withdrawnProject)
-    //call to industry to decrease company satisfaction
-    console.log(this.state.projects);
-    this.setState({
-      projects: this.state.projects.filter((project) => project.id !== withdrawnProject),
-      panes: this.state.panes.filter((pane) => pane.id !== "project_"+withdrawnProject),
-      activePane: this.state.activePane - 1
-    })
+    if(collectionEmitters[collection]){
+      //pass action and data to requested data collection
+      const cb = collectionEmitters[collection];
+      const result = cb(action,data);
+      //remove active pane if item has been deleted
+      let panes = this.state.panes;
+      let activePane = this.state.activePane;
+      if(action === "fire" || action === "hire" || action === "dismiss"){
+        //generate pane id based on data/collection name
+        const id = data.id ? data.id : data;
+        const name = collection.slice(0,collection.length-1);
+        panes = this.state.panes.filter((pane) => pane.id !== name + "_"+id)
+        activePane = this.state.activePane -1;
+      }
+
+      if(collection === "employees" || collection === "applicants"){
+        //we need to update employees and applicants together because they are returned together
+        this.setState({
+          employees: result.employees,
+          applicants: result.applicants,
+          panes: panes,
+          activePane:activePane
+        })
+      } else {
+        //otherwise just update the collection with the manager's result
+        this.setState({
+          [collection]: result,
+          panes: panes,
+          activePane:activePane
+        })
+      }
+    } else {
+      console.log('collection emitter not found for ' + collection)
+    }
+
   }
   addPane = (type,info) => {
     console.log('adding pane',info);
@@ -602,12 +463,13 @@ class Content extends Component {
                 {
                   this.props.mobile ? '' :
                   <Sidebar  employees={this.state.employees} 
-                                projects={this.state.projects} 
-                                applicants={this.state.applicants} 
-                                addPane={this.addPane}
-                                dismissApplicant={this.dismissApplicant}
-                                appOpenModal={this.props.appOpenModal}
-                                mobile={this.props.mobile}
+                            projects={this.state.projects} 
+                            applicants={this.state.applicants} 
+                            addPane={this.addPane}
+                            // dismissApplicant={this.dismissApplicant}
+                            appOpenModal={this.props.appOpenModal}
+                            mobile={this.props.mobile}
+                            updateCollection={this.updateCollection}
                       />
                 }
                       
@@ -636,9 +498,10 @@ class Content extends Component {
                                           projects={this.state.projects} 
                                           applicants={this.state.applicants} 
                                           addPane={this.addPane}
-                                          dismissApplicant={this.dismissApplicant}
+                                          // dismissApplicant={this.dismissApplicant}
                                           appOpenModal={this.props.appOpenModal}
                                           mobile={this.props.mobile}
+                                          updateCollection={this.updateCollection}
                                 />
                           }
                           <Main panes={this.state.panes} 
@@ -646,11 +509,11 @@ class Content extends Component {
                                 addPane={this.addPane}
                                 updatePane={this.updatePane} 
                                 removePane={this.removePane}
-                                hireApplicant={this.hireApplicant}
-                                dismissApplicant={this.dismissApplicant}
-                                updateEmployee={this.updateEmployee}
-                                updateEmployeeLevel={this.updateEmployeeLevel}
-                                fireEmployee={this.fireEmployee}
+                                // hireApplicant={this.hireApplicant}
+                                // dismissApplicant={this.dismissApplicant}
+                                // updateEmployee={this.updateEmployee}
+                                // updateEmployeeLevel={this.updateEmployeeLevel}
+                                // fireEmployee={this.fireEmployee}
                                 generateTask={this.generateTask}
                                 dismissTask={this.dismissTask}
                                 resolveTask={this.resolveTask}
@@ -658,13 +521,14 @@ class Content extends Component {
                                 acceptProject={this.acceptProject}
                                 rejectProject={this.rejectProject}
                                 withdrawProject={this.withdrawProject}
-                                readEmail={this.readEmail}
+                                // readEmail={this.readEmail}
                                 sendEmail={this.sendEmail}
                                 archiveEmail={this.archiveEmail}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
-                                employees={this.state.employees} 
+                                employees={this.state.employees}
+                                updateCollection={this.updateCollection} 
                                 />
                         </div>
                 <footer></footer>

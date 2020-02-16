@@ -9,19 +9,23 @@ class ViewEmailModal extends Component{
         }
     }
     considerProject = () => {
-        this.props.considerProject(this.props.email.target);
+        this.props.updateCollection('projects','consider',this.props.email.target)
         this.props.closeEmail();
     }
     acceptProject = () => {
-        this.props.acceptProject(this.props.email.target);
+        this.props.updateCollection('projects','accept',this.props.email.target)
+        this.props.closeEmail();
+    }
+    rejectProject = () => {
+        this.props.updateCollection('projects','reject',this.props.email.target)
         this.props.closeEmail();
     }
     hireApplicant = () => {
-        this.props.hireApplicant(this.props.email.target);
+        this.props.updateCollection('applicants','hire',this.props.email.target)
         this.props.closeEmail();
     }
     dismissApplicant = () => {
-        this.props.dismissApplicant(this.props.email.target);
+        this.props.updateCollection('applicants','dismiss',this.props.email.target)
         this.props.closeEmail();
     }
     resolveTask = () => {
@@ -41,7 +45,7 @@ class ViewEmailModal extends Component{
         const email = this.props.email;
         email.sent = true;
         email.forward = true;
-        this.props.sendEmail(email);
+        this.props.updateCollection('emails','send',email);
     }
     render(){
         console.log('email view props', this.props)
@@ -71,7 +75,7 @@ class ViewEmailModal extends Component{
                     <React.Fragment>
                         <Button onClick={this.considerProject}>Sure, we'll consider you</Button>
                         <Button onClick={this.acceptProject}>Yeah, let's do it</Button>
-                        <Button >Sorry, maybe another time</Button>
+                        <Button onClick={this.rejectProject}>Sorry, maybe another time</Button>
                         <Button onClick={this.forward}><Icon name="mail forward"></Icon></Button>
                     </React.Fragment>
                 break

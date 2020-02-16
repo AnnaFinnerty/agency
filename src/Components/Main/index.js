@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 
 import Email from '../Email';
 import Tasks from '../Tasks';
-import Employee from '../Employee';
-import Project from '../Project';
+import Employee from '../Employee/view.js';
+import Project from '../Project/view.js';
 
 import { Menu, Tab, Icon } from 'semantic-ui-react'
 import '../../App.css';
@@ -22,6 +22,7 @@ class Main extends Component {
                   updateEmployee={this.props.updateEmployee}
                   employees={this.props.employees}
                   projects={this.props.projects}
+                  updateCollection={this.props.updateCollection}
                   />
 
       case 'applicant':
@@ -29,6 +30,7 @@ class Main extends Component {
                   {...info} 
                   hireApplicant={this.props.hireApplicant} 
                   addPane={this.props.addPane}
+                  updateCollection={this.props.updateCollection}
                 />
 
       case 'employee':
@@ -39,6 +41,7 @@ class Main extends Component {
                   fireEmployee={this.props.fireEmployee} 
                   addPane={this.props.addPane} 
                   projects={this.props.projects}
+                  updateCollection={this.props.updateCollection}
                 />
 
       case "email":
@@ -55,6 +58,7 @@ class Main extends Component {
                   dismissTask={this.props.dismissTask}
                   generateTask={this.props.generateTask}
                   sendEmail={this.props.sendEmail}
+                  updateCollection={this.props.updateCollection}
                   />
 
       case "tasks":
@@ -64,6 +68,7 @@ class Main extends Component {
                   resolveTask={this.props.resolveTask}
                   dismissTask={this.props.dismissTask}
                   generateTask={this.props.generateTask}
+                  updateCollection={this.props.updateCollection}
                 />
                   
 

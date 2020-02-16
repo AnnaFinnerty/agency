@@ -5,16 +5,6 @@ function RandomMessage(){
     this.helpers = new Helpers();
 }
 
-RandomMessage.prototype.generateRandomMessage = function(boss,employee1,employee2){
-    //emails from the boss get priority
-    if(boss.stats.happiness > 60 || boss.stats.happiness < 30){
-        return this.bossEmail()
-    } else {
-        if(employee1.stats.happiness > 80){
-
-        }
-    }
-}
 
 RandomMessage.prototype.generateMessage = function(type,time,employee1,employee2){
     switch(type){

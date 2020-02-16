@@ -30,7 +30,7 @@ class Email extends Component{
     })
   }
   openEmail = (emailIndex) => {
-    this.props.readEmail(emailIndex);
+    this.props.updateCollection('emails','read',emailIndex);
     this.setState({
       currentEmail: emailIndex,
       openEmail: true
@@ -44,7 +44,7 @@ class Email extends Component{
     })
   }
   render(){
-    // console.log('emails props',this.props.emails)
+    console.log('emails props',this.props.emails)
     let emails = this.props.emails;
     if(this.state.boxShowing === 'inbox'){
       emails = this.props.emails.filter((email)=> !email.archived )
@@ -69,7 +69,7 @@ class Email extends Component{
           <Grid.Column width={2}onClick={()=>this.openEmail(i)}>
              {email.time.hour < 10 ? "0" + email.time.hour + ":00" : email.time.hour + ":00"} {email.time.day}/ {email.time.month}/{email.time.year}
           </Grid.Column>
-          <Grid.Column width={1} onClick={()=>this.props.archiveEmail(i)}>
+          <Grid.Column width={1} onClick={()=>this.props.updateCollection('emails','archive',i)}>
             {
               this.state.boxShowing !== 'inbox' ? '' :
               <Icon name="archive"></Icon> 
@@ -100,18 +100,20 @@ class Email extends Component{
                           addPane={this.props.addPane}
                           acceptProject={this.props.acceptProject}
                           considerProject={this.props.considerProject}
-                          hireApplicant={this.props.hireApplicant}
-                          dismissApplicant={this.props.dismissApplicant}
+                          // hireApplicant={this.props.hireApplicant}
+                          // dismissApplicant={this.props.dismissApplicant}
                           resolveTask={this.props.resolveTask}
                           generateTask={this.props.generateTask}
                           dismissTask={this.props.dismissTask}
+                          updateCollection={this.props.updateCollection}
                           />
         }
         {
           !this.state.newEmail ? '':
           <NewEmailModal open={this.state.newEmail} 
                          closeEmail={this.closeEmail}
-                         sendEmail={this.props.sendEmail} 
+                        //  sendEmail={this.props.sendEmail}
+                         updateCollection={this.props.updateCollection} 
                          />
         }
       </React.Fragment>

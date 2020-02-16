@@ -53,7 +53,7 @@ class NewEmailModal extends Component{
             subtype: 'money',
             cost: this.suggestions[this.state.selected].cost
         }
-        this.props.sendEmail(email);
+        this.props.updateCollection('emails','send',email);
     }
     render(){
         const suggestionOptions = this.suggestions.map((suggestion,i)=>(
