@@ -41,7 +41,7 @@ class ViewEmailModal extends Component{
         const email = this.props.email;
         email.sent = true;
         email.forward = true;
-        this.props.sendEmail(email);
+        this.props.updateCollection('emails','send',email);
     }
     render(){
         console.log('email view props', this.props)

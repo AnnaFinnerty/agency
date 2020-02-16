@@ -14,22 +14,22 @@ class Employee extends Component {
   raiseSalary = () => {
     const updatedEmployee = this.props.info;
     updatedEmployee.raiseSalary();
-    this.props.updateEmployee(updatedEmployee);
+    this.props.updateCollection('employees','update',updatedEmployee);
   }
   lowerSalary = () => {
     const updatedEmployee = this.props.info;
     updatedEmployee.lowerSalary();
-    this.props.updateEmployee(updatedEmployee);
+    this.props.updateCollection('employees','update',updatedEmployee);
   }
   promote = () => {
     const updatedEmployee = this.props.info;
     updatedEmployee.promote();
-    this.props.updateEmployeeLevel(updatedEmployee);
+    this.props.updateCollection('employees','update',updatedEmployee);
   }
   demote = () => {
     const updatedEmployee = this.props.info;
     updatedEmployee.demote();
-    this.props.updateEmployeeLevel(updatedEmployee);
+    this.props.updateCollection('employees','update',updatedEmployee);
   }
   changeProject = (e,data) => {
     console.log('changing project to:', data.value);
@@ -72,9 +72,9 @@ class Employee extends Component {
             {
               this.props.info.level === 5 ? '' :
               this.props.type !== "applicant" ? 
-              <Button onClick={()=>this.props.fireEmployee(this.props.info.id)}>fire</Button>
+              <Button onClick={()=>this.props.updateCollection('employees','fire', this.props.info.id)}>fire</Button>
               :
-              <Button onClick={()=>this.props.hireApplicant(this.props.info)}>hire</Button>
+              <Button onClick={()=>this.props.updateCollection('applicants','hire',this.props.info)}>hire</Button>
             }
           </Grid.Column>
         </Grid.Row>

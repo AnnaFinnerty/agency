@@ -107,28 +107,28 @@ class Content extends Component {
       const startProject = industry.newProject(true);
       startProjects.push(startProject);
     }
-    const startEmployees = this.randomEmployeeGenerator.generateStartEmployees(7,1,startProjects);
+    this.employeeManager.newEmployees(7,1,startProjects);
 
     //now that employees have been assigned, update projects with employee info
     for(let i = 0 ; i < startProjects.length; i ++){
-      startProjects[i].calculateProductivity(startEmployees.employeesByProject[startProjects[i].id]);
+      startProjects[i].calculateProductivity(this.employeeManager.getEmployeesByProject(startProjects[i].id));
     }
 
-    const sortedEmployees = this.sortEmployees(startEmployees.employees);
+    // const sortedEmployees = this.sortEmployees(startEmployees.employees);
     //generate welcome email
-    this.emailManager.generateEmail('start',sortedEmployees[0],null,time);
+    this.emailManager.generateEmail('start',this.employeeManager.boss,null,time);
 
     //update agency income/expenses based on employees/projects
-    agency.calculateAgencyParameters(startEmployees.employees,startProjects);
+    agency.calculateAgencyParameters(this.employeeManager.employees,startProjects);
 
     const startTask = this.createTask("hire a new employee",3,"hire")
 
     this.setState({
       industry: industry,
       agency: agency,
-      employees: sortedEmployees,
-      employeeStats: startEmployees.employeeStats,
-      projects: [newProject, ...startEmployees.startProjects],
+      employees: this.employeeManager.employees,
+      employeeStats: this.employeeManager.employeeStats,
+      projects: [newProject, ...startProjects],
       applicants: startApplicants,
       emails: this.emailManager.emails,
       tasks: [startTask],
@@ -392,48 +392,48 @@ class Content extends Component {
   sortEmployees = (employees) => {
     return employees.sort(function(a,b){return b.level - a.level})
   }
-  sendEmail = (email) => {
-    const player = this.state.player;
-    const agency = this.state.agency;
-    let employees = this.state.employees;
-    if(email.type === 'request'){
-      player.augmentReputation();
-      player.decrementHappiness();
-      agency.debit(email.cost);
-      employees = employees.map((employee)=>{employee.satisfy(10);return employee})
-    } else {
-      player.decrementReputation();
-    }
-    this.setState({
-       emails: [email, ...this.state.emails],
-       employees: employees,
-       agency: agency,
-       player: player
-    })
-  }
-  readEmail = (i) => {
-    console.log('reading email');
-    const updatedEmail = this.state.emails[i];
-    updatedEmail.read = true;
-    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
-    this.setState({
-      emails: emails
-    })
-  }
-  archiveEmail = (i) => {
-    console.log('archiving email');
-    const updatedEmail = this.state.emails[i];
-    updatedEmail.archived = true;
-    const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
-    this.setState({
-      emails: emails
-    })
-  }
-  deleteEmail = (i) => {
-    this.setState({
-      emails: this.state.emails.filter((email,x) => x !== i)
-    })
-  }
+  // sendEmail = (email) => {
+  //   const player = this.state.player;
+  //   const agency = this.state.agency;
+  //   let employees = this.state.employees;
+  //   if(email.type === 'request'){
+  //     player.augmentReputation();
+  //     player.decrementHappiness();
+  //     agency.debit(email.cost);
+  //     employees = employees.map((employee)=>{employee.satisfy(10);return employee})
+  //   } else {
+  //     player.decrementReputation();
+  //   }
+  //   this.setState({
+  //      emails: [email, ...this.state.emails],
+  //      employees: employees,
+  //      agency: agency,
+  //      player: player
+  //   })
+  // }
+  // readEmail = (i) => {
+  //   console.log('reading email');
+  //   const updatedEmail = this.state.emails[i];
+  //   updatedEmail.read = true;
+  //   const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
+  //   this.setState({
+  //     emails: emails
+  //   })
+  // }
+  // archiveEmail = (i) => {
+  //   console.log('archiving email');
+  //   const updatedEmail = this.state.emails[i];
+  //   updatedEmail.archived = true;
+  //   const emails = this.state.emails.map((email,x) => x !== i ? email: updatedEmail);
+  //   this.setState({
+  //     emails: emails
+  //   })
+  // }
+  // deleteEmail = (i) => {
+  //   this.setState({
+  //     emails: this.state.emails.filter((email,x) => x !== i)
+  //   })
+  // }
   createTask = (text,urgency,action,requester,type,target) => {
     const task = {
       text: text,
@@ -518,11 +518,11 @@ class Content extends Component {
       }
     }
   }
-  addMessage = (message) => {
-    this.setState({
-      messages: [...this.state.messages,message]
-    })
-  }
+  // addMessage = (message) => {
+  //   this.setState({
+  //     messages: [...this.state.messages,message]
+  //   })
+  // }
   considerProject = (consideredProject) => {
     console.log('considering project', consideredProject);
     consideredProject.considering = true;
@@ -559,14 +559,36 @@ class Content extends Component {
   updateCollection = (collection,action,data) => {
     const collectionEmitters = {
        employees: this.employeeManager.emit,
+       applicants: this.employeeManager.emit,
        emails: this.emailManager.emit,
     }
     if(collectionEmitters[collection]){
       const cb = collectionEmitters[collection];
       const result = cb(action,data);
-      this.setState({
-        [collection]: result,
-      })
+      const id = data.id ? data.id : data;
+      const name = collection.slice(0,collection.length-1);
+      console.log('paneid: ' + name + "_"+id )
+      let panes = this.state.panes;
+      let activePane = this.state.activePane;
+      if(action === "fire" || action === "hire"){
+        panes = this.state.panes.filter((pane) => pane.id !== name + "_"+id)
+        activePane = this.state.activePane -1;
+      }
+
+      if(collection === "applicants" || collection === "employees"){
+        this.setState({
+          employees: result.employees,
+          applicants: result.applicants,
+          panes: panes,
+          activePane:activePane
+        })
+      } else {
+        this.setState({
+          [collection]: result,
+          panes: panes,
+          activePane:activePane
+        })
+      }
     } else {
       console.log('collection emitter not found for ' + collection)
     }
