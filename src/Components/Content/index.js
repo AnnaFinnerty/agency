@@ -4,15 +4,11 @@ import Header from '../Header';
 import Main from '../Main';
 import Sidebar from '../Sidebar';
 import Message from '../Message';
+import PauseScreen from './pause';
 
 import Player from '../../Scripts/Player'
 import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
-// import TaskManager from '../../Scripts/TaskManagers';
-// import RandomEmployee from '../../Scripts/RandomEmployee';
-// import RandomProject from '../../Scripts/RandomProject';
-// import RandomEmail from '../../Scripts/RandomEmail';
-import RandomMessage from '../../Scripts/RandomMessage';
 import EmployeeManager from '../../Scripts/EmployeeManager';
 import ProjectManager from '../../Scripts/ProjectManager';
 import EmailManager from '../../Scripts/EmailManager';
@@ -31,7 +27,6 @@ class Content extends Component {
       industry: new Industry(),
       agency: new Agency(),
       player: new Player(),
-      sidebarRight: true,
       projects: [],
       totalPositions: 20,
       employees: [],
@@ -72,7 +67,10 @@ class Content extends Component {
   componentDidMount(){
     this.start();
   }
-  start = (numStartEmployees, numStartProjects) => {
+  start = () => {
+    this.new();
+  }
+  new = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
     const industry = new Industry();
     const agency = new Agency();
@@ -530,6 +528,10 @@ class Content extends Component {
                 <footer>&copy; {year} <a href="https://github.com/AnnaFinnerty">Annie Finnerty</a>  </footer>
                 </div>
                 <Message open={this.state.messageOpen} closeMessage={this.closeMessage} messages={this.state.messages} addMessage={this.addMessage}/>
+                {
+                  this.state.timeRunning ? '' :
+                  <PauseScreen startTimer={this.startTimer}/>
+                }
       </React.Fragment>
     );
   }
