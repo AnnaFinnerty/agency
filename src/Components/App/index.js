@@ -11,12 +11,18 @@ class App extends Component {
     super();
     this.state = {
       testing: true,
-      appModalOpen: true,
+      appModalOpen: false,
       appModalView: "instructions",
-      instructionOnOpen: false,
-      mobile: window.innerWidth < 800
+      instructionOnOpen: true,
+      mobile: window.innerWidth < 800,
+      loaded: false,
     }
     window.addEventListener('resize',this.resize)
+  }
+  componentDidMount(){
+    if(!this.state.loaded && !this.state.testing){
+      this.openModal('instructions');
+    }
   }
   resize = () => {
     console.log('resized');
@@ -45,7 +51,7 @@ class App extends Component {
                   appOpenModal ={this.openModal}
                   mobile={this.state.mobile}
                   />
-        <AppModal open={this.state.appModalOpen && this.state.instructionOnOpen} 
+        <AppModal open={this.state.appModalOpen} 
                   view={this.state.appModalView} 
                   openModal={this.openModal}
                   closeModal={this.closeModal}

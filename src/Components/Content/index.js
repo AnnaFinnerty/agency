@@ -460,7 +460,7 @@ class Content extends Component {
     })
   }
   render(){
-    // console.log('content state', this.state)
+    console.log('content props', this.props)
     const year = new Date().getFullYear();
     return (
       <React.Fragment>
@@ -529,7 +529,7 @@ class Content extends Component {
                 </div>
                 <Message open={this.state.messageOpen} closeMessage={this.closeMessage} messages={this.state.messages} addMessage={this.addMessage}/>
                 {
-                  this.state.timeRunning ? '' :
+                  this.state.timeRunning || this.props.testing ? '' :
                   <PauseScreen startTimer={this.startTimer}/>
                 }
       </React.Fragment>
