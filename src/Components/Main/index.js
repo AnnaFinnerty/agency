@@ -50,10 +50,6 @@ class Main extends Component {
                   addPane={this.props.addPane} 
                   readEmail={this.props.readEmail}
                   archiveEmail={this.props.archiveEmail}
-                  considerProject={this.props.considerProject}
-                  acceptProject={this.props.acceptProject}
-                  hireApplicant={this.props.hireApplicant}
-                  dismissApplicant={this.props.dismissApplicant}
                   resolveTask={this.props.resolveTask}
                   dismissTask={this.props.dismissTask}
                   generateTask={this.props.generateTask}
@@ -104,21 +100,31 @@ class Main extends Component {
     const paneName = this.getPaneName(info)
     const item = { 
       menuItem: (
-        <Menu.Item key={info.type + "-" + info.id} 
+        <Menu.Item key={info.type + "-" + info.id}
+                   className="main-tab" 
                    onClick={()=>this.props.updatePane(i)}
                    draggable="true"
                    onDragStart={(e)=>this.drag(e,i)}
                    onDragOver={this.allowDrop}
                    onDrop={this.drop}
                    data-i={i}
+                   style={{
+                     padding:info.pinned? "2vh 1vw" : "2vh 0vw 2vh 1vw"
+                   }}
                   >
           {
-            info.pinned ? <Icon name="map pin"></Icon> : ''
+            info.pinned ? <Icon name="map pin"></Icon> : 
+            <Icon className="main-tab-hover" name="map pin" onClick={()=>this.props.togglePanePin(i)}></Icon>
           }
           {paneName}
           {
-            info.pinned ? '' : 
-            <button onClick={()=>this.props.removePane(i)}>X</button>
+            info.permanent ? '' : 
+            <Icon onClick={()=>this.props.removePane(i)} 
+                  name="close"
+                  style={{float:"right"}}
+                  className="main-tab-hover"
+                  >  
+            </Icon>
           }
         </Menu.Item>
       ),
@@ -156,7 +162,13 @@ class Main extends Component {
       panes.push(pane);
     }
     return (
-        <Tab style={{width:'100%',height:'90vh',backgroundColor:'whitesmoke',overflowX:'scroll'}} panes={panes} activeIndex={this.props.activePane}/>
+        <Tab style={{width:'100%',
+                    height:'90vh',
+                    backgroundColor:'whitesmoke',
+                    overflowX:'scroll'}} 
+             panes={panes} 
+             activeIndex={this.props.activePane}
+            />
     );
   }
 }

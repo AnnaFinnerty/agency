@@ -105,6 +105,16 @@ li{
   background: grey;
 }
 
+.main-tab:hover > .main-tab-hover{
+  color: black;
+  pointer-events: all;
+}
+
+.main-tab-hover{
+  color: transparent;
+  pointer-events: none;
+}
+
 .hover:hover{
   background: goldenrod;
 }

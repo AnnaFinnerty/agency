@@ -53,8 +53,8 @@ class Content extends Component {
       timeRunning: false,
       activePane: 0,
       panes: [
-        {type:'email',pinned:true},
-        {type:'tasks',pinned:true}
+        {type:'email',pinned:true,permanent:true},
+        {type:'tasks',pinned:true,permanent:true}
       ],
       updateParams: {
         emailFrequency: .15,
@@ -136,7 +136,6 @@ class Content extends Component {
     let day = this.state.day;
     let month = this.state.month;
     let year = this.state.year;
-    // let projects = this.state.projects;
     const tasks = this.state.tasks;
 
     
@@ -444,6 +443,15 @@ class Content extends Component {
        activePane: newPosition
     })
   }
+  togglePanePin = (i) => {
+    const panes = this.state.panes;
+    if(!panes[i].permanent){
+      panes[i].pinned = !panes[i].pinned
+    }
+    this.setState({
+      panes: panes
+    })
+  }
   updatePane = (i) => {
     this.setState({
       activePane: i
@@ -515,6 +523,7 @@ class Content extends Component {
                                 updatePane={this.updatePane} 
                                 removePane={this.removePane}
                                 movePane={this.movePane}
+                                togglePanePin={this.togglePanePin}
                                 generateTask={this.generateTask}
                                 dismissTask={this.dismissTask}
                                 resolveTask={this.resolveTask}
