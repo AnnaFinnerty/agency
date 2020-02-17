@@ -109,7 +109,7 @@ class Main extends Component {
                    onDrop={this.drop}
                    data-i={i}
                    style={{
-                     padding:info.pinned? "2vh 1vw" : "2vh 0vw 2vh 1vw"
+                     padding:"2vh 1vw"
                    }}
                   >
           {
@@ -122,7 +122,7 @@ class Main extends Component {
             <Icon onClick={()=>this.props.removePane(i)} 
                   name="close"
                   style={{float:"right"}}
-                  className="main-tab-hover"
+                  className={!info.pinned ? "" : "main-tab-hover"}
                   >  
             </Icon>
           }

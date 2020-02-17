@@ -1,20 +1,20 @@
 - prompt: add new hire to project
 - prompt: add employee removed from project to another project
-- no time on set emails
+- no time on sent emails
 - management panel
 - withdrawn projects decrease company satisfaction
 - managerial should not be the option for first focus
 - random update hour
-- get footer back
 - connect applicant amounts to job openings
 - update other agencies
 - update industry
 - bug: applicant pane does not close when applicant is hired, allows dupe panes
-- pane dragging/reordering
 - pane side runoff issue
-- pin/unpin panes
 
 
++ get footer back
++ pane dragging/reordering
++ pin/unpin panes
 + player score
 + tasks
 + prevent duplicate panes from being opened

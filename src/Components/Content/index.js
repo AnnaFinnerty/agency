@@ -422,22 +422,16 @@ class Content extends Component {
     })
   }
   removePane = (i) => {
-    console.log('removing pane', i);
     const activePane = this.state.activePane === i ? i - 1: this.state.activePane;
-    console.log('old active pane', this.state.activePane);
-    console.log('new active pane', activePane);
     this.setState({
        panes: this.state.panes.filter((pane,x) => i !== x),
        activePane: activePane
     })
   }
   movePane = (previousPosition,newPosition) => {
-    console.log('moving pane', previousPosition,newPosition);
     const panes = this.state.panes;
     const pane = panes.splice(previousPosition,1)[0];
     panes.splice(newPosition,0,pane);
-    console.log(pane);
-    console.log(panes);
     this.setState({
        panes: panes,
        activePane: newPosition
