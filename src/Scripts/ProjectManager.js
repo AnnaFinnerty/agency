@@ -48,12 +48,15 @@ ProjectManager.prototype.withdrawFromProject = function(project){
 }
 
 ProjectManager.prototype.updateProjects = function(employeesByProject){
+    console.log('updating projects');
+    console.log(employeesByProject);
     const completedProjects = [];
     const failedProjects = [];
     for(let i = 0; i < this.projects.length; i++){
         this.projects[i].calculateProductivity(employeesByProject[this.projects[i].id]);
         if(this.projects[i].completed){
             completedProjects.push(this.projects[i])
+            this.projects.withdrawFromProject(this.projects[i]);
         }
     }
     return {

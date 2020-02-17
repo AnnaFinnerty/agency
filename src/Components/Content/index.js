@@ -62,10 +62,6 @@ class Content extends Component {
       },
     }
 
-    // this.randomEmployeeGenerator = new RandomEmployee();
-    // this.randomProjectGenerator = new RandomProject();
-    // this.randomEmailGenerator = new RandomEmail();
-    // this.randomMessageGenerator = new RandomMessage();
     this.employeeManager = new EmployeeManager();
     this.projectManager = new ProjectManager();
     this.emailManager = new EmailManager();
@@ -80,24 +76,14 @@ class Content extends Component {
     console.log("starting game");
     const industry = new Industry();
     const agency = new Agency();
-    // const startProjects = [];
-    // const startApplicants = [];
-    // const startEmails = [];
-
+    
     const startYear = new Date().getFullYear() - 1;
-    const time = {
-      hour: this.state.hour,
-      day: this.state.day,
-      month: this.state.month,
-      year: startYear,
-      startYear: startYear,
-    }
+    const time = this.getTime();
 
     const newProject = industry.newProject(false);
     console.log(this.projectManager)
     this.projectManager.addProject(newProject);
     this.emailManager.generateEmail('project',newProject,null,time);
-    // startEmails.push(newProjectEmail);
 
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
@@ -154,13 +140,6 @@ class Content extends Component {
     const tasks = this.state.tasks;
 
     
-    const time = {
-      hour: this.state.hour,
-      day: this.state.day,
-      month: this.state.month,
-      year: this.state.year,
-      startYear: this.state.startYear,
-    }
 
     if(this.state.hour >= 11){
       //new day
@@ -183,8 +162,10 @@ class Content extends Component {
       hour = this.state.hour + 1;
     }
     
+
     //daily updates
-    
+    const time = this.getTime();
+
     //if the agency runs out of cash or the bosses happiness drops to 0, you're fired
     if(this.state.agency.coh <= 0 || this.state.employees[0].happiness <= 0){
       this.emailManager.generateEmail(time,this.state.employees[0]);
@@ -207,7 +188,7 @@ class Content extends Component {
       }
       
       //update and find completed projects
-      const completedProjects = this.projectManager.updateProjects(this.projectManager.employeesByProject);
+      const completedProjects = this.projectManager.updateProjects(this.employeeManager.employeesByProject);
       //daily project update
       //remove complete projects
       for(let a = 0; a < completedProjects.completed.length; a++){
@@ -289,6 +270,16 @@ class Content extends Component {
     this.setState({
       timeRunning: false
     })
+  }
+  getTime = () => {
+    const time = {
+      hour: this.state.hour,
+      day: this.state.day,
+      month: this.state.month,
+      year: this.state.year,
+      startYear: this.state.startYear,
+    }
+    return time
   }
   createTask = (text,urgency,action,requester,type,target) => {
     const task = {

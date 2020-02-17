@@ -5,7 +5,8 @@ function EmployeeManager(){
     this.boss = null;
     this.employees = [];
     this.applicants = [];
-    this.employeeStats = {}
+    this.employeeStats = {};
+    this.employeesByProject = {};
     this.randomEmployee = new RandomEmployee();
     this.emit = this.emit.bind(this);
 }
