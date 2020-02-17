@@ -28,6 +28,13 @@ header{
   height: 14vh;
 }
 
+footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
 aside{
   background: dimgray;
   width: 30vw;

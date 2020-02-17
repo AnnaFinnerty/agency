@@ -16,6 +16,7 @@ class Agency{
         this.settings = {
             acceptingApplicants: true,
             acceptingProjects: true,
+            acceptingOneTimePayments: false,
         }
         //date founded
     }

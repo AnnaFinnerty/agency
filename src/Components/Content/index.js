@@ -190,6 +190,7 @@ class Content extends Component {
       //update and find completed projects
       const completedProjects = this.projectManager.updateProjects(this.employeeManager.employeesByProject);
       //daily project update
+      
       //remove complete projects
       for(let a = 0; a < completedProjects.completed.length; a++){
         const endTask = this.createTask("find a new project",3,"project")
@@ -431,6 +432,16 @@ class Content extends Component {
        activePane: activePane
     })
   }
+  movePane = (i) => {
+    console.log('moving pane', i);
+    // const activePane = this.state.activePane === i ? i - 1: this.state.activePane;
+    // console.log('old active pane', this.state.activePane);
+    // console.log('new active pane', activePane);
+    // this.setState({
+    //    panes: this.state.panes.filter((pane,x) => i !== x),
+    //    activePane: activePane
+    // })
+  }
   updatePane = (i) => {
     this.setState({
       activePane: i
@@ -448,6 +459,7 @@ class Content extends Component {
   }
   render(){
     // console.log('content state', this.state)
+    const year = new Date().getFullYear();
     return (
       <React.Fragment>
           <div className="app">
@@ -500,21 +512,10 @@ class Content extends Component {
                                 addPane={this.addPane}
                                 updatePane={this.updatePane} 
                                 removePane={this.removePane}
-                                // hireApplicant={this.hireApplicant}
-                                // dismissApplicant={this.dismissApplicant}
-                                // updateEmployee={this.updateEmployee}
-                                // updateEmployeeLevel={this.updateEmployeeLevel}
-                                // fireEmployee={this.fireEmployee}
+                                movePane={this.movePane}
                                 generateTask={this.generateTask}
                                 dismissTask={this.dismissTask}
                                 resolveTask={this.resolveTask}
-                                considerProject={this.considerProject}
-                                acceptProject={this.acceptProject}
-                                rejectProject={this.rejectProject}
-                                withdrawProject={this.withdrawProject}
-                                // readEmail={this.readEmail}
-                                sendEmail={this.sendEmail}
-                                archiveEmail={this.archiveEmail}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
@@ -522,7 +523,7 @@ class Content extends Component {
                                 updateCollection={this.updateCollection} 
                                 />
                         </div>
-                <footer></footer>
+                <footer>&copy; {year} <a href="https://github.com/AnnaFinnerty">Annie Finnerty</a>  </footer>
                 </div>
                 <Message open={this.state.messageOpen} closeMessage={this.closeMessage} messages={this.state.messages} addMessage={this.addMessage}/>
       </React.Fragment>
