@@ -28,6 +28,13 @@ header{
   height: 14vh;
 }
 
+footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
 aside{
   background: dimgray;
   width: 30vw;
@@ -96,6 +103,16 @@ li{
 .message-closed{
   height: 5vh;
   background: grey;
+}
+
+.main-tab:hover > .main-tab-hover{
+  color: black;
+  pointer-events: all;
+}
+
+.main-tab-hover{
+  color: transparent;
+  pointer-events: none;
 }
 
 .hover:hover{

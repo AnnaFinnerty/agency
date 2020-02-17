@@ -12,6 +12,12 @@ class Agency{
         this.reputation = reputation ? reputation : 50;
         this.experience = experience ? experience : 0;
         this.completedProjects = 0;
+        this.cohHistory = [];
+        this.settings = {
+            acceptingApplicants: true,
+            acceptingProjects: true,
+            acceptingOneTimePayments: false,
+        }
         //date founded
     }
     debit = (amt) => {

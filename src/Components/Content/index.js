@@ -53,8 +53,8 @@ class Content extends Component {
       timeRunning: false,
       activePane: 0,
       panes: [
-        {type:'email',pinned:true},
-        {type:'tasks',pinned:true}
+        {type:'email',pinned:true,permanent:true},
+        {type:'tasks',pinned:true,permanent:true}
       ],
       updateParams: {
         emailFrequency: .15,
@@ -62,10 +62,6 @@ class Content extends Component {
       },
     }
 
-    // this.randomEmployeeGenerator = new RandomEmployee();
-    // this.randomProjectGenerator = new RandomProject();
-    // this.randomEmailGenerator = new RandomEmail();
-    // this.randomMessageGenerator = new RandomMessage();
     this.employeeManager = new EmployeeManager();
     this.projectManager = new ProjectManager();
     this.emailManager = new EmailManager();
@@ -80,24 +76,14 @@ class Content extends Component {
     console.log("starting game");
     const industry = new Industry();
     const agency = new Agency();
-    // const startProjects = [];
-    // const startApplicants = [];
-    // const startEmails = [];
-
+    
     const startYear = new Date().getFullYear() - 1;
-    const time = {
-      hour: this.state.hour,
-      day: this.state.day,
-      month: this.state.month,
-      year: startYear,
-      startYear: startYear,
-    }
+    const time = this.getTime();
 
     const newProject = industry.newProject(false);
     console.log(this.projectManager)
     this.projectManager.addProject(newProject);
     this.emailManager.generateEmail('project',newProject,null,time);
-    // startEmails.push(newProjectEmail);
 
     numStartProjects = numStartProjects ? numStartProjects : 3;
     for(let i = 0 ; i < numStartProjects; i ++){
@@ -150,17 +136,9 @@ class Content extends Component {
     let day = this.state.day;
     let month = this.state.month;
     let year = this.state.year;
-    // let projects = this.state.projects;
     const tasks = this.state.tasks;
 
     
-    const time = {
-      hour: this.state.hour,
-      day: this.state.day,
-      month: this.state.month,
-      year: this.state.year,
-      startYear: this.state.startYear,
-    }
 
     if(this.state.hour >= 11){
       //new day
@@ -183,8 +161,10 @@ class Content extends Component {
       hour = this.state.hour + 1;
     }
     
+
     //daily updates
-    
+    const time = this.getTime();
+
     //if the agency runs out of cash or the bosses happiness drops to 0, you're fired
     if(this.state.agency.coh <= 0 || this.state.employees[0].happiness <= 0){
       this.emailManager.generateEmail(time,this.state.employees[0]);
@@ -207,8 +187,9 @@ class Content extends Component {
       }
       
       //update and find completed projects
-      const completedProjects = this.projectManager.updateProjects(this.projectManager.employeesByProject);
+      const completedProjects = this.projectManager.updateProjects(this.employeeManager.employeesByProject);
       //daily project update
+      
       //remove complete projects
       for(let a = 0; a < completedProjects.completed.length; a++){
         const endTask = this.createTask("find a new project",3,"project")
@@ -289,6 +270,16 @@ class Content extends Component {
     this.setState({
       timeRunning: false
     })
+  }
+  getTime = () => {
+    const time = {
+      hour: this.state.hour,
+      day: this.state.day,
+      month: this.state.month,
+      year: this.state.year,
+      startYear: this.state.startYear,
+    }
+    return time
   }
   createTask = (text,urgency,action,requester,type,target) => {
     const task = {
@@ -431,13 +422,28 @@ class Content extends Component {
     })
   }
   removePane = (i) => {
-    console.log('removing pane', i);
     const activePane = this.state.activePane === i ? i - 1: this.state.activePane;
-    console.log('old active pane', this.state.activePane);
-    console.log('new active pane', activePane);
     this.setState({
        panes: this.state.panes.filter((pane,x) => i !== x),
        activePane: activePane
+    })
+  }
+  movePane = (previousPosition,newPosition) => {
+    const panes = this.state.panes;
+    const pane = panes.splice(previousPosition,1)[0];
+    panes.splice(newPosition,0,pane);
+    this.setState({
+       panes: panes,
+       activePane: newPosition
+    })
+  }
+  togglePanePin = (i) => {
+    const panes = this.state.panes;
+    if(!panes[i].permanent){
+      panes[i].pinned = !panes[i].pinned
+    }
+    this.setState({
+      panes: panes
     })
   }
   updatePane = (i) => {
@@ -457,6 +463,7 @@ class Content extends Component {
   }
   render(){
     // console.log('content state', this.state)
+    const year = new Date().getFullYear();
     return (
       <React.Fragment>
           <div className="app">
@@ -466,7 +473,6 @@ class Content extends Component {
                             projects={this.state.projects} 
                             applicants={this.state.applicants} 
                             addPane={this.addPane}
-                            // dismissApplicant={this.dismissApplicant}
                             appOpenModal={this.props.appOpenModal}
                             mobile={this.props.mobile}
                             updateCollection={this.updateCollection}
@@ -509,21 +515,11 @@ class Content extends Component {
                                 addPane={this.addPane}
                                 updatePane={this.updatePane} 
                                 removePane={this.removePane}
-                                // hireApplicant={this.hireApplicant}
-                                // dismissApplicant={this.dismissApplicant}
-                                // updateEmployee={this.updateEmployee}
-                                // updateEmployeeLevel={this.updateEmployeeLevel}
-                                // fireEmployee={this.fireEmployee}
+                                movePane={this.movePane}
+                                togglePanePin={this.togglePanePin}
                                 generateTask={this.generateTask}
                                 dismissTask={this.dismissTask}
                                 resolveTask={this.resolveTask}
-                                considerProject={this.considerProject}
-                                acceptProject={this.acceptProject}
-                                rejectProject={this.rejectProject}
-                                withdrawProject={this.withdrawProject}
-                                // readEmail={this.readEmail}
-                                sendEmail={this.sendEmail}
-                                archiveEmail={this.archiveEmail}
                                 emails={this.state.emails}
                                 tasks={this.state.tasks}
                                 projects={this.state.projects}
@@ -531,7 +527,7 @@ class Content extends Component {
                                 updateCollection={this.updateCollection} 
                                 />
                         </div>
-                <footer></footer>
+                <footer>&copy; {year} <a href="https://github.com/AnnaFinnerty">Annie Finnerty</a>  </footer>
                 </div>
                 <Message open={this.state.messageOpen} closeMessage={this.closeMessage} messages={this.state.messages} addMessage={this.addMessage}/>
       </React.Fragment>
