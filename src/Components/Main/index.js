@@ -104,7 +104,14 @@ class Main extends Component {
     const paneName = this.getPaneName(info)
     const item = { 
       menuItem: (
-        <Menu.Item key={info.type + "-" + info.id} onClick={()=>this.props.updatePane(i)}>
+        <Menu.Item key={info.type + "-" + info.id} 
+                   onClick={()=>this.props.updatePane(i)}
+                   draggable="true"
+                   onDragStart={(e)=>this.drag(e,i)}
+                   onDragOver={this.allowDrop}
+                   onDrop={this.drop}
+                   data-i={i}
+                  >
           {
             info.pinned ? <Icon name="map pin"></Icon> : ''
           }
@@ -121,6 +128,25 @@ class Main extends Component {
                     </Tab.Pane>
     }
     return item
+  }
+  allowDrop = (e) => {
+    e.preventDefault();
+  }
+  
+  drag = (e,i) => {
+    console.log('drag!')
+    e.dataTransfer.setData("text", i);
+  }
+  
+  drop = (e) => {
+    console.log('drop!')
+    e.preventDefault();
+    const previousPosition = e.dataTransfer.getData("text");
+    console.log(previousPosition);
+    const newPosition = e.target.getAttribute('data-i');
+    console.log(newPosition);
+    this.props.movePane(previousPosition,newPosition)
+
   }
   render(){
     // console.log('main props', this.props)
