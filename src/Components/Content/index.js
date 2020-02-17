@@ -473,7 +473,6 @@ class Content extends Component {
                             projects={this.state.projects} 
                             applicants={this.state.applicants} 
                             addPane={this.addPane}
-                            // dismissApplicant={this.dismissApplicant}
                             appOpenModal={this.props.appOpenModal}
                             mobile={this.props.mobile}
                             updateCollection={this.updateCollection}
