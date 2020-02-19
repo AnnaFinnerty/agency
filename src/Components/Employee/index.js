@@ -9,7 +9,7 @@ const Employees = (props) => (
       <div key={employee.id} className="hover">
         <Grid celled onClick={()=>props.addPane('employee',employee)}>
           <Grid.Row columns={3}  style={{padding:'0'}}>
-              <Grid.Column width={6}>
+              <Grid.Column width={6} style={{display:"flex"}}>
                 <PersonalIcon icon={employee.icon}/>
                 {employee.name.display}
                 {

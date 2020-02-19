@@ -1,13 +1,13 @@
 
 import RandomEmployee from './RandomEmployee';
 
-function EmployeeManager(){
+function EmployeeManager(agencyName){
     this.boss = null;
     this.employees = [];
     this.applicants = [];
     this.employeeStats = {};
     this.employeesByProject = {};
-    this.randomEmployee = new RandomEmployee();
+    this.randomEmployee = new RandomEmployee(agencyName);
     this.emit = this.emit.bind(this);
 }
 

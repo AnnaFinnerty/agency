@@ -4,15 +4,11 @@ import Header from '../Header';
 import Main from '../Main';
 import Sidebar from '../Sidebar';
 import Message from '../Message';
+import PauseScreen from './pause';
 
 import Player from '../../Scripts/Player'
 import Industry from '../../Scripts/Industry';
 import Agency from '../../Scripts/Agency';
-// import TaskManager from '../../Scripts/TaskManagers';
-// import RandomEmployee from '../../Scripts/RandomEmployee';
-// import RandomProject from '../../Scripts/RandomProject';
-// import RandomEmail from '../../Scripts/RandomEmail';
-import RandomMessage from '../../Scripts/RandomMessage';
 import EmployeeManager from '../../Scripts/EmployeeManager';
 import ProjectManager from '../../Scripts/ProjectManager';
 import EmailManager from '../../Scripts/EmailManager';
@@ -31,7 +27,6 @@ class Content extends Component {
       industry: new Industry(),
       agency: new Agency(),
       player: new Player(),
-      sidebarRight: true,
       projects: [],
       totalPositions: 20,
       employees: [],
@@ -62,21 +57,25 @@ class Content extends Component {
       },
     }
 
-    this.employeeManager = new EmployeeManager();
-    this.projectManager = new ProjectManager();
-    this.emailManager = new EmailManager();
-    this.taskManager = new TaskManager();
-    this.messageManager = new MessageManager();
     this.helpers = new Helpers();
   }
   componentDidMount(){
     this.start();
   }
-  start = (numStartEmployees, numStartProjects) => {
+  start = () => {
+    this.new();
+  }
+  new = (numStartEmployees, numStartProjects) => {
     console.log("starting game");
     const industry = new Industry();
     const agency = new Agency();
     
+    this.employeeManager = new EmployeeManager(agency.name);
+    this.projectManager = new ProjectManager();
+    this.emailManager = new EmailManager();
+    this.taskManager = new TaskManager();
+    this.messageManager = new MessageManager();
+
     const startYear = new Date().getFullYear() - 1;
     const time = this.getTime();
 
@@ -462,7 +461,7 @@ class Content extends Component {
     })
   }
   render(){
-    // console.log('content state', this.state)
+    console.log('content props', this.props)
     const year = new Date().getFullYear();
     return (
       <React.Fragment>
@@ -530,6 +529,10 @@ class Content extends Component {
                 <footer>&copy; {year} <a href="https://github.com/AnnaFinnerty">Annie Finnerty</a>  </footer>
                 </div>
                 <Message open={this.state.messageOpen} closeMessage={this.closeMessage} messages={this.state.messages} addMessage={this.addMessage}/>
+                {
+                  this.state.timeRunning || this.props.testing ? '' :
+                  <PauseScreen startTimer={this.startTimer}/>
+                }
       </React.Fragment>
     );
   }
