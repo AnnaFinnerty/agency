@@ -1,7 +1,7 @@
 import Employee from './Employee';
 import MatchEmployeeToProject from './MatchEmployeeToProject';
 
-function RandomEmployee(){
+function RandomEmployee(agencyName){
     this.employeeId = 100000001;
     this.applicantId = 200000001;
     this.maxLeaders = 2;
@@ -10,6 +10,7 @@ function RandomEmployee(){
     this.femaleIcons = ['female-icon-1'];
     this.maleIcons = ['male-icon-1'];
     this.neutralIcons = ['male-icon-1'];
+    // this.domain = agencyName !== undefined ? '' : agencyName.split(' ').join('').toLowerCase();
 }
 
 RandomEmployee.prototype.generateStartEmployees = function(numEmployees, numLeaders, startProjects){
@@ -185,7 +186,7 @@ RandomEmployee.prototype.randomName = function(gender){
             full:first_name + " " + lastName,
             display: first_name.charAt(0) + ". " + lastName,
             short: first_name + " " + lastName.charAt(0) + ".",
-            email: first_name.charAt(0) + lastName + '@'
+            email: first_name.charAt(0) + lastName + '@' + "this.domain" + ".com"
         }
 }
 

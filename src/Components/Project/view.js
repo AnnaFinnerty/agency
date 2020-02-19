@@ -12,7 +12,7 @@ function Project(props) {
     console.log('removing employee from project',removedWorker)
     removedWorker.projectId = null;
     removedWorker.project.workers = removedWorker.project.workers.filter((worker)=> worker.id !== removedWorker.id);
-    props.updateEmployee(removedWorker);
+    props.updateCollection('employees','update',removedWorker);
   }
   const addEmployee = (e,data) => {
     
@@ -24,7 +24,7 @@ function Project(props) {
     
 
     console.log('adding employee to project',data.value, addedEmployee)
-    props.updateEmployee(addedEmployee);
+    props.updateCollection('employees','update',addedEmployee);
   }
   const helpers = new Helpers();
   const budget = helpers.monify(props.info.budget)

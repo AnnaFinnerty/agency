@@ -57,11 +57,6 @@ class Content extends Component {
       },
     }
 
-    this.employeeManager = new EmployeeManager();
-    this.projectManager = new ProjectManager();
-    this.emailManager = new EmailManager();
-    this.taskManager = new TaskManager();
-    this.messageManager = new MessageManager();
     this.helpers = new Helpers();
   }
   componentDidMount(){
@@ -75,6 +70,12 @@ class Content extends Component {
     const industry = new Industry();
     const agency = new Agency();
     
+    this.employeeManager = new EmployeeManager(agency.name);
+    this.projectManager = new ProjectManager();
+    this.emailManager = new EmailManager();
+    this.taskManager = new TaskManager();
+    this.messageManager = new MessageManager();
+
     const startYear = new Date().getFullYear() - 1;
     const time = this.getTime();
 

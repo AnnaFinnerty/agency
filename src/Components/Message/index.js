@@ -7,6 +7,7 @@ class Message extends Component{
         this.state = {
             open: false,
             text: '',
+            newMessage: false,
         }
     }
     open = () => {
@@ -35,9 +36,9 @@ class Message extends Component{
         })
         return(
             <div style={{overflow:"hidden"}} className={this.state.open ? 'message message-open': 'message message-closed'}>
-                <Header style={{position:'fixed',width:'100%',backgroundColor:"dimgray"}}>
+                <div onClick={this.state.open ? this.close : this.open} style={{position:'fixed',width:'95%',height:"5vh",backgroundColor:"dimgray"}}>
                     <Button onClick={this.state.open ? this.close : this.open} style={{right:'15px',position:'fixed',padding:'4px'}}>X</Button>
-                </Header>
+                </div>
                 {
                     !this.state.open ? "" :
                     <React.Fragment>
